@@ -252,17 +252,26 @@
     overflow: hidden;
     isolation: isolate;
     transition: opacity 420ms cubic-bezier(.4,0,.2,1);
-  }
-  .vs-photo:hover { opacity: 0.86; }
-  /* Image protection — block drag, right-click, and iOS long-press save */
-  .vs-photo {
     -webkit-touch-callout: none;
     user-select: none;
   }
+  .vs-photo:hover { opacity: 0.86; }
   .vs-photo > img {
     display: block; width: 100%; height: 100%; object-fit: cover;
     pointer-events: none;
     -webkit-user-drag: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  /* Transparent shield — sits above the <img> and grain layers so the browser
+     never identifies an image element under the cursor; eliminates "Save image
+     as" and "Open image in new tab" from the native context menu entirely. */
+  .vs-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    -webkit-touch-callout: none;
     user-select: none;
   }
   .vs-photo > .grain {
@@ -360,15 +369,24 @@
 <div id="root"></div>
 
 <script>
-/* Image protection — contextmenu and drag blocked on all portfolio images */
-document.addEventListener('contextmenu', function(e) {
-  if (e.target.tagName === 'IMG' || (e.target.closest && e.target.closest('.vs-photo'))) {
-    e.preventDefault();
+/* Image protection — capture phase fires before the browser builds its native
+   context menu, ensuring "Save image as" / "Open image in new tab" never appear.
+   The ::after shield in CSS means e.target will be .vs-photo (not the <img>),
+   but we guard both just in case. */
+(function () {
+  function onPhotoImg(e) {
+    if (e.target.tagName === 'IMG' ||
+        (e.target.closest && e.target.closest('.vs-photo'))) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
   }
-});
-document.addEventListener('dragstart', function(e) {
-  if (e.target.tagName === 'IMG') e.preventDefault();
-});
+  document.addEventListener('contextmenu', onPhotoImg, true);
+  document.addEventListener('dragstart',   onPhotoImg, true);
+
+  /* iOS Safari long-press dispatches a contextmenu on touch; handled above.
+     The -webkit-touch-callout:none in CSS covers the native callout sheet. */
+}());
 </script>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>

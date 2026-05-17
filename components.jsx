@@ -12,12 +12,16 @@ function Photo({ src, tone, aspect, natural, style, alt = "" }) {
     ? { background: src ? "transparent" : tone, ...style }
     : { aspectRatio: aspect || "4/5", background: src ? "var(--paper-bone)" : tone, ...style };
 
+  const noSave = e => { e.preventDefault(); e.stopPropagation(); };
+
   return (
-    <div className="vs-photo" style={baseStyle}>
+    <div className="vs-photo" style={baseStyle}
+         onContextMenu={noSave} onDragStart={noSave}>
       {src && (
         useNatural
-          ? <img src={src} alt={alt} draggable={false} style={{ display: "block", width: "100%", height: "auto" }} />
-          : <img src={src} alt={alt} draggable={false} />
+          ? <img src={src} alt={alt} draggable={false} onContextMenu={noSave} onDragStart={noSave}
+                 style={{ display: "block", width: "100%", height: "auto" }} />
+          : <img src={src} alt={alt} draggable={false} onContextMenu={noSave} onDragStart={noSave} />
       )}
       <div className="grain"></div>
     </div>

@@ -16,8 +16,8 @@ function Photo({ src, tone, aspect, natural, style, alt = "" }) {
     <div className="vs-photo" style={baseStyle}>
       {src && (
         useNatural
-          ? <img src={src} alt={alt} style={{ display: "block", width: "100%", height: "auto" }} />
-          : <img src={src} alt={alt} />
+          ? <img src={src} alt={alt} draggable={false} style={{ display: "block", width: "100%", height: "auto" }} />
+          : <img src={src} alt={alt} draggable={false} />
       )}
       <div className="grain"></div>
     </div>

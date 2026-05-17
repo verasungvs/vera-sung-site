@@ -18,6 +18,7 @@ function useHashRoute() {
 
 function Header({ route, go }) {
   const [top] = route.split("/");
+  const mob = useIsMobile();
   const items = [
     { id: "home",                 label: "Home" },
     { id: "photography/passage",  label: "Photography", match: "photography" },
@@ -25,6 +26,22 @@ function Header({ route, go }) {
     { id: "about",                label: "About" },
     { id: "contact",              label: "Contact" },
   ];
+
+  /* On mobile: insert a flex-break span before "About" (index 3) so the nav
+     wraps intentionally as Home / Photography / Performance on line one,
+     and About / Contact on line two — never a single isolated item. */
+  const navChildren = items.map((it, idx) => {
+    const active = top === (it.match || it.id.split("/")[0]) ||
+                   (it.id === "home" && top === "home");
+    return (
+      <button key={it.id} onClick={() => go(it.id)} className={active ? "active" : ""}>
+        <span className="printed--soft">{it.label}</span>
+      </button>
+    );
+  });
+  if (mob) {
+    navChildren.splice(3, 0, <span key="nav-break" style={{ flexBasis: "100%", height: 0 }} />);
+  }
 
   return (
     <header className="site">
@@ -40,15 +57,7 @@ function Header({ route, go }) {
           }}>宋 孟璇</span>
         </button>
         <nav className="primary">
-          {items.map(it => {
-            const active = top === (it.match || it.id.split("/")[0]) ||
-                           (it.id === "home" && top === "home");
-            return (
-              <button key={it.id} onClick={() => go(it.id)} className={active ? "active" : ""}>
-                <span className="printed--soft">{it.label}</span>
-              </button>
-            );
-          })}
+          {navChildren}
         </nav>
         <span className="meta-right"></span>
       </div>

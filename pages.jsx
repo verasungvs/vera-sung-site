@@ -271,7 +271,12 @@ function PassageSequence({ project }) {
         if (p.kind === "triptych") {
           return (
             <Reveal as="section" key={i} style={wrapStyle}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", columnGap: 18 }}>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: mob ? "1fr" : "1fr 1fr 1fr",
+                columnGap: mob ? 0 : 18,
+                rowGap: mob ? 14 : 0,
+              }}>
                 <Photo src={p.a.src} natural />
                 <Photo src={p.b.src} natural />
                 <Photo src={p.c.src} natural />
@@ -549,12 +554,28 @@ function AboutPage({ go }) {
         alignItems: "start",
       }}>
         <Reveal>
-          <div className="label printed--soft" style={{
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "baseline",
             marginBottom: mob ? 20 : 36,
-            fontSize: mob ? 13 : 18,
-            letterSpacing: mob ? "0.12em" : "0.22em",
           }}>
-            About
+            <div className="label printed--soft" style={{
+              fontSize: mob ? 13 : 18,
+              letterSpacing: mob ? "0.12em" : "0.22em",
+            }}>
+              About
+            </div>
+            {mob && (
+              <button
+                onClick={() => document.getElementById("about-cv").scrollIntoView({ behavior: "smooth" })}
+                className="printed--soft"
+                style={{
+                  fontFamily: "var(--mono)", fontSize: 10,
+                  letterSpacing: "0.20em", color: "var(--ink-4)",
+                  opacity: 0.65, textTransform: "uppercase",
+                }}>
+                cv ↓
+              </button>
+            )}
           </div>
 
           {/* Wordmark — same pattern as the top-left header */}
@@ -640,7 +661,7 @@ function AboutPage({ go }) {
         }}>
 
           {/* Left — Performance CV */}
-          <div>
+          <div id="about-cv">
             <div className="stamp stamp--page printed--stamp" style={{ marginBottom: 36 }}>
               Performance CV
             </div>

@@ -24,8 +24,9 @@ function HomePage({ go }) {
       {/* the opening photograph — alone, no label, no caption.
          Breaks out slightly wider than the column on desktop so it reads
          like a full-bleed photobook plate. */}
+      {/* mobile: negative margin cancels the col-narrow 22px side padding → full-bleed */}
       <Reveal as="section" style={{
-        margin: mob ? "0 0 48px" : "0 -12% 120px",
+        margin: mob ? "0 -22px 48px" : "0 -12% 120px",
       }}>
         <Photo src="assets/drifting-01.jpg" aspect="3/2" />
       </Reveal>
@@ -40,10 +41,10 @@ function HomePage({ go }) {
                onClick={() => go("photography/" + pr.id)}
                style={{
                  display: "grid",
-                 gridTemplateColumns: mob ? "36px 1fr" : "60px 1fr",
+                 gridTemplateColumns: mob ? "28px 1fr" : "60px 1fr",
                  alignItems: "baseline",
-                 columnGap: mob ? 16 : 32,
-                 padding: "6px 0",
+                 columnGap: mob ? 12 : 32,
+                 padding: mob ? "3px 0" : "6px 0",
                  cursor: "pointer",
                  transition: "padding-left .8s var(--ease), opacity .8s var(--ease)",
                }}
@@ -51,14 +52,14 @@ function HomePage({ go }) {
                onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.opacity = "1"; }}>
             <span style={{
               fontFamily: "var(--mono-worn)",
-              fontSize: mob ? 10 : 11,
+              fontSize: mob ? 9 : 11,
               letterSpacing: "0.22em",
             }}>
               <LetterpressTitle text={pr.no} />
             </span>
             <span style={{
               fontFamily: "var(--mono-worn)",
-              fontSize: mob ? 14 : 18,
+              fontSize: mob ? 12 : 18,
               letterSpacing: "0.06em", textTransform: "uppercase",
             }}>
               <LetterpressTitle text={pr.title} />
@@ -74,23 +75,26 @@ function HomePage({ go }) {
 function PhotographyPage({ sub, go }) {
   const pid = sub || "passage";
   const pr = PROJECTS.find(p => p.id === pid) || PROJECTS[0];
+  const mob = useIsMobile();
 
   return (
     <div className="page-enter col-narrow" data-screen-label={"Photography / " + pr.title} style={{ paddingTop: 48 }}>
 
       {/* sub-nav: projects label, then the four projects beneath as stacked items */}
       <div style={{
-        paddingBottom: 18, borderBottom: "1px solid rgba(85,82,75,.10)", marginBottom: 25,
+        paddingBottom: 18, borderBottom: "1px solid rgba(85,82,75,.10)",
+        marginBottom: mob ? 16 : 25,
       }}>
         <div className="label printed--soft" style={{
-          fontSize: 15, fontWeight: 700, color: "var(--ink)", marginBottom: 28, letterSpacing: "0.22em",
+          fontSize: 15, fontWeight: 700, color: "var(--ink)",
+          marginBottom: mob ? 14 : 28, letterSpacing: "0.22em",
         }}>
           projects
         </div>
         <div style={{
           display: "flex",
           flexWrap: "wrap",
-          gap: "40px 56px",
+          gap: mob ? "10px 16px" : "40px 56px",
           alignItems: "start",
         }}>
           {PROJECTS.map(p => {
@@ -98,18 +102,22 @@ function PhotographyPage({ sub, go }) {
             return (
               <button key={p.id} onClick={() => go("photography/" + p.id)}
                 style={{
-                  display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10,
+                  display: "flex", flexDirection: "column", alignItems: "flex-start",
+                  gap: mob ? 4 : 10,
                   textAlign: "left", paddingBottom: 0, border: 0,
-                  width: 180,
+                  width: mob ? 130 : 180,
                 }}>
                 <span style={{
-                  fontFamily: "var(--mono-worn)", fontSize: 11,
+                  fontFamily: "var(--mono-worn)",
+                  fontSize: mob ? 9 : 11,
                   letterSpacing: "0.28em",
                 }}>
                   <LetterpressTitle text={p.no} />
                 </span>
                 <span style={{
-                  fontFamily: "var(--mono-worn)", fontSize: 15, letterSpacing: "0.08em",
+                  fontFamily: "var(--mono-worn)",
+                  fontSize: mob ? 11 : 15,
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
                 }}>
                   <LetterpressTitle text={p.title} />
@@ -121,30 +129,33 @@ function PhotographyPage({ sub, go }) {
       </div>
 
       {/* title spread */}
-      <section style={{ marginBottom: 96 }}>
+      <section style={{ marginBottom: mob ? 40 : 96 }}>
         <div className="numeral printed--soft" style={{ marginBottom: 18, fontSize: 15 }}>series {pr.no}</div>
         <div className="stamp stamp--big printed--stamp" style={{ marginBottom: 32 }}>
           {pr.title}
         </div>
         {pr.id === "passage" ? (
           <div className="printed" style={{
-            fontFamily: "var(--mono)", fontSize: 18, lineHeight: 1.75,
-            color: "var(--ink-2)", maxWidth: 720, marginTop: 24,
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 14 : 18,
+            lineHeight: mob ? 1.55 : 1.75,
+            color: "var(--ink-2)", maxWidth: 720,
+            marginTop: mob ? 16 : 24,
           }}>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               Around the vast sandy expanse of Mont-Saint-Michel, as the sea
               withdraws, people begin to step onto the sand, wandering,
               lingering, observing.
             </p>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               They walk or drift, forming a circle, as if taking part in a
               brief ritual already on the verge of disappearing.
             </p>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               On this stretch of sand, each day, there is a temporary moment
               in which we are allowed to walk here.
             </p>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               When the time comes, the sea returns, rushing in or slowly
               spreading across the ground. The sand does not disappear, it
               is simply covered.
@@ -156,21 +167,24 @@ function PhotographyPage({ sub, go }) {
           </div>
         ) : pr.id === "night-walks" ? (
           <div className="printed" style={{
-            fontFamily: "var(--mono)", fontSize: 18, lineHeight: 1.75,
-            color: "var(--paper-light)", maxWidth: 720, marginTop: 24,
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 14 : 18,
+            lineHeight: mob ? 1.55 : 1.75,
+            color: "var(--paper-light)", maxWidth: 720,
+            marginTop: mob ? 16 : 24,
           }}>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               Night walks in the American town of Wilson.
             </p>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               Under the cover of darkness, I move forward, feeling as if
               nothing but a thin skin wraps around me.
             </p>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               For nearly a month, my walking has been animal, instinctive,
               almost a premonition in motion.
             </p>
-            <p style={{ margin: "0 0 14px" }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
               Look, someone slips quietly past that window. Strands of hair
               on the wooden floor, traces scattered by the watcher.
             </p>
@@ -424,12 +438,16 @@ const PERFORMANCE_ROWS = [
 ];
 
 function PhotoNum({ item }) {
+  const mob = useIsMobile();
   return (
-    <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+    <div style={{ display: "flex", gap: mob ? 5 : 12, alignItems: "flex-start" }}>
       <div className="printed--soft" style={{
-        fontFamily: "var(--mono)", fontSize: 11,
+        fontFamily: "var(--mono)",
+        fontSize: mob ? 8 : 11,
         letterSpacing: "0.18em", color: "var(--ink-4)",
-        width: 28, flexShrink: 0, paddingTop: 6,
+        width: mob ? 14 : 28, flexShrink: 0,
+        paddingTop: mob ? 3 : 6,
+        opacity: mob ? 0.35 : 1,
       }}>{item.n}</div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <Photo src={item.src} natural />
@@ -476,9 +494,10 @@ function PerformancePage() {
             ) : (
               <div style={{
                 display: "grid",
-                /* Mobile: triptychs collapse to 2-col so each image stays legible */
+                /* Mobile: all multi-image rows collapse to 1-col so each
+                   image fills the available width and stays clearly legible */
                 gridTemplateColumns: mob
-                  ? "1fr 1fr"
+                  ? "1fr"
                   : (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr"),
                 columnGap: mob ? 8 : 24,
                 alignItems: "start",
@@ -495,6 +514,7 @@ function PerformancePage() {
 
 /* ============================== ABOUT ============================== */
 function AboutPage({ go }) {
+  const mob = useIsMobile();
   const links = [
     {
       label: "hans lucas",
@@ -513,9 +533,19 @@ function AboutPage({ go }) {
     <div className="page-enter col-wide" data-screen-label="About" style={{ paddingTop: 72 }}>
 
       {/* === Top: About title + portrait ============================= */}
-      <div style={{ display: "grid", gridTemplateColumns: "6fr 4fr", gap: 80, alignItems: "start" }}>
+      {/* Mobile: stack bio above portrait (single column) */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: mob ? "1fr" : "6fr 4fr",
+        gap: mob ? 32 : 80,
+        alignItems: "start",
+      }}>
         <Reveal>
-          <div className="label printed--soft" style={{ marginBottom: 36, fontSize: 18, letterSpacing: "0.22em" }}>
+          <div className="label printed--soft" style={{
+            marginBottom: mob ? 20 : 36,
+            fontSize: mob ? 13 : 18,
+            letterSpacing: mob ? "0.12em" : "0.22em",
+          }}>
             About
           </div>
 
@@ -531,10 +561,15 @@ function AboutPage({ go }) {
 
           {/* Biography */}
           <div className="printed" style={{
-            fontFamily: "var(--mono)", fontSize: 17, lineHeight: 1.7,
-            color: "var(--ink-2)", maxWidth: 560, marginTop: 40,
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 14 : 17,
+            lineHeight: mob ? 1.55 : 1.7,
+            color: "var(--ink-2)",
+            maxWidth: mob ? "100%" : 560,
+            marginTop: mob ? 24 : 40,
+            letterSpacing: mob ? "0.005em" : undefined,
           }}>
-            <p style={{ margin: "0 0 16px" }}>
+            <p style={{ margin: mob ? "0 0 10px" : "0 0 16px" }}>
               Born in Taiwan, Vera Sung lives and works between Taiwan and France.
             </p>
             <p style={{ margin: 0 }}>
@@ -546,21 +581,27 @@ function AboutPage({ go }) {
             </p>
           </div>
 
-          {/* Links — formerly the Links page content. Description sits in a
-             quieter, lighter ink; the linked label stays in the warm primary. */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 30, maxWidth: 560, marginTop: 56 }}>
+          {/* Links */}
+          <div style={{
+            display: "flex", flexDirection: "column",
+            gap: mob ? 20 : 30,
+            maxWidth: mob ? "100%" : 560,
+            marginTop: mob ? 36 : 56,
+          }}>
             {links.map((it, i) => (
               <a key={i} href={it.href} target="_blank" rel="noreferrer"
                  style={{ display: "block", borderBottom: "none", paddingBottom: 0 }}>
                 <div className="printed" style={{
-                  fontFamily: "var(--mono)", fontSize: 15,
+                  fontFamily: "var(--mono)",
+                  fontSize: mob ? 12 : 15,
                   color: "var(--ink-4)",
                   letterSpacing: ".02em", marginBottom: 6,
                 }}>
                   {it.desc}
                 </div>
                 <div className="printed" style={{
-                  fontFamily: "var(--mono)", fontSize: 20,
+                  fontFamily: "var(--mono)",
+                  fontSize: mob ? 16 : 20,
                   color: "oklch(0.38 0.10 40)",
                   letterSpacing: ".03em", fontWeight: 500,
                 }}>
@@ -572,18 +613,23 @@ function AboutPage({ go }) {
         </Reveal>
 
         <Reveal delay={150}>
-          <div style={{ paddingTop: 8 }}>
+          <div style={{ paddingTop: mob ? 0 : 8 }}>
             <Photo src="assets/vera-portrait-bw.jpg" natural />
           </div>
         </Reveal>
       </div>
 
       {/* === Divider ================================================= */}
-      <div style={{ height: 1, background: "rgba(85,82,75,.14)", margin: "96px 0 56px" }}/>
+      <div style={{ height: 1, background: "rgba(85,82,75,.14)", margin: mob ? "48px 0 32px" : "96px 0 56px" }}/>
 
       {/* === CV section — two columns ================================ */}
       <Reveal>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "start" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: mob ? "1fr" : "1fr 1fr",
+          gap: mob ? 40 : 80,
+          alignItems: "start",
+        }}>
 
           {/* Left — Performance CV */}
           <div>

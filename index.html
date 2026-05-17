@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vera Sung — photographs, performances</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  /* =========================================================
+     Site-specific layer — sits on top of the Vera Sung
+     design-system tokens in colors_and_type.css.
+     No new colors or fonts are introduced here; only layout
+     and a few utility classes (printed, sheet, stamp).
+     ========================================================= */
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: var(--t-base);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---------------------------------------------------------
+     DARK THEME (scoped to .theme-dark on <body>)
+     Used only on the Night Walks page. The token names from
+     colors_and_type.css are preserved so all components keep
+     working without per-page changes. */
+  body.theme-dark {
+    --paper:       #000000;
+    --paper-light: #f0e8d6;    /* warm cream — used for description text */
+    --paper-warm:  #0a0907;
+    --paper-bone:  #111010;
+    --linen:       #1c1a16;
+    --stone:       #2c2820;
+    --taupe:       #574f42;
+
+    --ink:         #f0e8d6;    /* primary — warm cream, not pure white */
+    --ink-2:       #dcd5c4;
+    --ink-3:       #a8a293;
+    --ink-4:       #8a8474;
+    --ink-5:       #4a443a;
+
+    --bg:          var(--paper);
+    --bg-alt:      var(--paper-warm);
+    --fg:          var(--ink-2);
+    --fg-muted:    var(--ink-3);
+    --fg-quiet:    var(--ink-4);
+    --rule:        var(--ink-5);
+    --link:        var(--ink-2);
+  }
+  body.theme-dark ::selection { background: var(--ink-2); color: var(--paper); }
+  body.theme-dark header.site { background: rgba(0, 0, 0, 0.92); }
+
+  /* Paper grain — light dust on dark, screen blend */
+  body.theme-dark::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.90  0 0 0 0 0.80  0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+    mix-blend-mode: screen;
+    opacity: 0.06;
+  }
+  body.theme-dark::after {
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.45) 100%);
+  }
+
+  /* Ink-bleed halo inverted: light glow on dark */
+  body.theme-dark .printed {
+    text-shadow:
+      0 0 0.5px rgba(220,213,196,.30),
+      0.2px 0.2px 0.3px rgba(170,160,140,.15);
+  }
+  body.theme-dark .printed--soft {
+    text-shadow: 0 0 0.4px rgba(180,170,150,.22);
+  }
+  body.theme-dark .printed--stamp {
+    text-shadow:
+      0 0 0.8px rgba(239,232,216,.45),
+      0.4px 0.3px 0.5px rgba(180,170,148,.22);
+  }
+
+  /* paper grain everywhere, very low opacity, multiply blend */
+  body::before {
+    content:""; position: fixed; inset:0; pointer-events:none; z-index:0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.37  0 0 0 0 0.30  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+    mix-blend-mode: multiply;
+    opacity: 0.14;
+  }
+  /* faint vignette so paper feels lit, not scanned-flat */
+  body::after {
+    content:""; position: fixed; inset:0; pointer-events:none; z-index:0;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(80,60,40,0.06) 100%);
+  }
+  #root { position: relative; z-index: 1; }
+
+  /* The printed-on-paper text treatment used throughout the system.
+     Always applied via class so it is consistent. */
+  .printed {
+    text-shadow:
+      0 0 0.5px rgba(73,70,64,.45),
+      0.2px 0.2px 0.3px rgba(105,102,93,.18);
+    filter: blur(0.20px);
+  }
+  .printed--soft {
+    text-shadow:
+      0 0 0.4px rgba(160,157,148,.30);
+    filter: blur(0.18px);
+  }
+  .printed--stamp {
+    text-shadow:
+      0 0 0.8px rgba(53,49,42,.5),
+      0.4px 0.3px 0.5px rgba(105,102,93,.2);
+    filter: blur(0.30px);
+  }
+
+  /* Letterpress on Japanese paper — ink pressed into a soft, fibrous sheet.
+     Uses a stack of text-shadows to read as: light top highlight (paper relief)
+     + deep ink shadow below + warm ink bleed outward. Combined with a small
+     blur it never feels digitally crisp. The body's paper-grain layer
+     supplies the fibre texture. */
+  .letterpress {
+    color: rgba(43, 38, 30, 0.56);
+    text-shadow:
+      /* top highlight — paper appears slightly raised above the ink */
+      0 -0.4px 0 rgba(255, 252, 240, 0.35),
+      /* deep ink, pressed into the sheet */
+      0.3px 0.7px 0 rgba(28, 22, 14, 0.15),
+      0.5px 1.0px 0.8px rgba(34, 26, 16, 0.24),
+      /* warm ink bleed into the fibres */
+      0 0 1.6px rgba(110, 80, 45, 0.18),
+      -0.3px 0.4px 0.6px rgba(150, 110, 60, 0.14);
+    filter: blur(0.45px) contrast(1.02);
+  }
+  .letterpress > span { display: inline-block; }
+
+  /* Stamped wordmark / page stamps — Special Elite, tracked,
+     very slightly off-axis like a rubber stamp. */
+  .stamp {
+    font-family: var(--mono-worn);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: inline-block;
+    transform: rotate(-0.35deg);
+    transform-origin: left center;
+    opacity: 0.94;
+  }
+  .stamp--wordmark { font-size: 19px; letter-spacing: 0.34em; }
+  .stamp--page    { font-size: 22px; letter-spacing: 0.22em; }
+  .stamp--big     { font-size: 28px; letter-spacing: 0.20em; }
+
+  /* Tracked uppercase mono labels — the workhorse element. */
+  .label {
+    font-family: var(--mono);
+    font-size: var(--t-xs);
+    color: var(--ink-3);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .label--quiet { color: var(--ink-4); }
+  .label--small { font-size: 10px; letter-spacing: 0.20em; }
+
+  /* Meta-line ("PARIS · 03.2024" running head feeling) */
+  .meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-4);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .meta--ink { color: var(--ink-3); }
+
+  /* Roman numeral sequence marker */
+  .numeral {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-4);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  /* Buttons reset */
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; text-align: inherit; }
+
+  /* Links inherit text styles; underline on hover only */
+  a, .link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur) var(--ease), opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+    padding-bottom: 1px;
+  }
+  a:hover, .link:hover { border-bottom-color: rgba(110,90,60,.34); }
+
+  /* Page wrapper — single column, generous margins */
+  .frame { max-width: 1120px; margin: 0 auto; padding: 0 96px; }
+  .col-narrow { max-width: 980px; margin: 0 auto; padding: 0 96px; }
+  .col-wide   { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
+
+  /* Sticky header */
+  header.site {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(252, 250, 246, 0.94);
+    backdrop-filter: blur(0px);
+  }
+  header.site .row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: baseline;
+    column-gap: 32px;
+    padding: 22px 56px 14px;
+  }
+  header.site .crease {
+    height: 1px;
+    background: linear-gradient(90deg,
+      rgba(85,82,75,0) 0%,
+      rgba(85,82,75,.12) 18%,
+      rgba(85,82,75,.08) 50%,
+      rgba(85,82,75,.12) 82%,
+      rgba(85,82,75,0) 100%);
+  }
+  nav.primary { display: flex; gap: 26px; justify-self: center; }
+  nav.primary button {
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    color: var(--ink-4);
+    transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+  nav.primary button:hover { opacity: 0.78; }
+  nav.primary button.active { color: var(--ink); }
+  header.site .meta-right { justify-self: end; }
+
+  /* Footer */
+  footer.site {
+    margin-top: 140px;
+    padding: 24px 56px 64px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 32px;
+    border-top: 1px solid rgba(85,82,75,.10);
+  }
+  footer.site .c { text-align: center; }
+  footer.site .r { text-align: right; }
+
+  /* The image — replaces gradient placeholder when a real src exists */
+  .vs-photo {
+    position: relative;
+    width: 100%;
+    background: var(--paper-bone);
+    overflow: hidden;
+    isolation: isolate;
+    transition: opacity 420ms cubic-bezier(.4,0,.2,1);
+  }
+  .vs-photo:hover { opacity: 0.86; }
+  .vs-photo > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .vs-photo > .grain {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.32  0 0 0 0 0.26  0 0 0 0 0.20  0 0 0 0.28 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+  }
+
+  /* Spread head — the running header above a photograph (numeral + place) */
+  .spread-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .section { margin: 0 0 100px; }
+
+  /* Caption block under a photograph */
+  .cap {
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-2);
+    letter-spacing: 0.005em; margin-top: 12px;
+  }
+  .cap-meta {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-4);
+    letter-spacing: 0.04em; margin-top: 4px;
+  }
+
+  /* Index/contents rows */
+  .ix {
+    display: grid; grid-template-columns: 36px 1fr 1fr 80px;
+    align-items: baseline; column-gap: 32px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(85,82,75,.10);
+    cursor: pointer;
+    transition: padding-left var(--dur) var(--ease), color var(--dur) var(--ease);
+    color: var(--ink-3);
+  }
+  .ix:hover { padding-left: 6px; color: var(--ink); }
+  .ix .num { font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.22em; }
+  .ix .tt  { font-family: var(--mono); font-size: 18px; color: var(--ink); letter-spacing: 0.06em; text-transform: uppercase; }
+  .ix .ty  { font-family: var(--mono); font-size: 10.5px; color: var(--ink-4); letter-spacing: 0.18em; text-transform: uppercase; }
+  .ix .ar  { text-align: right; font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.22em; text-transform: uppercase; }
+
+  /* Performance archive row */
+  .arch {
+    display: grid; grid-template-columns: 72px 1fr 1.4fr; column-gap: 32px;
+    align-items: baseline; padding: 14px 0;
+    border-bottom: 1px solid rgba(85,82,75,.10);
+  }
+  .arch .y { font-family: var(--mono); font-size: 10.5px; color: var(--ink-4); letter-spacing: 0.18em; }
+  .arch .t { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); letter-spacing: 0.01em; }
+  .arch .t .role { display: block; font-size: 10px; color: var(--ink-4); letter-spacing: 0.20em; text-transform: uppercase; margin-bottom: 4px; }
+  .arch .m { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.01em; }
+
+  /* CV row */
+  .cv {
+    display: grid; grid-template-columns: 96px 1fr; column-gap: 28px;
+    align-items: baseline; padding: 14px 0;
+    border-bottom: 1px dotted rgba(85,82,75,.12);
+  }
+  .cv .y { font-family: var(--mono); font-size: 13px; color: var(--ink-4); letter-spacing: 0.16em; }
+  .cv .b { font-family: var(--mono); font-size: 17px; color: var(--ink-2); line-height: 1.6; }
+  .cv .b .role { font-size: 12px; color: var(--ink-4); letter-spacing: 0.20em; text-transform: uppercase; display: block; margin-bottom: 5px; }
+  .cv .b .meta { color: var(--ink-3); font-size: 14px; display: block; margin-top: 3px; }
+
+  /* Page enter */
+  .page-enter { animation: pageIn 700ms cubic-bezier(.25,.1,.25,1) both; }
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* Slow reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(10px); transition: opacity 1.4s var(--ease), transform 1.4s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* Rules */
+  .rule { height: 1px; background: rgba(85,82,75,.14); border: 0; margin: 0; }
+
+  /* Small */
+  @media (max-width: 900px) {
+    .frame, .col-narrow, .col-wide { padding: 0 22px; }
+    header.site .row { padding: 16px 22px 10px; grid-template-columns: 1fr; row-gap: 12px; }
+    header.site .meta-right { display: none; }
+    nav.primary { justify-self: start; flex-wrap: wrap; gap: 16px; }
+    footer.site { padding: 18px 22px 48px; grid-template-columns: 1fr; row-gap: 8px; }
+    footer.site .r, footer.site .c { text-align: left; }
+    .ix { grid-template-columns: 28px 1fr; }
+    .ix .ty, .ix .ar { display: none; }
+    .arch { grid-template-columns: 56px 1fr; }
+    .arch .m { grid-column: 2; margin-top: 4px; }
+    .cv { grid-template-columns: 60px 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="pages.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

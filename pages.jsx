@@ -240,44 +240,22 @@ function PassageSequence({ project }) {
   const gaps = [64, 64, 128, 64, 96, 64, 64, 144, 64];
   const isPassage = project.id === "passage";
 
-  /* Default breakout for every photograph on this project. Passage gets a
-     wider breakout than other projects. On mobile, all breakouts collapse to
-     zero so images respect the column side padding instead of bleeding out. */
+  /* All Passage plates share the same breakout — consistent width throughout.
+     Mobile breakouts are zeroed separately below. */
   const breakout = isPassage ? "-10%" : "0";
-  const firstBreakout = isPassage ? "-18%" : "0";
-
-  /* Desktop-only editorial layout for Passage — each plate has a unique
-     horizontal position (asymmetric left/right margins) and its own gap,
-     so the sequence reads like a hand-laid photobook rather than a grid.
-     Mobile ignores this entirely (mob path below sets everything to "0"). */
-  const passageDesktop = (!mob && isPassage) ? [
-    { ml: "-18%", mr: "-18%", gap: 220 }, // I   — grand opening, most air
-    { ml: "-14%", mr: "-2%",  gap: 80  }, // II  — drifts left
-    { ml: "-10%", mr: "-10%", gap: 160 }, // III — centered, long breath
-    { ml: "0",    mr: "-8%",  gap: 64  }, // IV  — intimate, pulls right
-    { ml: "-12%", mr: "-4%",  gap: 96  }, // V   — leans left, opens out
-    { ml: "-10%", mr: "-10%", gap: 64  }, // VI  — settles center
-    { ml: "0",    mr: "-14%", gap: 200 }, // VII — far right, longest pause
-    { ml: "-10%", mr: "-10%", gap: 80  }, // VIII— full, re-centers
-    { ml: "-8%",  mr: "4%",   gap: 96  }, // IX  — leans left, nearing end
-    { ml: "-14%", mr: "-14%", gap: 80  }, // X   — wide, penultimate
-    { ml: "-6%",  mr: "-6%",  gap: 40  }, // XI  — quiet close
-  ] : null;
+  const firstBreakout = breakout; // no size exception for the opening plate
 
   return (
     <div style={{ paddingTop: 40 }}>
       {seq.map((p, i) => {
         const isLast = i === seq.length - 1;
-        const baseGap = isLast ? 40 : gaps[i % gaps.length];
-        const mb = baseGap + (p.extraGap || 0);
+        /* Desktop Passage: fixed 96px gap — equal breathing space throughout.
+           Mobile / other projects: original repeating gap array. */
+        const baseGap = isLast ? 40 : (isPassage && !mob ? 96 : gaps[i % gaps.length]);
+        const mb = (isPassage && !mob) ? baseGap : (baseGap + (p.extraGap || 0));
 
-        /* Desktop Passage: use per-plate editorial position.
-           Mobile / other projects: existing symmetric offset logic. */
-        const dl = passageDesktop ? passageDesktop[i] : null;
         const offset = mob ? "0" : (p.breakout || (i === 0 ? firstBreakout : breakout));
-        const wrapStyle = dl
-          ? { marginLeft: dl.ml, marginRight: dl.mr, marginBottom: dl.gap }
-          : { marginLeft: offset, marginRight: offset, marginBottom: mb };
+        const wrapStyle = { marginLeft: offset, marginRight: offset, marginBottom: mb };
 
         if (p.kind === "diptych") {
           return (

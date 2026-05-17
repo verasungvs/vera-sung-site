@@ -3,8 +3,21 @@
 
 const { useState: usePgState } = React;
 
+/* Returns true when viewport width ≤ 900 px.
+   Used to swap mobile-only inline-style values without touching desktop. */
+function useIsMobile() {
+  const [m, setM] = usePgState(window.innerWidth <= 900);
+  React.useEffect(() => {
+    const fn = () => setM(window.innerWidth <= 900);
+    window.addEventListener('resize', fn, { passive: true });
+    return () => window.removeEventListener('resize', fn);
+  }, []);
+  return m;
+}
+
 /* ============================== HOME ============================== */
 function HomePage({ go }) {
+  const mob = useIsMobile();
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
 
@@ -12,7 +25,7 @@ function HomePage({ go }) {
          Breaks out slightly wider than the column on desktop so it reads
          like a full-bleed photobook plate. */}
       <Reveal as="section" style={{
-        margin: "0 -12% 120px",
+        margin: mob ? "0 0 48px" : "0 -12% 120px",
       }}>
         <Photo src="assets/drifting-01.jpg" aspect="3/2" />
       </Reveal>
@@ -26,8 +39,10 @@ function HomePage({ go }) {
           <div key={pr.id}
                onClick={() => go("photography/" + pr.id)}
                style={{
-                 display: "grid", gridTemplateColumns: "60px 1fr",
-                 alignItems: "baseline", columnGap: 32,
+                 display: "grid",
+                 gridTemplateColumns: mob ? "36px 1fr" : "60px 1fr",
+                 alignItems: "baseline",
+                 columnGap: mob ? 16 : 32,
                  padding: "6px 0",
                  cursor: "pointer",
                  transition: "padding-left .8s var(--ease), opacity .8s var(--ease)",
@@ -35,13 +50,15 @@ function HomePage({ go }) {
                onMouseEnter={e => { e.currentTarget.style.paddingLeft = "6px"; e.currentTarget.style.opacity = "0.78"; }}
                onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.opacity = "1"; }}>
             <span style={{
-              fontFamily: "var(--mono-worn)", fontSize: 11,
+              fontFamily: "var(--mono-worn)",
+              fontSize: mob ? 10 : 11,
               letterSpacing: "0.22em",
             }}>
               <LetterpressTitle text={pr.no} />
             </span>
             <span style={{
-              fontFamily: "var(--mono-worn)", fontSize: 18,
+              fontFamily: "var(--mono-worn)",
+              fontSize: mob ? 14 : 18,
               letterSpacing: "0.06em", textTransform: "uppercase",
             }}>
               <LetterpressTitle text={pr.title} />
@@ -422,6 +439,8 @@ function PhotoNum({ item }) {
 }
 
 function PerformancePage() {
+  const mob = useIsMobile();
+
   /* Renumber labels sequentially based on the current visual order. */
   let counter = 0;
   const numbered = PERFORMANCE_ROWS.map(row => ({
@@ -434,25 +453,34 @@ function PerformancePage() {
          style={{ paddingTop: 56, paddingLeft: "6vw", paddingRight: "6vw", maxWidth: 1600, margin: "0 auto" }}>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
-        paddingBottom: 14, borderBottom: "1px solid rgba(85,82,75,.10)", marginBottom: 80 }}>
+        paddingBottom: 14, borderBottom: "1px solid rgba(85,82,75,.10)",
+        marginBottom: mob ? 40 : 80 }}>
         <span className="label printed--soft">III · performance · portfolio</span>
       </div>
 
       {numbered.map((row, i) => {
         const cols = row.items.length;
+        /* Mobile: zero out the editorial left/right offsets so images use the
+           full available width; compress vertical gaps to ~⅓ of desktop. */
+        const mLeft  = mob ? 0 : row.x;
+        const mRight = mob ? 0 : row.r;
+        const mGap   = mob ? Math.round(row.gap * 0.33) : row.gap;
         return (
           <Reveal as="section" key={i} style={{
-            marginBottom: row.gap,
-            marginLeft: row.x + "%",
-            marginRight: row.r + "%",
+            marginBottom: mGap,
+            marginLeft: mLeft + "%",
+            marginRight: mRight + "%",
           }}>
             {cols === 1 ? (
               <PhotoNum item={row.items[0]} />
             ) : (
               <div style={{
                 display: "grid",
-                gridTemplateColumns: cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr",
-                columnGap: 24,
+                /* Mobile: triptychs collapse to 2-col so each image stays legible */
+                gridTemplateColumns: mob
+                  ? "1fr 1fr"
+                  : (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr"),
+                columnGap: mob ? 8 : 24,
                 alignItems: "start",
               }}>
                 {row.items.map((it, j) => <PhotoNum key={j} item={it} />)}

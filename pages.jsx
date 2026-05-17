@@ -61,6 +61,7 @@ function HomePage({ go }) {
               fontFamily: "var(--mono-worn)",
               fontSize: mob ? 12 : 18,
               letterSpacing: "0.06em", textTransform: "uppercase",
+              opacity: mob ? 0.80 : 1,
             }}>
               <LetterpressTitle text={pr.title} />
             </span>

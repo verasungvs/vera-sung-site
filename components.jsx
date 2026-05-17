@@ -2,28 +2,73 @@
    All type uses the design-system classes (.label, .meta, .stamp, .printed). */
 const { useEffect, useRef, useState } = React;
 
-/* Single photograph slot. Either a real <img> or a toned placeholder
-   composed of layered CSS gradients. Grain overlay always applied.
-   When `natural` is true (or no aspect is given for a real src),
-   the image keeps its own intrinsic ratio — no cropping. */
+/* Single photograph slot. Renders artworks as CSS background-image so the
+   browser never resolves a native <img> element under the cursor — this is
+   the only reliable way to prevent "Save image as" / "Open image in new tab"
+   across all browsers and platforms.
+
+   • aspect mode  — fixed-ratio container, background-image only, zero <img>
+   • natural mode — invisible <img> sizer keeps the natural height; a
+                    background-image layer provides the visual display
+   • placeholder  — tone-coloured block, no image at all                    */
 function Photo({ src, tone, aspect, natural, style, alt = "" }) {
   const useNatural = natural || (src && !aspect);
-  const baseStyle = useNatural
-    ? { background: src ? "transparent" : tone, ...style }
-    : { aspectRatio: aspect || "4/5", background: src ? "var(--paper-bone)" : tone, ...style };
-
   const noSave = e => { e.preventDefault(); e.stopPropagation(); };
 
+  /* ── placeholder / no src ─────────────────────────────────────── */
+  if (!src) {
+    return (
+      <div className="vs-photo"
+           style={{ aspectRatio: useNatural ? undefined : (aspect || "4/5"),
+                    background: tone, ...style }}
+           onContextMenu={noSave}>
+        <div className="grain" />
+      </div>
+    );
+  }
+
+  /* ── natural aspect ratio ──────────────────────────────────────
+     The <img> is opacity:0 so it drives the container's natural height
+     without being visible. The background-image div on top provides the
+     actual display. Both children have pointer-events:none so the parent
+     div receives all events — the browser never identifies a native image
+     element under the cursor. */
+  if (useNatural) {
+    return (
+      <div className="vs-photo" style={style || {}}
+           onContextMenu={noSave} onDragStart={noSave}>
+        <img
+          src={src} alt="" aria-hidden="true" draggable={false}
+          style={{
+            display: "block", width: "100%", height: "auto",
+            opacity: 0, pointerEvents: "none",
+            userSelect: "none", WebkitUserDrag: "none",
+          }}
+        />
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: `url(${src})`,
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+          pointerEvents: "none",
+        }} aria-hidden="true" />
+        <div className="grain" />
+      </div>
+    );
+  }
+
+  /* ── fixed aspect ratio ────────────────────────────────────────
+     No <img> tag in the DOM at all. The container IS the image. */
   return (
-    <div className="vs-photo" style={baseStyle}
-         onContextMenu={noSave} onDragStart={noSave}>
-      {src && (
-        useNatural
-          ? <img src={src} alt={alt} draggable={false} onContextMenu={noSave} onDragStart={noSave}
-                 style={{ display: "block", width: "100%", height: "auto" }} />
-          : <img src={src} alt={alt} draggable={false} onContextMenu={noSave} onDragStart={noSave} />
-      )}
-      <div className="grain"></div>
+    <div className="vs-photo" style={{
+      aspectRatio: aspect || "4/5",
+      backgroundImage: `url(${src})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      ...(style || {}),
+    }} onContextMenu={noSave} onDragStart={noSave}>
+      <div className="grain" />
     </div>
   );
 }

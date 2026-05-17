@@ -91,10 +91,15 @@ function PhotographyPage({ sub, go }) {
         }}>
           projects
         </div>
-        <div style={{
+        <div style={mob ? {
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "10px 20px",
+          alignItems: "start",
+        } : {
           display: "flex",
           flexWrap: "wrap",
-          gap: mob ? "10px 16px" : "40px 56px",
+          gap: "40px 56px",
           alignItems: "start",
         }}>
           {PROJECTS.map(p => {
@@ -105,7 +110,7 @@ function PhotographyPage({ sub, go }) {
                   display: "flex", flexDirection: "column", alignItems: "flex-start",
                   gap: mob ? 4 : 10,
                   textAlign: "left", paddingBottom: 0, border: 0,
-                  width: mob ? 130 : 180,
+                  width: mob ? "100%" : 180,
                 }}>
                 <span style={{
                   fontFamily: "var(--mono-worn)",
@@ -220,6 +225,7 @@ function PhotographyPage({ sub, go }) {
 =============================================================================*/
 function PassageSequence({ project }) {
   const seq = project.sequence || [];
+  const mob = useIsMobile();
 
   /* Plates share the same column width — no dramatic size differences.
      Vertical rhythm comes from gap variation; a few openings are wider.
@@ -234,7 +240,8 @@ function PassageSequence({ project }) {
   const isPassage = project.id === "passage";
 
   /* Default breakout for every photograph on this project. Passage gets a
-     wider breakout than other projects. */
+     wider breakout than other projects. On mobile, all breakouts collapse to
+     zero so images respect the column side padding instead of bleeding out. */
   const breakout = isPassage ? "-10%" : "0";
   const firstBreakout = isPassage ? "-18%" : "0";
 
@@ -245,9 +252,9 @@ function PassageSequence({ project }) {
         const baseGap = isLast ? 40 : gaps[i % gaps.length];
         const mb = baseGap + (p.extraGap || 0);
 
-        /* Choose the horizontal offset for this row. Per-plate `breakout`
-           overrides the project-level default. */
-        const offset = p.breakout || (i === 0 ? firstBreakout : breakout);
+        /* Mobile: zero all breakouts so images stay within column padding.
+           Desktop: per-plate override first, then project-level default. */
+        const offset = mob ? "0" : (p.breakout || (i === 0 ? firstBreakout : breakout));
         const wrapStyle = { marginLeft: offset, marginRight: offset, marginBottom: mb };
 
         if (p.kind === "diptych") {
@@ -500,6 +507,7 @@ function PerformancePage() {
                   ? "1fr"
                   : (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr"),
                 columnGap: mob ? 8 : 24,
+                rowGap: mob ? 24 : 0,
                 alignItems: "start",
               }}>
                 {row.items.map((it, j) => <PhotoNum key={j} item={it} />)}

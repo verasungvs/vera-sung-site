@@ -749,46 +749,77 @@ function LinksPage() {
 /* ============================== CONTACT ============================== */
 function ContactPage() {
   const [copied, setCopied] = usePgState(false);
+  const mob = useIsMobile();
   const email = "verasung_vs@gmail.com";
   const copy = () => { navigator.clipboard?.writeText(email); setCopied(true); setTimeout(() => setCopied(false), 1800); };
 
   return (
     <div className="page-enter col-wide" data-screen-label="Contact" style={{ paddingTop: 72 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 96, alignItems: "center" }}>
+      {/* Mobile: stack contact info above portrait (1 col).
+          Desktop: side-by-side (1fr 1fr). */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: mob ? "1fr" : "1fr 1fr",
+        gap: mob ? 40 : 96,
+        alignItems: mob ? "start" : "center",
+      }}>
         <Reveal>
           <div className="label printed--soft" style={{ marginBottom: 18 }}>VI · contact</div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", columnGap: 28, rowGap: 36, alignItems: "baseline", marginTop: 8 }}>
-            <span className="meta printed--soft" style={{ fontSize: 14 }}>email</span>
+          {/* Inner grid — mobile: narrower label col so values never overflow */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: mob ? "100px 1fr" : "160px 1fr",
+            columnGap: mob ? 14 : 28,
+            rowGap: mob ? 20 : 36,
+            alignItems: "baseline",
+            marginTop: mob ? 6 : 8,
+          }}>
+            <span className="meta printed--soft" style={{ fontSize: mob ? 10 : 14 }}>email</span>
             <button onClick={copy} className="printed" style={{
-              fontFamily: "var(--mono)", fontSize: 18, color: "var(--ink)", letterSpacing: ".02em",
+              fontFamily: "var(--mono)",
+              fontSize: mob ? 13 : 18,
+              color: "var(--ink)", letterSpacing: ".02em",
               borderBottom: "1px solid rgba(85,82,75,.18)", paddingBottom: 3, textAlign: "left",
             }}>
               {email}
-              <span className="meta printed--soft" style={{ marginLeft: 14, fontSize: 13, color: copied ? "var(--ink)" : "var(--ink-4)" }}>
+              <span className="meta printed--soft" style={{
+                marginLeft: mob ? 8 : 14,
+                fontSize: mob ? 10 : 13,
+                color: copied ? "var(--ink)" : "var(--ink-4)",
+              }}>
                 {copied ? "✓ copied" : "(click to copy)"}
               </span>
             </button>
 
-            <span className="meta printed--soft" style={{ fontSize: 14 }}>instagram</span>
+            <span className="meta printed--soft" style={{ fontSize: mob ? 10 : 14 }}>instagram</span>
             <a href="https://www.instagram.com/verasung_vs/" target="_blank" rel="noreferrer" className="printed"
-               style={{ fontFamily: "var(--mono)", fontSize: 18, color: "var(--ink-2)", letterSpacing: ".02em" }}>
+               style={{ fontFamily: "var(--mono)", fontSize: mob ? 13 : 18, color: "var(--ink-2)", letterSpacing: ".02em" }}>
               @verasung_vs
             </a>
 
-            <span className="meta printed--soft" style={{ fontSize: 14 }}>photojournalism works</span>
+            <span className="meta printed--soft" style={{ fontSize: mob ? 10 : 14 }}>
+              {mob ? "press / agency" : "photojournalism works"}
+            </span>
             <a href="https://hanslucas.com/vsung/photo" target="_blank" rel="noreferrer" className="printed"
-               style={{ fontFamily: "var(--mono)", fontSize: 18, color: "var(--ink-2)", letterSpacing: ".02em" }}>
+               style={{ fontFamily: "var(--mono)", fontSize: mob ? 13 : 18, color: "var(--ink-2)", letterSpacing: ".02em" }}>
               hanslucas.com / vsung
             </a>
           </div>
         </Reveal>
 
         <Reveal delay={150}>
-          <div style={{ paddingTop: 28 }}>
+          <div style={{ paddingTop: mob ? 0 : 28 }}>
             <Photo src="assets/contact-portrait.jpg" natural />
-            <div className="printed" style={{ fontFamily: "var(--mono)", fontSize: 12, lineHeight: 1.7,
-              color: "var(--ink-4)", maxWidth: 380, marginTop: 56, letterSpacing: ".02em" }}>
+            <div className="printed" style={{
+              fontFamily: "var(--mono)",
+              fontSize: mob ? 11 : 12,
+              lineHeight: 1.7,
+              color: "var(--ink-4)",
+              maxWidth: mob ? "100%" : 380,
+              marginTop: mob ? 20 : 56,
+              letterSpacing: ".02em",
+            }}>
               all photographs © vera sung.<br/>
               please write before reproducing any image.
             </div>

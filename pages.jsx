@@ -260,7 +260,12 @@ function PassageSequence({ project }) {
         if (p.kind === "diptych") {
           return (
             <Reveal as="section" key={i} style={wrapStyle}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 18 }}>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: mob ? "1fr" : "1fr 1fr",
+                columnGap: mob ? 0 : 18,
+                rowGap: mob ? 14 : 0,
+              }}>
                 <Photo src={p.a.src} natural />
                 <Photo src={p.b.src} natural />
               </div>
@@ -569,9 +574,9 @@ function AboutPage({ go }) {
                 onClick={() => document.getElementById("about-cv").scrollIntoView({ behavior: "smooth" })}
                 className="printed--soft"
                 style={{
-                  fontFamily: "var(--mono)", fontSize: 10,
-                  letterSpacing: "0.20em", color: "var(--ink-4)",
-                  opacity: 0.65, textTransform: "uppercase",
+                  fontFamily: "var(--mono)", fontSize: 13,
+                  letterSpacing: "0.18em", color: "var(--ink-2)",
+                  opacity: 0.88, textTransform: "uppercase",
                 }}>
                 cv ↓
               </button>

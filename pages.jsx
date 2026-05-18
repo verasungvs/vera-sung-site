@@ -433,11 +433,11 @@ const PERFORMANCE_ROWS = [
   { items: [P(4)],                x:  4, r:  8, gap: 110 },  /* large solo */
   { items: [P(6)],                x:  8, r:  4, gap: 120 },  /* large solo */
   /* image 12 enlarged left + image 23 (P17) paired on right */
-  { items: [P(8), P(17)],         x:  2, r:  4, gap: 120, layout: "2fr 1fr" },
+  { items: [P(8), P(17)],         x:  0, r:  0, gap: 120, layout: "2fr 1.5fr" },
   { items: [P(1)],                x:  6, r:  8, gap: 120 },  /* large solo */
   { items: [P(3)],                x:  8, r:  6, gap: 120 },  /* large solo */
   /* images 15/16 swapped with 25/26: P23/P24 now occupy this position */
-  { items: [P(23), P(24)],        x:  2, r:  2, gap: 100 },  /* pair — large */
+  { items: [P(23), P(24)],        x:  0, r:  0, gap: 100 },  /* pair — full width */
   { items: [P(11)],               x:  6, r: 10, gap: 120 },  /* large solo */
   { items: [P(39)],               x:  8, r:  6, gap: 120 },  /* large solo */
   { items: [P(14)],               x: 26, r: 26, gap: 110 },

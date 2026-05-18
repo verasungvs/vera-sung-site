@@ -426,31 +426,41 @@ const PERFORMANCE_ROWS = [
   { items: [P(7)],                x:  2, r:  2, gap: 110 },  /* large solo — full width */
   { items: [P(25), P(26)],        x:  2, r:  2, gap: 100 },  /* pair — large */
   { items: [P(31)],               x:  6, r:  8, gap: 120 },  /* large solo */
-  { items: [P(5), P(13)],         x:  2, r:  2, gap: 100 },  /* pair — moved between 04 and 05 */
+  { items: [P(5), P(13)],         x:  2, r:  2, gap: 100 },  /* pair */
   { items: [P(12)],               x:  2, r:  2, gap: 120 },  /* panoramic */
-  { items: [P(19)],               x: 14, r: 30, gap: 120 },
+  /* image 08 (P19) deleted */
   { items: [P(20)],               x:  6, r:  8, gap: 120 },  /* large solo */
   { items: [P(4)],                x:  4, r:  8, gap: 110 },  /* large solo */
   { items: [P(6)],                x:  8, r:  4, gap: 120 },  /* large solo */
-  { items: [P(8)],                x: 20, r: 50, gap: 130 },  /* portrait */
-  { items: [P(1)],                x:  6, r:  8, gap: 120 },  /* large solo — moved between 12 and 13-14 */
-  { items: [P(3)],                x:  8, r:  6, gap: 120 },  /* large solo — moved */
-  { items: [P(9), P(10)],         x:  2, r:  2, gap: 100 },  /* pair — large */
+  /* image 12 enlarged left + image 23 (P17) paired on right */
+  { items: [P(8), P(17)],         x:  2, r:  4, gap: 120, layout: "2fr 1fr" },
+  { items: [P(1)],                x:  6, r:  8, gap: 120 },  /* large solo */
+  { items: [P(3)],                x:  8, r:  6, gap: 120 },  /* large solo */
+  /* images 15/16 swapped with 25/26: P23/P24 now occupy this position */
+  { items: [P(23), P(24)],        x:  2, r:  2, gap: 100 },  /* pair — large */
   { items: [P(11)],               x:  6, r: 10, gap: 120 },  /* large solo */
   { items: [P(39)],               x:  8, r:  6, gap: 120 },  /* large solo */
   { items: [P(14)],               x: 26, r: 26, gap: 110 },
   { items: [P(22)],               x:  6, r:  8, gap: 120 },  /* large solo */
-  { items: [P(15), P(16), P(17)], x:  2, r:  2, gap: 110 },  /* triptych — large */
+  /* P17 removed from here (moved to pair with P8 above) → diptych */
+  { items: [P(15), P(16)],        x:  2, r:  2, gap: 110 },  /* diptych — large */
   { items: [P(18)],               x: 10, r: 30, gap: 120 },
-  { items: [P(23)],               x:  4, r:  8, gap: 120 },  /* large solo */
-  { items: [P(24)],               x:  8, r:  4, gap: 120 },  /* large solo */
+  /* images 25/26 swapped with 15/16: P9/P10 now occupy these positions */
+  { items: [P(9)],                x:  4, r:  8, gap: 120 },  /* large solo */
+  { items: [P(10)],               x:  8, r:  4, gap: 120 },  /* large solo */
   { items: [P(35)],               x:  6, r: 10, gap: 120 },  /* large solo */
   { items: [P(30)],               x: 14, r: 30, gap: 120 },
   { items: [P(28)],               x:  6, r:  8, gap: 120 },  /* large solo */
   { items: [P(27), P(32)],        x:  2, r:  2, gap: 100 },  /* pair — large */
-  { items: [P(33)],               x: 44, r: 20, gap: 130 },  /* portrait */
-  { items: [P(29)],               x:  6, r: 10, gap: 120 },  /* large solo — above 37 */
-  { items: [P(36), P(37), P(38)], x:  2, r:  2, gap: 110 },  /* triptych — large */
+  /* image 32 (P33): enlarged single — reduced margins for more presence */
+  { items: [P(33)],               x:  2, r:  4, gap: 130 },  /* large solo — enlarged */
+  { items: [P(29)],               x:  6, r: 10, gap: 120 },  /* large solo */
+  /* image 34 (P36) deleted; P37 kept solo; image 36 (P38) as larger single */
+  { items: [P(37)],               x:  8, r:  6, gap: 120 },  /* large solo */
+  { items: [P(38)],               x:  2, r:  4, gap: 120 },  /* image 36 — enlarged single */
+  /* three new photos — sewing machine scene solo, then intimate pair */
+  { items: [P(40)],               x:  2, r:  2, gap: 120 },  /* new — theatrical scene */
+  { items: [P(41), P(42)],        x:  2, r:  2, gap: 100 },  /* new — intimate pair */
   { items: [P(34)],               x:  6, r:  8, gap: 80 },   /* large solo — final */
 ];
 
@@ -515,7 +525,7 @@ function PerformancePage() {
                    image fills the available width and stays clearly legible */
                 gridTemplateColumns: mob
                   ? "1fr"
-                  : (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr"),
+                  : (row.layout || (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr")),
                 columnGap: mob ? 8 : 24,
                 rowGap: mob ? 24 : 0,
                 alignItems: "start",

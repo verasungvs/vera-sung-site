@@ -149,26 +149,19 @@ function PhotographyPage({ sub, go }) {
             marginTop: mob ? 16 : 24,
           }}>
             <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
-              Around the vast sandy expanse of Mont-Saint-Michel, as the sea
-              withdraws, people begin to step onto the sand, wandering,
-              lingering, observing.
+              On the vast sandy expanse surrounding Mont-Saint-Michel, as
+              the sea withdraws, people begin to step onto the sand:
+              wandering, lingering, watching.
             </p>
             <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
-              They walk or drift, forming a circle, as if taking part in a
-              brief ritual already on the verge of disappearing.
-            </p>
-            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
-              On this stretch of sand, each day, there is a temporary moment
-              in which we are allowed to walk here.
-            </p>
-            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
-              When the time comes, the sea returns, rushing in or slowly
-              spreading across the ground. The sand does not disappear, it
-              is simply covered.
+              Each day, there is a brief moment when we are allowed to walk
+              here, to pass through. They gather, drift, forming a collective
+              silhouette, like migration, like ritual, like an ordinary walk.
             </p>
             <p style={{ margin: 0 }}>
-              Those who have stepped onto this sandy territory also move
-              with the rhythm of nature, having briefly crossed this place.
+              When the time comes, the sea returns. The sand does not
+              disappear, it is simply covered. Day after day, this rhythm
+              rises and falls with the moon.
             </p>
           </div>
         ) : pr.id === "night-walks" ? (
@@ -581,18 +574,16 @@ function AboutPage({ go }) {
             }}>
               About
             </div>
-            {mob && (
-              <button
-                onClick={() => document.getElementById("about-cv").scrollIntoView({ behavior: "smooth" })}
-                className="printed--soft"
-                style={{
-                  fontFamily: "var(--mono)", fontSize: 13,
-                  letterSpacing: "0.18em", color: "var(--ink-2)",
-                  opacity: 0.88, textTransform: "uppercase",
-                }}>
-                cv ↓
-              </button>
-            )}
+            <button
+              onClick={() => document.getElementById("about-cv").scrollIntoView({ behavior: "smooth" })}
+              className="printed--soft"
+              style={{
+                fontFamily: "var(--mono)", fontSize: 13,
+                letterSpacing: "0.18em", color: "var(--ink-2)",
+                opacity: 0.88, textTransform: "uppercase",
+              }}>
+              cv ↓
+            </button>
           </div>
 
           {/* Wordmark — same pattern as the top-left header */}
@@ -616,14 +607,14 @@ function AboutPage({ go }) {
             letterSpacing: mob ? "0.005em" : undefined,
           }}>
             <p style={{ margin: mob ? "0 0 10px" : "0 0 16px" }}>
-              Born in Taiwan, Vera Sung lives and works between Taiwan and France.
+              Born in Taiwan, Vera Sung lives and works between Taiwan and
+              France. Her work is rooted in a background in performance.
+              Through bodily gesture, trace, and scene, she explores forms
+              and memories of presence and absence, and the states between
+              them that seem to escape language.
             </p>
             <p style={{ margin: 0 }}>
-              Rooted in her background in performance, her artistic practice
-              explores the boundaries between presence and absence, the body
-              and disappearance. Through gestures, traces, and scenes, she
-              investigates the forms and memories of being there, and not
-              being there.
+              She is currently a member of the French photo agency Hans Lucas.
             </p>
           </div>
 

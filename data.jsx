@@ -35,7 +35,7 @@ const PROJECTS = [
   {
     id: "passage",
     no: "I",
-    title: "passage",
+    title: "le passage",
     years: "2022 — 2024",
     place: "brittany / normandy",
     medium: "digital photography",
@@ -61,7 +61,7 @@ const PROJECTS = [
   {
     id: "night-walks",
     no: "II",
-    title: "night walks",
+    title: "practice without objects",
     years: "2023 — ongoing",
     place: "taipei / paris",
     medium: "digital photography, after dark",

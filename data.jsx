@@ -61,7 +61,7 @@ const PROJECTS = [
   {
     id: "night-walks",
     no: "II",
-    title: "practice without objects",
+    title: "Night Walk",
     years: "2023 — ongoing",
     place: "taipei / paris",
     medium: "digital photography, after dark",
@@ -84,7 +84,7 @@ const PROJECTS = [
   {
     id: "practice",
     no: "III",
-    title: "night walks",
+    title: "Practice Without Objects",
     years: "2021 — ongoing",
     place: "studio, paris",
     medium: "digital photography, triptychs",

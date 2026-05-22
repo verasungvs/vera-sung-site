@@ -61,7 +61,7 @@ const PROJECTS = [
   {
     id: "night-walks",
     no: "II",
-    title: "Night Walk",
+    title: "Night Walks",
     years: "2023 — ongoing",
     place: "taipei / paris",
     medium: "digital photography, after dark",

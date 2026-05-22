@@ -84,7 +84,7 @@ const PROJECTS = [
   {
     id: "practice",
     no: "III",
-    title: "a practice without objects",
+    title: "night walks",
     years: "2021 — ongoing",
     place: "studio, paris",
     medium: "digital photography, triptychs",

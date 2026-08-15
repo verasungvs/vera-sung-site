@@ -565,36 +565,7 @@ function PhotoNum({ item }) {
 
 function PerformanceShowreel({ mob }) {
   const stopSave = e => e.preventDefault();
-  const [videoUrl, setVideoUrl] = usePgState("");
-
-  React.useEffect(() => {
-    const controller = new AbortController();
-    let objectUrl = "";
-    const parts = [
-      "00", "01", "02", "03", "04", "05",
-    ].map(n => `assets/performance/performance-showreel-720p-v3.part-${n}?v=20260815-3`);
-
-    Promise.all(parts.map(src =>
-      fetch(src, { signal: controller.signal }).then(response => {
-        if (!response.ok) throw new Error("Showreel part failed to load");
-        return response.arrayBuffer();
-      })
-    ))
-      .then(buffers => {
-        objectUrl = URL.createObjectURL(new Blob(buffers, { type: "video/mp4" }));
-        setVideoUrl(objectUrl);
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) {
-          setVideoUrl("assets/performance/performance-showreel-35s.mp4?v=20260815-2");
-        }
-      });
-
-    return () => {
-      controller.abort();
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-    };
-  }, []);
+  const videoUrl = "assets/performance/performance-showreel-40s-1080p.mp4?v=20260815-4";
 
   return (
     <Reveal as="section" style={{
@@ -617,7 +588,7 @@ function PerformanceShowreel({ mob }) {
           lineHeight: 1.25,
           marginBottom: mob ? 9 : 12,
         }}>
-          35-second performance showreel
+          40 seconds performance showreel
         </div>
         <div style={{
           fontSize: mob ? 10 : 12,

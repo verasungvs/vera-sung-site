@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-photo-balanced-29",
+  cacheVersion: "20260815-footer-order-30",
   home: {
     images: [
       {
@@ -416,7 +416,7 @@ function Header({ route, go }) {
 function Footer({ go, compact = false }) {
   const mob = useIsMobile();
   const compactStyle = compact
-    ? (mob ? { marginTop: 38, minHeight: "220px", padding: "0 22px 8px", rowGap: 0, alignContent: "end", borderTop: "none" } : { paddingBottom: 24 })
+    ? (mob ? { marginTop: 38, minHeight: "220px", padding: "0 22px 2px", rowGap: 0, alignContent: "end", borderTop: "none" } : { paddingBottom: 24 })
     : undefined;
   const footerTextStyle = {
     fontSize: 14,
@@ -426,13 +426,13 @@ function Footer({ go, compact = false }) {
   };
   return (
     <footer className="site" style={compactStyle}>
-      <div className="meta printed--soft" style={footerTextStyle}>© 2026 Vera Sung. All rights reserved.</div>
-      <div className="c">
+      <div className="meta printed--soft" style={{ ...footerTextStyle, order: mob && compact ? 3 : undefined }}>© 2026 Vera Sung. All rights reserved.</div>
+      <div className="c" style={{ order: mob && compact ? 2 : undefined }}>
         <button className="link meta printed--soft" onClick={() => go("contact")} style={footerTextStyle}>
           verasung_vs@gmail.com
         </button>
       </div>
-      <div className="r">
+      <div className="r" style={{ order: mob && compact ? 1 : undefined }}>
         <a className="meta printed--soft" href="https://www.instagram.com/verasung_vs/"
            target="_blank" rel="noreferrer"
            style={{ ...footerTextStyle, display: "inline-flex", alignItems: "center", gap: 8 }}>

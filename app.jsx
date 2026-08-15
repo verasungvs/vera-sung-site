@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-footer-bottom-26",
+  cacheVersion: "20260815-mobile-lower-27",
   home: {
     images: [
       {
@@ -115,7 +115,7 @@ HomePage = function HomePage2026({ go }) {
   }, []);
 
   return (
-    <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: mob ? 80 : 190 }}>
+    <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: mob ? 92 : 190 }}>
       <section style={{
         position: "relative",
         width: mob ? "103vw" : "100vw",
@@ -416,7 +416,7 @@ function Header({ route, go }) {
 function Footer({ go, compact = false }) {
   const mob = useIsMobile();
   const compactStyle = compact
-    ? (mob ? { marginTop: 38, minHeight: "220px", padding: "0 22px 8px", rowGap: 0, alignContent: "end" } : { paddingBottom: 24 })
+    ? (mob ? { marginTop: 38, minHeight: "220px", padding: "0 22px 8px", rowGap: 0, alignContent: "end", borderTop: "none" } : { paddingBottom: 24 })
     : undefined;
   const footerTextStyle = {
     fontSize: 14,

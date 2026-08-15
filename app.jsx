@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-feathered-still-16",
+  cacheVersion: "20260815-feathered-still-17",
   home: {
     images: [
       {
@@ -177,8 +177,8 @@ HomePage = function HomePage2026({ go }) {
             zIndex: 2,
             pointerEvents: "none",
             background: [
-              "linear-gradient(to right, var(--paper) 0%, transparent 17%, transparent 83%, var(--paper) 100%)",
-              "linear-gradient(to bottom, var(--paper) 0%, transparent 14%, transparent 86%, var(--paper) 100%)",
+              "linear-gradient(to right, var(--paper) 0%, rgba(246,244,237,0) 17%, rgba(246,244,237,0) 83%, var(--paper) 100%)",
+              "linear-gradient(to bottom, var(--paper) 0%, rgba(246,244,237,0) 14%, rgba(246,244,237,0) 86%, var(--paper) 100%)",
             ].join(", "),
             opacity: showFirst ? 0 : 1,
             transition: `opacity ${SITE.home.fadeDuration}ms cubic-bezier(.72,0,.92,1)`,

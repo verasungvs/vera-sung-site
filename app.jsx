@@ -409,10 +409,10 @@ function Header({ route, go }) {
   );
 }
 
-function Footer({ go }) {
+function Footer({ go, compact = false }) {
   const footerTextStyle = { fontSize: 14, letterSpacing: "0.04em", textTransform: "none" };
   return (
-    <footer className="site">
+    <footer className="site" style={compact ? { paddingBottom: 24 } : undefined}>
       <div className="meta printed--soft" style={footerTextStyle}>© 2026 Vera Sung. All rights reserved.</div>
       <div className="c">
         <button className="link meta printed--soft" onClick={() => go("contact")} style={footerTextStyle}>
@@ -461,7 +461,7 @@ function App() {
     <>
       <Header route={route} go={go} />
       {body}
-      <Footer go={go} />
+      <Footer go={go} compact={top === "home"} />
     </>
   );
 }

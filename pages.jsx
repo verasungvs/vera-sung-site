@@ -87,15 +87,15 @@ function PhotographyPage({ sub, go }) {
         marginBottom: mob ? 16 : 25,
       }}>
         <div className="label printed--soft" style={{
-          fontSize: 15, fontWeight: 700, color: "var(--ink)",
-          marginBottom: mob ? 14 : 28, letterSpacing: "0.22em",
+          fontSize: mob ? 17 : 15, fontWeight: 700, color: "var(--ink)",
+          marginBottom: mob ? 18 : 28, letterSpacing: "0.22em",
         }}>
           projects
         </div>
         <div style={mob ? {
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "10px 20px",
+          gap: "14px 16px",
           alignItems: "start",
         } : {
           display: "flex",
@@ -115,15 +115,15 @@ function PhotographyPage({ sub, go }) {
                 }}>
                 <span style={{
                   fontFamily: "var(--mono-worn)",
-                  fontSize: mob ? 9 : 11,
+                  fontSize: mob ? 11 : 11,
                   letterSpacing: "0.28em",
                 }}>
                   <LetterpressTitle text={p.no} />
                 </span>
                 <span style={{
                   fontFamily: "var(--mono-worn)",
-                  fontSize: mob ? 11 : 15,
-                  letterSpacing: "0.08em",
+                  fontSize: mob ? 13 : 15,
+                  letterSpacing: mob ? "0.05em" : "0.08em",
                   textTransform: "uppercase",
                 }}>
                   <LetterpressTitle text={p.title} />

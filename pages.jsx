@@ -234,6 +234,12 @@ function PassageSequence({ project }) {
     "assets/practice-10.jpg",
     "assets/practice-11.jpg",
   ]);
+  const extraCompactPracticeSources = new Set([
+    "assets/practice-03.jpg",
+    "assets/practice-04.jpg",
+    "assets/practice-08.jpg",
+    "assets/practice-11.jpg",
+  ]);
   const watermarkLabels = {
     "night-walks": "NIGHT WALKS",
     practice: "PRACTICE WITHOUT OBJECTS",
@@ -241,7 +247,10 @@ function PassageSequence({ project }) {
   };
   const sequencePhoto = (src) => {
     const compact = compactPortraitProjects && portraitSources.has(src);
-    const compactWidth = project.id === "practice"
+    const extraCompact = project.id === "practice" && extraCompactPracticeSources.has(src);
+    const compactWidth = extraCompact
+      ? (mob ? "60%" : "56%")
+      : project.id === "practice"
       ? (mob ? "70%" : "64%")
       : (mob ? "82%" : "76%");
     const watermark = watermarkLabels[project.id];
@@ -250,7 +259,7 @@ function PassageSequence({ project }) {
         position: "relative",
         ...(compact ? {
         width: compactWidth,
-        maxWidth: project.id === "practice" ? 560 : (mob ? 620 : 680),
+        maxWidth: extraCompact ? 490 : (project.id === "practice" ? 560 : (mob ? 620 : 680)),
         marginLeft: "auto",
         marginRight: "auto",
         } : {}),
@@ -264,11 +273,11 @@ function PassageSequence({ project }) {
             zIndex: 12,
             pointerEvents: "none",
             fontFamily: "var(--mono)",
-            fontSize: mob ? 8 : 9,
+            fontSize: mob ? 10 : 11,
             lineHeight: 1,
             letterSpacing: "0.10em",
-            color: "rgba(255,255,255,.58)",
-            textShadow: "0 1px 2px rgba(0,0,0,.34)",
+            color: "rgba(255,255,255,.74)",
+            textShadow: "0 1px 2px rgba(0,0,0,.46)",
             textTransform: "uppercase",
             whiteSpace: "nowrap",
           }}>

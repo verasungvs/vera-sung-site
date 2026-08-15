@@ -778,14 +778,14 @@ function AboutPage({ go }) {
             letterSpacing: mob ? "0.005em" : undefined,
           }}>
             <p style={{ margin: mob ? "0 0 10px" : "0 0 16px" }}>
-              Born in Taiwan, Vera Sung lives and works between Taiwan and
-              France. Her work is rooted in a background in performance.
-              Through bodily gesture, trace, and scene, her work explores
-              forms and memories of presence and absence, as well as the
-              unnamed states between them.
+              Vera Sung (宋孟璇) is a Taiwanese performer and artist living and
+              working between Taiwan and France. Rooted in her background in
+              performance, her practice explores forms and memories of presence
+              and absence through bodily gesture, trace, and scene, as well as
+              the unnamed states that exist between them.
             </p>
             <p style={{ margin: 0 }}>
-              She is currently a member of the French photo agency Hans Lucas.
+              She is a member of the French photography agency Hans Lucas.
             </p>
           </div>
 

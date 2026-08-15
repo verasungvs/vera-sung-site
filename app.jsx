@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-home-breathing-21",
+  cacheVersion: "20260815-home-spacing-22",
   home: {
     images: [
       {
@@ -21,7 +21,7 @@ const SITE = {
     desktopWidth: "88%",
     mobileWidth: "100%",
     maxWidth: 900,
-    desktopBottomGap: 240,
+    desktopBottomGap: 320,
     mobileBottomGap: 48,
     watermark: "LE PASSAGE, 2026",
     watermarkDesktopSize: 11,
@@ -115,7 +115,7 @@ HomePage = function HomePage2026({ go }) {
   }, []);
 
   return (
-    <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
+    <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: mob ? 64 : 190 }}>
       <section style={{
         position: "relative",
         width: mob ? "103vw" : "100vw",
@@ -298,7 +298,7 @@ function Header({ route, go }) {
         transform: "translateX(-50%)",
         width: 390,
         padding: "20px 24px 22px",
-        background: "rgba(250, 248, 242, 0.82)",
+        background: "rgba(250, 248, 242, 0.70)",
         border: "1px solid rgba(85,82,75,.10)",
         boxShadow: "0 12px 30px rgba(70,62,50,.05)",
         backdropFilter: "blur(3px)",

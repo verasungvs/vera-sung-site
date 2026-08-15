@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-single-still-13",
+  cacheVersion: "20260815-single-still-14",
   home: {
     images: [
       {
@@ -162,7 +162,7 @@ HomePage = function HomePage2026({ go }) {
               height: "100%",
               objectFit: "contain",
               background: "transparent",
-              opacity: dimFirst ? 0.5 : (showFirst ? 1 : 0.06),
+              opacity: dimFirst ? 0.6 : (showFirst ? 1 : 0.18),
               transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
               transform: "translateX(-50%)",
               pointerEvents: "none",

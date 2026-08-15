@@ -2,12 +2,12 @@
 const { useEffect: useAppEffect, useState: useAppState } = React;
 
 /* ==================== 2026 PASSAGE PRESENTATION ====================
-   Homepage hero, reduced web-resolution Passage images, and subtle year marks.
+   Homepage hero, web-resolution Passage images, and subtle year marks.
    The original PassageSequence is retained for every other photographic series. */
 const LegacyPassageSequence = PassageSequence;
 
 const passageWebSrc = (src) =>
-  `/.netlify/images?url=/${src}&w=800&fm=jpg&q=58`;
+  `/.netlify/images?url=/${src}&w=1100&fm=jpg&q=74`;
 
 function PassageWatermarkedPhoto({ src, label }) {
   return (
@@ -22,8 +22,8 @@ function PassageWatermarkedPhoto({ src, label }) {
         fontFamily: "var(--mono)",
         fontSize: 9,
         letterSpacing: "0.10em",
-        color: "rgba(255,255,255,.60)",
-        textShadow: "0 1px 2px rgba(0,0,0,.30)",
+        color: "rgba(255,255,255,.58)",
+        textShadow: "0 1px 2px rgba(0,0,0,.28)",
         textTransform: "uppercase",
         whiteSpace: "nowrap",
       }}>
@@ -33,7 +33,8 @@ function PassageWatermarkedPhoto({ src, label }) {
   );
 }
 
-/* Homepage override: the new Passage image is itself the link to the series. */
+/* Homepage override: the Passage image itself links to the series.
+   Natural sizing keeps the photograph edge-to-edge, with no band beneath it. */
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
   return (
@@ -52,20 +53,25 @@ HomePage = function HomePage2026({ go }) {
               go("photography/passage");
             }
           }}
-          style={{ position: "relative", cursor: "pointer", outline: "none" }}>
-          <Photo src="assets/home-passage-2026.jpg" aspect="3/2" />
+          style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}>
+          <Photo
+            src="assets/home-passage-2026.jpg"
+            natural
+            style={{ background: "transparent" }}
+          />
           <span aria-hidden="true" style={{
             position: "absolute",
-            right: mob ? 10 : 12,
-            bottom: mob ? 8 : 10,
+            right: mob ? 12 : 16,
+            bottom: mob ? 10 : 14,
             zIndex: 12,
             pointerEvents: "none",
             fontFamily: "var(--mono)",
-            fontSize: mob ? 8 : 9,
-            letterSpacing: "0.12em",
+            fontSize: mob ? 9 : 12,
+            lineHeight: 1,
+            letterSpacing: "0.11em",
             textTransform: "uppercase",
-            color: "rgba(55,50,45,.48)",
-            textShadow: "0 1px 1px rgba(255,255,255,.28)",
+            color: "rgba(55,50,45,.43)",
+            textShadow: "0 1px 1px rgba(255,255,255,.26)",
             whiteSpace: "nowrap",
           }}>
             LE PASSAGE, 2026
@@ -111,8 +117,9 @@ HomePage = function HomePage2026({ go }) {
   );
 };
 
-/* Passage override: every work is displayed at 2/3 of the former width.
-   The first six visual positions are marked 2026; all following positions 2023. */
+/* Passage override: slightly smaller than the original site presentation,
+   but large enough to read comfortably. The first six visual positions are
+   marked 2026; all following positions 2023. */
 PassageSequence = function PassageSequence2026({ project }) {
   if (project.id !== "passage") {
     return <LegacyPassageSequence project={project} />;
@@ -129,9 +136,10 @@ PassageSequence = function PassageSequence2026({ project }) {
         const baseGap = isLast ? 40 : (!mob ? 96 : gaps[i % gaps.length]);
         const mb = !mob ? baseGap : (baseGap + (p.extraGap || 0));
         const label = i < 6 ? "LE PASSAGE, 2026" : "LE PASSAGE, 2023";
+        const width = mob ? "94%" : "76%";
         const wrapStyle = {
-          width: "66.6667%",
-          maxWidth: "66.6667%",
+          width,
+          maxWidth: width,
           marginLeft: "auto",
           marginRight: "auto",
           marginBottom: mb,

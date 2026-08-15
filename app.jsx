@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-layout-fixes-5",
+  cacheVersion: "20260815-mirror-align-6",
   home: {
     images: [
       {
@@ -19,7 +19,8 @@ const SITE = {
         src: "assets/home-carousel-mirror.jpg",
         alt: "Photograph by Vera Sung",
         scale: 0.86,
-        offsetX: 10,
+        offsetX: 32,
+        mobileOffsetX: 10,
       },
       {
         src: "assets/home-carousel-cabinet.jpg",
@@ -170,7 +171,7 @@ HomePage = function HomePage2026({ go }) {
                 background: "transparent",
                 opacity: index === slide ? 1 : 0,
                 transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
-                transform: `translateX(${item.offsetX || 0}%) scale(${item.scale || 1})`,
+                transform: `translateX(${mob ? (item.mobileOffsetX || 0) : (item.offsetX || 0)}%) scale(${item.scale || 1})`,
                 pointerEvents: "none",
                 userSelect: "none",
                 WebkitUserDrag: "none",

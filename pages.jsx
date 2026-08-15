@@ -96,8 +96,8 @@ function PhotographyPage({ sub, go }) {
         </div>
         <div style={mob ? {
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "20px 16px",
+          gridTemplateColumns: "1fr",
+          gap: "18px",
           alignItems: "start",
         } : {
           display: "flex",

@@ -561,6 +561,57 @@ function PhotoNum({ item }) {
   );
 }
 
+function PerformanceShowreel({ mob }) {
+  const stopSave = e => e.preventDefault();
+  return (
+    <Reveal as="section" style={{
+      width: mob ? "100%" : "62%",
+      maxWidth: 820,
+      marginLeft: mob ? 0 : "10%",
+      marginRight: "auto",
+      marginBottom: mob ? 52 : 120,
+    }}>
+      <div className="printed" style={{
+        fontFamily: "var(--mono)",
+        color: "var(--ink-2)",
+        marginBottom: mob ? 12 : 18,
+        textAlign: "left",
+      }}>
+        <div style={{
+          fontSize: mob ? 13 : 16,
+          letterSpacing: "0.04em",
+          marginBottom: mob ? 6 : 8,
+        }}>
+          35-second performance showreel
+        </div>
+        <div style={{
+          fontSize: mob ? 10 : 12,
+          lineHeight: 1.6,
+          color: "var(--ink-4)",
+          letterSpacing: "0.01em",
+        }}>
+          (If you would like to view the full version, please feel free to contact me. I would be delighted to share it with you. Thank you.)
+        </div>
+      </div>
+      <video
+        src="assets/performance/performance-showreel-35s.mp4"
+        controls
+        controlsList="nodownload noplaybackrate"
+        disablePictureInPicture
+        playsInline
+        preload="metadata"
+        onContextMenu={stopSave}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "auto",
+          background: "#000",
+        }}
+      />
+    </Reveal>
+  );
+}
+
 function PerformancePage() {
   const mob = useIsMobile();
 
@@ -589,29 +640,32 @@ function PerformancePage() {
         const mRight = mob ? 0 : row.r;
         const mGap   = mob ? Math.round(row.gap * 0.33) : row.gap;
         return (
-          <Reveal as="section" key={i} style={{
-            marginBottom: mGap,
-            marginLeft: mLeft + "%",
-            marginRight: mRight + "%",
-          }}>
-            {cols === 1 ? (
-              <PhotoNum item={row.items[0]} />
-            ) : (
-              <div style={{
-                display: "grid",
-                /* Mobile: all multi-image rows collapse to 1-col so each
-                   image fills the available width and stays clearly legible */
-                gridTemplateColumns: mob
-                  ? "1fr"
-                  : (row.layout || (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr")),
-                columnGap: mob ? 8 : 24,
-                rowGap: mob ? 24 : 0,
-                alignItems: "start",
-              }}>
-                {row.items.map((it, j) => <PhotoNum key={j} item={it} />)}
-              </div>
-            )}
-          </Reveal>
+          <React.Fragment key={i}>
+            <Reveal as="section" style={{
+              marginBottom: mGap,
+              marginLeft: mLeft + "%",
+              marginRight: mRight + "%",
+            }}>
+              {cols === 1 ? (
+                <PhotoNum item={row.items[0]} />
+              ) : (
+                <div style={{
+                  display: "grid",
+                  /* Mobile: all multi-image rows collapse to 1-col so each
+                     image fills the available width and stays clearly legible */
+                  gridTemplateColumns: mob
+                    ? "1fr"
+                    : (row.layout || (cols === 2 ? "1fr 1fr" : "1fr 1fr 1fr")),
+                  columnGap: mob ? 8 : 24,
+                  rowGap: mob ? 24 : 0,
+                  alignItems: "start",
+                }}>
+                  {row.items.map((it, j) => <PhotoNum key={j} item={it} />)}
+                </div>
+              )}
+            </Reveal>
+            {i === 1 ? <PerformanceShowreel mob={mob} /> : null}
+          </React.Fragment>
         );
       })}
     </div>

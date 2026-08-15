@@ -357,6 +357,8 @@
     header.site .meta-right { display: none; }
     nav.primary { justify-self: center; justify-content: space-evenly; width: 100%; flex-wrap: wrap; row-gap: 12px; column-gap: 0; }
     nav.primary button { font-size: 15px; }
+    nav.primary > button:nth-of-type(4) { transform: translateX(18px); }
+    nav.primary > button:nth-of-type(5) { transform: translateX(-18px); }
     /* Strip sub-pixel blurs — they soften text on mobile screens */
     .printed, .printed--soft, .printed--stamp { filter: none; }
     .letterpress { filter: none; color: rgba(43, 38, 30, 0.82); }

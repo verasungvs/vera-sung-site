@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-feathered-still-15",
+  cacheVersion: "20260815-feathered-still-16",
   home: {
     images: [
       {
@@ -118,8 +118,8 @@ HomePage = function HomePage2026({ go }) {
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <section style={{
         position: "relative",
-        width: mob ? "100vw" : "92vw",
-        maxWidth: 1050,
+        width: mob ? "100vw" : "97vw",
+        maxWidth: 1140,
         aspectRatio: "3 / 2",
         left: "50%",
         transform: "translateX(-50%)",
@@ -180,8 +180,17 @@ HomePage = function HomePage2026({ go }) {
               "linear-gradient(to right, var(--paper) 0%, transparent 17%, transparent 83%, var(--paper) 100%)",
               "linear-gradient(to bottom, var(--paper) 0%, transparent 14%, transparent 86%, var(--paper) 100%)",
             ].join(", "),
-            opacity: showFirst ? 0 : 0.92,
+            opacity: showFirst ? 0 : 1,
             transition: `opacity ${SITE.home.fadeDuration}ms cubic-bezier(.72,0,.92,1)`,
+          }} />
+          <div aria-hidden="true" style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 3,
+            pointerEvents: "none",
+            boxShadow: "inset 0 0 0 2px var(--paper)",
+            opacity: showFirst ? 0 : 1,
+            transition: "opacity 2000ms ease-in-out 8000ms",
           }} />
           <div
             aria-hidden="true"

@@ -11,9 +11,9 @@
   /* ---------- COLOR / GROUND ----------
      Pale mineral whites — gallery wall, light passing through paper.
      Subtle warm-neutral, never cream. Never pure #fff. */
-  --paper:        #F4F1E8;   /* primary — warm ivory, never green */
-  --paper-light:  #F8F5EC;   /* lightest sheet — pale parchment */
-  --paper-warm:   #EBE5D3;   /* aged paper, warmer */
+  --paper:        #F6F4ED;   /* primary — lighter, more neutral ivory */
+  --paper-light:  #FAF8F2;   /* lightest sheet — pale parchment */
+  --paper-warm:   #EEEADF;   /* aged paper, softly neutral */
   --paper-bone:   #E3DCC8;   /* dry, naturally aged */
   --linen:        #D6CEB7;   /* washed cotton */
   --stone:        #BFB6A0;   /* pale stone */

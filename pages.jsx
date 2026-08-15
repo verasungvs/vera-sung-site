@@ -337,6 +337,7 @@ function PassageSequence({ project }) {
               <div style={{
                 display: "grid",
                 gridTemplateColumns: mob ? "1fr" : "1fr 1fr",
+                alignItems: "start",
                 columnGap: mob ? 0 : 18,
                 rowGap: mob ? 14 : 0,
               }}>
@@ -353,6 +354,7 @@ function PassageSequence({ project }) {
               <div style={{
                 display: "grid",
                 gridTemplateColumns: mob ? "1fr" : "1fr 1fr 1fr",
+                alignItems: "start",
                 columnGap: mob ? 0 : 18,
                 rowGap: mob ? 14 : 0,
               }}>

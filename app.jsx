@@ -7,24 +7,24 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-layout-fixes-4",
+  cacheVersion: "20260815-layout-fixes-5",
   home: {
     images: [
       {
         src: "assets/home-passage-2026.jpg",
         alt: "LE PASSAGE, 2026",
-        scale: 1,
+        scale: 0.94,
       },
       {
         src: "assets/home-carousel-mirror.jpg",
         alt: "Photograph by Vera Sung",
         scale: 0.86,
-        offsetX: 6,
+        offsetX: 10,
       },
       {
         src: "assets/home-carousel-cabinet.jpg",
         alt: "Photograph by Vera Sung",
-        scale: 0.86,
+        scale: 0.80,
       },
     ],
     interval: 4000,

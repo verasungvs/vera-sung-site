@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-larger-8pct-19",
+  cacheVersion: "20260815-photo-menu-20",
   home: {
     images: [
       {
@@ -186,42 +186,6 @@ HomePage = function HomePage2026({ go }) {
         </div>
       </section>
 
-      <Reveal as="section" style={{
-        marginBottom: 160,
-        width: mob ? "92%" : 460,
-        maxWidth: "100%",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}>
-        {PROJECTS.map(pr => (
-          <div key={pr.id}
-               onClick={() => go("photography/" + pr.id)}
-               style={{
-                 display: "grid",
-                 gridTemplateColumns: mob ? "28px 1fr" : "60px 1fr",
-                 alignItems: "baseline",
-                 columnGap: mob ? 12 : 32,
-                 padding: mob ? "3px 0" : "6px 0",
-                 cursor: "pointer",
-                 transition: "padding-left .8s var(--ease), opacity .8s var(--ease)",
-               }}
-               onMouseEnter={e => { e.currentTarget.style.paddingLeft = "6px"; e.currentTarget.style.opacity = "0.78"; }}
-               onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.opacity = "1"; }}>
-            <span style={{ fontFamily: "var(--mono-worn)", fontSize: mob ? 9 : 11, letterSpacing: "0.22em" }}>
-              <LetterpressTitle text={pr.no} />
-            </span>
-            <span style={{
-              fontFamily: "var(--mono-worn)",
-              fontSize: mob ? 12 : 18,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              opacity: mob ? 0.80 : 1,
-            }}>
-              <LetterpressTitle text={pr.title} />
-            </span>
-          </div>
-        ))}
-      </Reveal>
     </div>
   );
 };
@@ -312,6 +276,7 @@ function useHashRoute() {
 function Header({ route, go }) {
   const [top] = route.split("/");
   const mob = useIsMobile();
+  const [photoMenuOpen, setPhotoMenuOpen] = useAppState(false);
   const items = [
     { id: "home", label: "Home" },
     { id: "photography/passage", label: "Photography", match: "photography" },
@@ -320,8 +285,95 @@ function Header({ route, go }) {
     { id: "contact", label: "Contact" },
   ];
 
+  const projectMenu = !mob && photoMenuOpen && (
+    <div
+      role="menu"
+      aria-label="Photography projects"
+      onMouseEnter={() => setPhotoMenuOpen(true)}
+      onMouseLeave={() => setPhotoMenuOpen(false)}
+      style={{
+        position: "absolute",
+        top: "100%",
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: 390,
+        padding: "20px 24px 22px",
+        background: "rgba(250, 248, 242, 0.97)",
+        border: "1px solid rgba(85,82,75,.10)",
+        boxShadow: "0 12px 30px rgba(70,62,50,.07)",
+        zIndex: 40,
+      }}
+    >
+      {PROJECTS.map(pr => (
+        <button
+          key={pr.id}
+          role="menuitem"
+          onClick={() => {
+            setPhotoMenuOpen(false);
+            go("photography/" + pr.id);
+          }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "44px 1fr",
+            alignItems: "baseline",
+            columnGap: 18,
+            width: "100%",
+            padding: "5px 0",
+            transition: "padding-left .8s var(--ease), opacity .8s var(--ease)",
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.paddingLeft = "6px";
+            e.currentTarget.style.opacity = "0.72";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.paddingLeft = "0";
+            e.currentTarget.style.opacity = "1";
+          }}
+        >
+          <span style={{
+            fontFamily: "var(--mono-worn)",
+            fontSize: 10,
+            letterSpacing: "0.22em",
+            color: "var(--ink-3)",
+          }}>
+            <LetterpressTitle text={pr.no} />
+          </span>
+          <span style={{
+            fontFamily: "var(--mono-worn)",
+            fontSize: 15,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+          }}>
+            <LetterpressTitle text={pr.title} />
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+
   const navChildren = items.map((it) => {
     const active = top === (it.match || it.id.split("/")[0]) || (it.id === "home" && top === "home");
+    if (it.match === "photography" && !mob) {
+      return (
+        <div
+          key={it.id}
+          style={{ position: "relative", display: "flex", alignItems: "baseline" }}
+          onMouseEnter={() => setPhotoMenuOpen(true)}
+          onMouseLeave={() => setPhotoMenuOpen(false)}
+        >
+          <button
+            onClick={() => go(it.id)}
+            className={active ? "active" : ""}
+            aria-haspopup="menu"
+            aria-expanded={photoMenuOpen}
+          >
+            <span className="printed--soft">{it.label}</span>
+          </button>
+          {projectMenu}
+        </div>
+      );
+    }
     return (
       <button key={it.id} onClick={() => go(it.id)} className={active ? "active" : ""}>
         <span className="printed--soft">{it.label}</span>
@@ -335,7 +387,10 @@ function Header({ route, go }) {
     <header className="site">
       <div className="row">
         <button onClick={() => go("home")} className="stamp stamp--wordmark printed--stamp"
-                style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 1 }}>
+                style={{
+                  display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 1,
+                  opacity: 0.68,
+                }}>
           <span>vera sung</span>
           <span style={{
             fontFamily: "var(--mono-worn)", fontSize: 13,

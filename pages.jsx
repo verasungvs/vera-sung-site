@@ -220,6 +220,33 @@ function PhotographyPage({ sub, go }) {
 function PassageSequence({ project }) {
   const seq = project.sequence || [];
   const mob = useIsMobile();
+  const compactPortraitProjects = project.id === "night-walks" || project.id === "practice";
+  const portraitSources = new Set([
+    "assets/night-walks-01.jpg",
+    "assets/night-walks-10.jpg",
+    "assets/practice-03.jpg",
+    "assets/practice-04.jpg",
+    "assets/practice-05.jpg",
+    "assets/practice-06.jpg",
+    "assets/practice-07.jpg",
+    "assets/practice-08.jpg",
+    "assets/practice-09.jpg",
+    "assets/practice-10.jpg",
+    "assets/practice-11.jpg",
+  ]);
+  const sequencePhoto = (src) => {
+    const compact = compactPortraitProjects && portraitSources.has(src);
+    return (
+      <div style={compact ? {
+        width: mob ? "82%" : "76%",
+        maxWidth: mob ? 620 : 680,
+        marginLeft: "auto",
+        marginRight: "auto",
+      } : undefined}>
+        <Photo src={src} natural />
+      </div>
+    );
+  };
 
   /* Plates share the same column width — no dramatic size differences.
      Vertical rhythm comes from gap variation; a few openings are wider.
@@ -248,7 +275,15 @@ function PassageSequence({ project }) {
         const mb = (isPassage && !mob) ? baseGap : (baseGap + (p.extraGap || 0));
 
         const offset = mob ? "0" : (p.breakout || (i === 0 ? firstBreakout : breakout));
-        const wrapStyle = { marginLeft: offset, marginRight: offset, marginBottom: mb };
+        const wrapStyle = project.id === "drifting"
+          ? {
+              width: "94%",
+              maxWidth: 820,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginBottom: mb,
+            }
+          : { marginLeft: offset, marginRight: offset, marginBottom: mb };
 
         if (p.kind === "diptych") {
           return (
@@ -259,8 +294,8 @@ function PassageSequence({ project }) {
                 columnGap: mob ? 0 : 18,
                 rowGap: mob ? 14 : 0,
               }}>
-                <Photo src={p.a.src} natural />
-                <Photo src={p.b.src} natural />
+                {sequencePhoto(p.a.src)}
+                {sequencePhoto(p.b.src)}
               </div>
             </Reveal>
           );
@@ -275,9 +310,9 @@ function PassageSequence({ project }) {
                 columnGap: mob ? 0 : 18,
                 rowGap: mob ? 14 : 0,
               }}>
-                <Photo src={p.a.src} natural />
-                <Photo src={p.b.src} natural />
-                <Photo src={p.c.src} natural />
+                {sequencePhoto(p.a.src)}
+                {sequencePhoto(p.b.src)}
+                {sequencePhoto(p.c.src)}
               </div>
             </Reveal>
           );
@@ -285,7 +320,7 @@ function PassageSequence({ project }) {
 
         return (
           <Reveal as="section" key={i} style={wrapStyle}>
-            <Photo src={p.src} natural />
+            {sequencePhoto(p.src)}
           </Reveal>
         );
       })}

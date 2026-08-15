@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-photos-1600",
+  cacheVersion: "20260815-home-drifting-1400",
   home: {
     image: "assets/home-passage-2026.jpg",
     link: "photography/passage",
@@ -129,8 +129,22 @@ HomePage = function HomePage2026({ go }) {
               height: "auto",
               objectFit: "contain",
               background: "transparent",
+              pointerEvents: "none",
               userSelect: "none",
               WebkitUserDrag: "none",
+              WebkitTouchCallout: "none",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 8,
+              WebkitTouchCallout: "none",
+              userSelect: "none",
             }}
           />
           <span aria-hidden="true" style={{

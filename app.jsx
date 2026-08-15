@@ -1,34 +1,39 @@
 /* App shell — sticky header with stamped wordmark + mono nav, hash routing. */
 const { useEffect: useAppEffect, useState: useAppState } = React;
 
-/* ==================== 2026 PASSAGE PRESENTATION ====================
-   Homepage hero, web-resolution Passage images, and subtle year marks.
-   The original PassageSequence is retained for every other photographic series. */
 const LegacyPassageSequence = PassageSequence;
 
 const passageWebSrc = (src) =>
   `/.netlify/images?url=/${src}&w=1100&fm=jpg&q=74`;
 
-function CleanNaturalPhoto({ src, style }) {
+function VisibleNaturalPhoto({ src, style }) {
   const noSave = e => { e.preventDefault(); e.stopPropagation(); };
   return (
-    <div className="vs-photo" style={{ ...(style || {}), background: "transparent" }}
-         onContextMenu={noSave} onDragStart={noSave}>
+    <div
+      style={{ position: "relative", width: "100%", overflow: "hidden", lineHeight: 0, ...(style || {}) }}
+      onContextMenu={noSave}
+      onDragStart={noSave}
+    >
       <img
-        src={src} alt="" aria-hidden="true" draggable={false}
+        src={src}
+        alt=""
+        draggable={false}
         style={{
-          display: "block", width: "100%", height: "auto",
-          opacity: 0, pointerEvents: "none",
-          userSelect: "none", WebkitUserDrag: "none",
+          display: "block",
+          width: "100%",
+          height: "auto",
+          objectFit: "contain",
+          pointerEvents: "none",
+          userSelect: "none",
+          WebkitUserDrag: "none",
+          WebkitTouchCallout: "none",
         }}
       />
-      <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: `url(${src})`,
-        backgroundSize: "100% 100%",
-        backgroundRepeat: "no-repeat",
-        pointerEvents: "none",
-      }} aria-hidden="true" />
+      <div
+        aria-hidden="true"
+        style={{ position: "absolute", inset: 0, zIndex: 5 }}
+        onContextMenu={noSave}
+      />
     </div>
   );
 }
@@ -36,7 +41,7 @@ function CleanNaturalPhoto({ src, style }) {
 function PassageWatermarkedPhoto({ src, label }) {
   return (
     <div style={{ position: "relative" }}>
-      <CleanNaturalPhoto src={passageWebSrc(src)} />
+      <VisibleNaturalPhoto src={passageWebSrc(src)} />
       <span aria-hidden="true" style={{
         position: "absolute",
         right: 10,
@@ -57,12 +62,10 @@ function PassageWatermarkedPhoto({ src, label }) {
   );
 }
 
-/* Homepage override: the Passage image itself links to the series.
-   This clean renderer intentionally omits the global grain layer because this
-   very pale photograph loses too much detail under multiply texture. */
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
-  const heroSrc = "assets/home-passage-2026.jpg?v=20260815c";
+  const heroSrc = "assets/home-passage-2026.jpg?v=20260815d";
+
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <Reveal as="section" style={{
@@ -79,8 +82,9 @@ HomePage = function HomePage2026({ go }) {
               go("photography/passage");
             }
           }}
-          style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}>
-          <CleanNaturalPhoto src={heroSrc} />
+          style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}
+        >
+          <VisibleNaturalPhoto src={heroSrc} />
           <span aria-hidden="true" style={{
             position: "absolute",
             right: mob ? 12 : 16,
@@ -139,9 +143,6 @@ HomePage = function HomePage2026({ go }) {
   );
 };
 
-/* Passage override: slightly smaller than the original site presentation,
-   but large enough to read comfortably. The first six visual positions are
-   marked 2026; all following positions 2023. */
 PassageSequence = function PassageSequence2026({ project }) {
   if (project.id !== "passage") {
     return <LegacyPassageSequence project={project} />;
@@ -236,10 +237,7 @@ function Header({ route, go }) {
     { id: "contact",              label: "Contact" },
   ];
 
-  /* On mobile: insert a flex-break span before "About" (index 3) so the nav
-     wraps intentionally as Home / Photography / Performance on line one,
-     and About / Contact on line two — never a single isolated item. */
-  const navChildren = items.map((it, idx) => {
+  const navChildren = items.map((it) => {
     const active = top === (it.match || it.id.split("/")[0]) ||
                    (it.id === "home" && top === "home");
     return (
@@ -248,6 +246,7 @@ function Header({ route, go }) {
       </button>
     );
   });
+
   if (mob) {
     navChildren.splice(3, 0, <span key="nav-break" style={{ flexBasis: "100%", height: 0 }} />);
   }
@@ -265,9 +264,7 @@ function Header({ route, go }) {
             transform: "rotate(-0.35deg)",
           }}>宋 孟璇</span>
         </button>
-        <nav className="primary">
-          {navChildren}
-        </nav>
+        <nav className="primary">{navChildren}</nav>
         <span className="meta-right"></span>
       </div>
       <div className="crease"></div>
@@ -308,7 +305,6 @@ function App() {
   const [route, go] = useHashRoute();
   const [top, sub] = route.split("/");
 
-  /* Night Walks runs on the dark theme; everything else stays on warm paper. */
   useAppEffect(() => {
     const isNightWalks = top === "photography" && sub === "night-walks";
     document.body.classList.toggle("theme-dark", isNightWalks);
@@ -322,7 +318,7 @@ function App() {
     case "cv":          body = <AboutPage go={go} />; break;
     case "links":       body = <AboutPage go={go} />; break;
     case "contact":     body = <ContactPage />; break;
-    default:            body = <HomePage go={go} />;
+    default:             body = <HomePage go={go} />;
   }
 
   return (

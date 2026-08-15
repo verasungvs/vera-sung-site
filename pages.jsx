@@ -258,7 +258,7 @@ function PassageSequence({ project }) {
       : (mob ? "82%" : "76%");
     const usePassageResolution = project.id === "night-walks" || project.id === "drifting";
     const webSrc = usePassageResolution
-      ? `/.netlify/images?url=/${src}&w=1100&fm=jpg&q=74`
+      ? `/.netlify/images?url=/${src}&w=1400&fm=jpg&q=82`
       : src;
 
     return (

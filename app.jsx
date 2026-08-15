@@ -7,20 +7,13 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-sequenced-home-9",
+  cacheVersion: "20260815-still-diptych-10",
   home: {
     images: [
       {
         src: "assets/home-passage-2026.jpg",
         alt: "LE PASSAGE, 2026",
         scale: 0.94,
-      },
-      {
-        src: "assets/home-carousel-practice.jpg",
-        alt: "Photograph by Vera Sung",
-        scale: 0.86,
-        offsetX: 32,
-        mobileOffsetX: 10,
       },
     ],
     companion: {
@@ -113,41 +106,22 @@ function PassageWatermarkedPhoto({ src, label }) {
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
   const [showFirst, setShowFirst] = useAppState(false);
-  const [showSecond, setShowSecond] = useAppState(false);
   const [showCompanion, setShowCompanion] = useAppState(false);
   const first = SITE.home.images[0];
-  const second = SITE.home.images[1];
   const companion = SITE.home.companion;
 
   useAppEffect(() => {
-    let timers = [];
-    const schedule = (fn, delay) => {
-      timers.push(window.setTimeout(fn, delay));
-    };
-    const runCycle = () => {
-      setShowFirst(false);
-      setShowSecond(false);
-      setShowCompanion(false);
-      schedule(() => setShowFirst(true), 50);
-      schedule(() => setShowFirst(false), 5000);
-      schedule(() => setShowSecond(true), 6000);
-      schedule(() => setShowCompanion(true), 7000);
-      schedule(() => {
-        setShowSecond(false);
-        setShowCompanion(false);
-      }, 10000);
-    };
-    runCycle();
-    const cycle = window.setInterval(runCycle, 12000);
+    const mainTimer = window.setTimeout(() => setShowFirst(true), 50);
+    const companionTimer = window.setTimeout(() => setShowCompanion(true), 700);
     return () => {
-      timers.forEach(timer => window.clearTimeout(timer));
-      window.clearInterval(cycle);
+      window.clearTimeout(mainTimer);
+      window.clearTimeout(companionTimer);
     };
   }, []);
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
-      <Reveal as="section" style={{
+      <section style={{
         width: mob ? SITE.home.mobileWidth : SITE.home.desktopWidth,
         maxWidth: SITE.home.maxWidth,
         margin: mob
@@ -174,31 +148,28 @@ HomePage = function HomePage2026({ go }) {
             lineHeight: 0,
           }}
         >
-          {[first, second].map((item, index) => (
-            <img
-              key={item.src}
-              src={`${item.src}?v=${SITE.cacheVersion}`}
-              alt={item.alt}
-              draggable={false}
-              onContextMenu={(e) => e.preventDefault()}
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "block",
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                background: "transparent",
-                opacity: index === 0 ? (showFirst ? 1 : 0) : (showSecond ? 1 : 0),
-                transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
-                transform: `translateX(${mob ? (item.mobileOffsetX || 0) : (item.offsetX || 0)}%) scale(${item.scale || 1})`,
-                pointerEvents: "none",
-                userSelect: "none",
-                WebkitUserDrag: "none",
-                WebkitTouchCallout: "none",
-              }}
-            />
-          ))}
+          <img
+            src={`${first.src}?v=${SITE.cacheVersion}`}
+            alt={first.alt}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "block",
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              background: "transparent",
+              opacity: showFirst ? 1 : 0,
+              transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
+              transform: `scale(${first.scale || 1})`,
+              pointerEvents: "none",
+              userSelect: "none",
+              WebkitUserDrag: "none",
+              WebkitTouchCallout: "none",
+            }}
+          />
           <div
             aria-hidden="true"
             onContextMenu={(e) => e.preventDefault()}
@@ -212,7 +183,7 @@ HomePage = function HomePage2026({ go }) {
             }}
           />
         </div>
-      </Reveal>
+      </section>
 
       <button
         type="button"
@@ -220,11 +191,11 @@ HomePage = function HomePage2026({ go }) {
         aria-label="Open Photography"
         style={{
           position: "fixed",
-          top: mob ? 104 : 82,
-          left: mob ? 22 : 56,
+          top: mob ? 116 : 82,
+          left: mob ? 18 : 56,
           zIndex: 16,
           display: "block",
-          width: mob ? 108 : 172,
+          width: mob ? 88 : 148,
           padding: 0,
           border: 0,
           background: "transparent",

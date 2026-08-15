@@ -245,11 +245,6 @@ function PassageSequence({ project }) {
   const slightlyCompactPracticeSources = new Set([
     "assets/practice-02.jpg",
   ]);
-  const watermarkLabels = {
-    "night-walks": "© Vera Sung · NIGHT WALKS",
-    practice: "© Vera Sung · PRACTICE WITHOUT OBJECTS",
-    drifting: "© Vera Sung · DRIFTING",
-  };
   const sequencePhoto = (src) => {
     const compact = compactPortraitProjects && portraitSources.has(src);
     const extraCompact = project.id === "practice" && extraCompactPracticeSources.has(src);
@@ -261,7 +256,11 @@ function PassageSequence({ project }) {
       : project.id === "practice"
       ? (mob ? "70%" : "64%")
       : (mob ? "82%" : "76%");
-    const watermark = watermarkLabels[project.id];
+    const usePassageResolution = project.id === "night-walks" || project.id === "drifting";
+    const webSrc = usePassageResolution
+      ? `/.netlify/images?url=/${src}&w=1100&fm=jpg&q=74`
+      : src;
+
     return (
       <div style={{
         position: "relative",
@@ -272,28 +271,7 @@ function PassageSequence({ project }) {
         marginRight: "auto",
         } : {}),
       }}>
-        <Photo src={src} natural />
-        {watermark ? (
-          <span aria-hidden="true" style={{
-            position: "absolute",
-            right: project.id === "practice" ? 6 : 10,
-            bottom: project.id === "practice" ? 6 : 8,
-            zIndex: 12,
-            pointerEvents: "none",
-            fontFamily: "var(--mono)",
-            fontSize: project.id === "practice" ? (mob ? 6 : 7) : (mob ? 10 : 11),
-            lineHeight: 1,
-            letterSpacing: project.id === "practice" ? "0.05em" : "0.10em",
-            color: project.id === "night-walks"
-              ? "rgba(255,255,255,.59)"
-              : "rgba(255,255,255,.74)",
-            textShadow: "0 1px 2px rgba(0,0,0,.46)",
-            textTransform: "uppercase",
-            whiteSpace: "nowrap",
-          }}>
-            {watermark}
-          </span>
-        ) : null}
+        <Photo src={webSrc} natural />
       </div>
     );
   };

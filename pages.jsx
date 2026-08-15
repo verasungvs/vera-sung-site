@@ -563,6 +563,37 @@ function PhotoNum({ item }) {
 
 function PerformanceShowreel({ mob }) {
   const stopSave = e => e.preventDefault();
+  const [videoUrl, setVideoUrl] = usePgState("");
+
+  React.useEffect(() => {
+    const controller = new AbortController();
+    let objectUrl = "";
+    const parts = [
+      "00", "01", "02", "03", "04", "05",
+    ].map(n => `assets/performance/performance-showreel-720p-v3.part-${n}?v=20260815-3`);
+
+    Promise.all(parts.map(src =>
+      fetch(src, { signal: controller.signal }).then(response => {
+        if (!response.ok) throw new Error("Showreel part failed to load");
+        return response.arrayBuffer();
+      })
+    ))
+      .then(buffers => {
+        objectUrl = URL.createObjectURL(new Blob(buffers, { type: "video/mp4" }));
+        setVideoUrl(objectUrl);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setVideoUrl("assets/performance/performance-showreel-35s.mp4?v=20260815-2");
+        }
+      });
+
+    return () => {
+      controller.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, []);
+
   return (
     <Reveal as="section" style={{
       width: mob ? "100%" : "62%",
@@ -578,9 +609,11 @@ function PerformanceShowreel({ mob }) {
         textAlign: "left",
       }}>
         <div style={{
-          fontSize: mob ? 13 : 16,
-          letterSpacing: "0.04em",
-          marginBottom: mob ? 6 : 8,
+          fontSize: mob ? 18 : 24,
+          fontWeight: 500,
+          letterSpacing: "0.07em",
+          lineHeight: 1.25,
+          marginBottom: mob ? 9 : 12,
         }}>
           35-second performance showreel
         </div>
@@ -589,11 +622,13 @@ function PerformanceShowreel({ mob }) {
           lineHeight: 1.6,
           color: "var(--ink-4)",
           letterSpacing: "0.01em",
+          fontStyle: "italic",
         }}>
           (If you would like to view the full version, please feel free to contact me. I would be delighted to share it with you. Thank you.)
         </div>
       </div>
       <video
+        src={videoUrl || undefined}
         controls
         controlsList="nodownload noplaybackrate"
         disablePictureInPicture
@@ -606,12 +641,7 @@ function PerformanceShowreel({ mob }) {
           height: "auto",
           background: "#000",
         }}
-      >
-        <source
-          src="assets/performance/performance-showreel-35s.mp4?v=20260815-2"
-          type="video/mp4"
-        />
-      </video>
+      />
     </Reveal>
   );
 }

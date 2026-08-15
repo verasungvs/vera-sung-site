@@ -64,12 +64,14 @@ function PassageWatermarkedPhoto({ src, label }) {
 
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
-  const heroSrc = "assets/home-passage-2026.jpg?v=20260815d";
+  const heroSrc = "assets/home-passage-2026.webp?v=20260815e";
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <Reveal as="section" style={{
-        margin: mob ? "0 -22px 48px" : "0 -12% 120px",
+        width: mob ? "100%" : "88%",
+        maxWidth: 900,
+        margin: mob ? "0 auto 48px" : "0 auto 105px",
       }}>
         <div
           onClick={() => go("photography/passage")}
@@ -84,20 +86,34 @@ HomePage = function HomePage2026({ go }) {
           }}
           style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}
         >
-          <VisibleNaturalPhoto src={heroSrc} />
+          <img
+            src={heroSrc}
+            alt="LE PASSAGE, 2026"
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{
+              display: "block",
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+              background: "transparent",
+              userSelect: "none",
+              WebkitUserDrag: "none",
+            }}
+          />
           <span aria-hidden="true" style={{
             position: "absolute",
-            right: mob ? 12 : 16,
-            bottom: mob ? 10 : 14,
+            right: mob ? 10 : 14,
+            bottom: mob ? 9 : 11,
             zIndex: 12,
             pointerEvents: "none",
             fontFamily: "var(--mono)",
-            fontSize: mob ? 9 : 12,
+            fontSize: mob ? 9 : 11,
             lineHeight: 1,
-            letterSpacing: "0.11em",
+            letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "rgba(55,50,45,.43)",
-            textShadow: "0 1px 1px rgba(255,255,255,.26)",
+            color: "rgba(70,64,59,.40)",
+            textShadow: "0 1px 1px rgba(255,255,255,.20)",
             whiteSpace: "nowrap",
           }}>
             LE PASSAGE, 2026

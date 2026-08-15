@@ -7,21 +7,23 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-home-carousel-2",
+  cacheVersion: "20260815-watermarks-3",
   home: {
     images: [
       {
         src: "assets/home-passage-2026.jpg",
         alt: "LE PASSAGE, 2026",
-        watermark: "LE PASSAGE, 2026",
+        scale: 1,
       },
       {
         src: "assets/home-carousel-mirror.jpg",
         alt: "Photograph by Vera Sung",
+        scale: 0.92,
       },
       {
         src: "assets/home-carousel-cabinet.jpg",
         alt: "Photograph by Vera Sung",
+        scale: 0.86,
       },
     ],
     interval: 4000,
@@ -43,8 +45,8 @@ const SITE = {
     webImageWidth: 1100,
     webImageQuality: 74,
     first2026Positions: 6,
-    watermark2026: "LE PASSAGE, 2026",
-    watermark2023: "LE PASSAGE, 2023",
+    watermark2026: "© Vera Sung · LE PASSAGE, 2026",
+    watermark2023: "© Vera Sung · LE PASSAGE, 2023",
     watermarkSize: 9,
     watermarkOpacity: 0.58,
     desktopGap: 96,
@@ -167,7 +169,7 @@ HomePage = function HomePage2026({ go }) {
                 background: "transparent",
                 opacity: index === slide ? 1 : 0,
                 transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
-                transform: index === 0 ? "scale(1)" : "scale(.94)",
+                transform: `scale(${item.scale || 1})`,
                 pointerEvents: "none",
                 userSelect: "none",
                 WebkitUserDrag: "none",
@@ -198,8 +200,8 @@ HomePage = function HomePage2026({ go }) {
             lineHeight: 1,
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: `rgba(70,64,59,${SITE.home.watermarkOpacity})`,
-            textShadow: "0 1px 1px rgba(255,255,255,.20)",
+            color: "rgba(255,255,255,.72)",
+            textShadow: "0 1px 2px rgba(0,0,0,.50)",
             whiteSpace: "nowrap",
             opacity: slides[slide].watermark ? 1 : 0,
             transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,

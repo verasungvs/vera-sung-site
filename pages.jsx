@@ -241,9 +241,9 @@ function PassageSequence({ project }) {
     "assets/practice-11.jpg",
   ]);
   const watermarkLabels = {
-    "night-walks": "NIGHT WALKS",
-    practice: "PRACTICE WITHOUT OBJECTS",
-    drifting: "DRIFTING",
+    "night-walks": "© Vera Sung · NIGHT WALKS",
+    practice: "© Vera Sung · PRACTICE WITHOUT OBJECTS",
+    drifting: "© Vera Sung · DRIFTING",
   };
   const sequencePhoto = (src) => {
     const compact = compactPortraitProjects && portraitSources.has(src);

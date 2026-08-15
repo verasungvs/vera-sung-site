@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-mobile-tight-25",
+  cacheVersion: "20260815-footer-bottom-26",
   home: {
     images: [
       {
@@ -416,9 +416,14 @@ function Header({ route, go }) {
 function Footer({ go, compact = false }) {
   const mob = useIsMobile();
   const compactStyle = compact
-    ? (mob ? { marginTop: 38, padding: "14px 22px 0", rowGap: 4 } : { paddingBottom: 24 })
+    ? (mob ? { marginTop: 38, minHeight: "220px", padding: "0 22px 8px", rowGap: 0, alignContent: "end" } : { paddingBottom: 24 })
     : undefined;
-  const footerTextStyle = { fontSize: 14, letterSpacing: "0.04em", textTransform: "none" };
+  const footerTextStyle = {
+    fontSize: 14,
+    letterSpacing: "0.04em",
+    textTransform: "none",
+    lineHeight: mob && compact ? 1.25 : undefined,
+  };
   return (
     <footer className="site" style={compactStyle}>
       <div className="meta printed--soft" style={footerTextStyle}>© 2026 Vera Sung. All rights reserved.</div>

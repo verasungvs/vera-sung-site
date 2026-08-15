@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-layered-home-8",
+  cacheVersion: "20260815-sequenced-home-9",
   home: {
     images: [
       {
@@ -16,22 +16,18 @@ const SITE = {
         scale: 0.94,
       },
       {
-        src: "assets/home-carousel-mirror.jpg",
+        src: "assets/home-carousel-practice.jpg",
         alt: "Photograph by Vera Sung",
         scale: 0.86,
         offsetX: 32,
         mobileOffsetX: 10,
       },
-      {
-        src: "assets/home-carousel-cabinet.jpg",
-        alt: "Photograph by Vera Sung",
-        scale: 0.80,
-        offsetX: -10,
-        mobileOffsetX: -8,
-      },
     ],
-    interval: 3500,
-    fadeDuration: 1500,
+    companion: {
+      src: "assets/home-carousel-mirror.jpg",
+      alt: "Photograph by Vera Sung",
+    },
+    fadeDuration: 2000,
     link: "photography/",
     desktopWidth: "88%",
     mobileWidth: "100%",
@@ -116,25 +112,38 @@ function PassageWatermarkedPhoto({ src, label }) {
 
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
-  const [slide, setSlide] = useAppState(0);
+  const [showFirst, setShowFirst] = useAppState(false);
+  const [showSecond, setShowSecond] = useAppState(false);
   const [showCompanion, setShowCompanion] = useAppState(false);
-  const slides = SITE.home.images.slice(0, 2);
-  const companion = SITE.home.images[2];
+  const first = SITE.home.images[0];
+  const second = SITE.home.images[1];
+  const companion = SITE.home.companion;
 
   useAppEffect(() => {
-    const timer = window.setInterval(
-      () => setSlide(current => (current + 1) % slides.length),
-      SITE.home.interval
-    );
-    return () => window.clearInterval(timer);
-  }, [slides.length]);
-
-  useAppEffect(() => {
-    setShowCompanion(false);
-    if (slide !== 1) return undefined;
-    const timer = window.setTimeout(() => setShowCompanion(true), 1000);
-    return () => window.clearTimeout(timer);
-  }, [slide]);
+    let timers = [];
+    const schedule = (fn, delay) => {
+      timers.push(window.setTimeout(fn, delay));
+    };
+    const runCycle = () => {
+      setShowFirst(false);
+      setShowSecond(false);
+      setShowCompanion(false);
+      schedule(() => setShowFirst(true), 50);
+      schedule(() => setShowFirst(false), 5000);
+      schedule(() => setShowSecond(true), 6000);
+      schedule(() => setShowCompanion(true), 7000);
+      schedule(() => {
+        setShowSecond(false);
+        setShowCompanion(false);
+      }, 10000);
+    };
+    runCycle();
+    const cycle = window.setInterval(runCycle, 12000);
+    return () => {
+      timers.forEach(timer => window.clearTimeout(timer));
+      window.clearInterval(cycle);
+    };
+  }, []);
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
@@ -165,7 +174,7 @@ HomePage = function HomePage2026({ go }) {
             lineHeight: 0,
           }}
         >
-          {slides.map((item, index) => (
+          {[first, second].map((item, index) => (
             <img
               key={item.src}
               src={`${item.src}?v=${SITE.cacheVersion}`}
@@ -180,7 +189,7 @@ HomePage = function HomePage2026({ go }) {
                 height: "100%",
                 objectFit: "contain",
                 background: "transparent",
-                opacity: index === slide ? 1 : 0,
+                opacity: index === 0 ? (showFirst ? 1 : 0) : (showSecond ? 1 : 0),
                 transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
                 transform: `translateX(${mob ? (item.mobileOffsetX || 0) : (item.offsetX || 0)}%) scale(${item.scale || 1})`,
                 pointerEvents: "none",
@@ -202,25 +211,6 @@ HomePage = function HomePage2026({ go }) {
               userSelect: "none",
             }}
           />
-          <span aria-hidden="true" style={{
-            position: "absolute",
-            right: mob ? 10 : 14,
-            bottom: mob ? 9 : 11,
-            zIndex: 12,
-            pointerEvents: "none",
-            fontFamily: "var(--mono)",
-            fontSize: mob ? SITE.home.watermarkMobileSize : SITE.home.watermarkDesktopSize,
-            lineHeight: 1,
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,.72)",
-            textShadow: "0 1px 2px rgba(0,0,0,.50)",
-            whiteSpace: "nowrap",
-            opacity: slides[slide].watermark ? 1 : 0,
-            transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
-          }}>
-            {slides[slide].watermark || ""}
-          </span>
         </div>
       </Reveal>
 
@@ -242,7 +232,7 @@ HomePage = function HomePage2026({ go }) {
           lineHeight: 0,
           opacity: showCompanion ? 1 : 0,
           visibility: showCompanion ? "visible" : "hidden",
-          transition: "opacity 700ms ease-in-out, visibility 700ms ease-in-out",
+          transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out, visibility ${SITE.home.fadeDuration}ms ease-in-out`,
           pointerEvents: showCompanion ? "auto" : "none",
         }}
       >

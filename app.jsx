@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-triptych-sequence-11",
+  cacheVersion: "20260815-single-still-12",
   home: {
     images: [
       {
@@ -16,15 +16,7 @@ const SITE = {
         scale: 0.94,
       },
     ],
-    bodyPortrait: {
-      src: "assets/home-carousel-practice.jpg",
-      alt: "Photograph by Vera Sung",
-    },
-    sinkPortrait: {
-      src: "assets/home-carousel-mirror.jpg",
-      alt: "Photograph by Vera Sung",
-    },
-    fadeDuration: 2000,
+    fadeDuration: 10000,
     link: "photography/",
     desktopWidth: "88%",
     mobileWidth: "100%",
@@ -110,26 +102,12 @@ function PassageWatermarkedPhoto({ src, label }) {
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
   const [showFirst, setShowFirst] = useAppState(false);
-  const [showBody, setShowBody] = useAppState(false);
-  const [showSink, setShowSink] = useAppState(false);
-  const [retiring, setRetiring] = useAppState(false);
   const first = SITE.home.images[0];
-  const bodyPortrait = SITE.home.bodyPortrait;
-  const sinkPortrait = SITE.home.sinkPortrait;
 
   useAppEffect(() => {
     const mainTimer = window.setTimeout(() => setShowFirst(true), 50);
-    const bodyTimer = window.setTimeout(() => setShowBody(true), 3500);
-    const sinkTimer = window.setTimeout(() => {
-      setShowSink(true);
-      setRetiring(true);
-      setShowFirst(false);
-      setShowBody(false);
-    }, 6500);
     return () => {
       window.clearTimeout(mainTimer);
-      window.clearTimeout(bodyTimer);
-      window.clearTimeout(sinkTimer);
     };
   }, []);
 
@@ -137,12 +115,14 @@ HomePage = function HomePage2026({ go }) {
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <section style={{
         position: "relative",
-        width: "100vw",
-        height: mob ? 235 : "min(430px, 42vw)",
-        marginLeft: "calc(50% - 50vw)",
+        width: mob ? "100vw" : "92vw",
+        maxWidth: 1050,
+        aspectRatio: "3 / 2",
+        left: "50%",
+        transform: "translateX(-50%)",
         margin: mob
-          ? `0 0 ${SITE.home.mobileBottomGap}px calc(50% - 50vw)`
-          : `0 0 ${SITE.home.desktopBottomGap}px calc(50% - 50vw)`,
+          ? `0 0 ${SITE.home.mobileBottomGap}px`
+          : `0 0 ${SITE.home.desktopBottomGap}px`,
       }}>
         <div
           onClick={() => go(SITE.home.link)}
@@ -179,53 +159,9 @@ HomePage = function HomePage2026({ go }) {
               height: "100%",
               objectFit: "contain",
               background: "transparent",
-              opacity: showFirst ? 1 : 0,
-              transition: `opacity ${retiring ? 5000 : SITE.home.fadeDuration}ms ease-in-out`,
-              transform: "translateX(-50%)",
-              pointerEvents: "none",
-              userSelect: "none",
-              WebkitUserDrag: "none",
-              WebkitTouchCallout: "none",
-            }}
-          />
-          <img
-            src={`${bodyPortrait.src}?v=${SITE.cacheVersion}`}
-            alt={bodyPortrait.alt}
-            draggable={false}
-            onContextMenu={(e) => e.preventDefault()}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: mob ? 8 : "4vw",
-              zIndex: 3,
-              display: "block",
-              width: "auto",
-              height: "100%",
-              objectFit: "contain",
-              opacity: showBody ? 1 : 0,
-              transition: `opacity ${retiring ? 5000 : SITE.home.fadeDuration}ms ease-in-out`,
-              pointerEvents: "none",
-              userSelect: "none",
-              WebkitUserDrag: "none",
-              WebkitTouchCallout: "none",
-            }}
-          />
-          <img
-            src={`${sinkPortrait.src}?v=${SITE.cacheVersion}`}
-            alt={sinkPortrait.alt}
-            draggable={false}
-            onContextMenu={(e) => e.preventDefault()}
-            style={{
-              position: "absolute",
-              top: 0,
-              right: mob ? 8 : "4vw",
-              zIndex: 4,
-              display: "block",
-              width: "auto",
-              height: "100%",
-              objectFit: "contain",
-              opacity: showSink ? 1 : 0,
+              opacity: showFirst ? 1 : 0.06,
               transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
+              transform: "translateX(-50%)",
               pointerEvents: "none",
               userSelect: "none",
               WebkitUserDrag: "none",

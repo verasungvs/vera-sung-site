@@ -234,16 +234,47 @@ function PassageSequence({ project }) {
     "assets/practice-10.jpg",
     "assets/practice-11.jpg",
   ]);
+  const watermarkLabels = {
+    "night-walks": "NIGHT WALKS",
+    practice: "PRACTICE WITHOUT OBJECTS",
+    drifting: "DRIFTING",
+  };
   const sequencePhoto = (src) => {
     const compact = compactPortraitProjects && portraitSources.has(src);
+    const compactWidth = project.id === "practice"
+      ? (mob ? "70%" : "64%")
+      : (mob ? "82%" : "76%");
+    const watermark = watermarkLabels[project.id];
     return (
-      <div style={compact ? {
-        width: mob ? "82%" : "76%",
-        maxWidth: mob ? 620 : 680,
+      <div style={{
+        position: "relative",
+        ...(compact ? {
+        width: compactWidth,
+        maxWidth: project.id === "practice" ? 560 : (mob ? 620 : 680),
         marginLeft: "auto",
         marginRight: "auto",
-      } : undefined}>
+        } : {}),
+      }}>
         <Photo src={src} natural />
+        {watermark ? (
+          <span aria-hidden="true" style={{
+            position: "absolute",
+            right: 10,
+            bottom: 8,
+            zIndex: 12,
+            pointerEvents: "none",
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 8 : 9,
+            lineHeight: 1,
+            letterSpacing: "0.10em",
+            color: "rgba(255,255,255,.58)",
+            textShadow: "0 1px 2px rgba(0,0,0,.34)",
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+          }}>
+            {watermark}
+          </span>
+        ) : null}
       </div>
     );
   };
@@ -277,8 +308,8 @@ function PassageSequence({ project }) {
         const offset = mob ? "0" : (p.breakout || (i === 0 ? firstBreakout : breakout));
         const wrapStyle = project.id === "drifting"
           ? {
-              width: "94%",
-              maxWidth: 820,
+              width: "88%",
+              maxWidth: 760,
               marginLeft: "auto",
               marginRight: "auto",
               marginBottom: mb,

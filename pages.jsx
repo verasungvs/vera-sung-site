@@ -83,8 +83,10 @@ function PhotographyPage({ sub, go }) {
 
       {/* sub-nav: projects label, then the four projects beneath as stacked items */}
       <div style={{
-        paddingBottom: 18, borderBottom: "1px solid rgba(85,82,75,.10)",
-        marginBottom: mob ? 16 : 25,
+        paddingTop: mob ? 8 : 0,
+        paddingBottom: mob ? 28 : 18,
+        borderBottom: "1px solid rgba(85,82,75,.10)",
+        marginBottom: mob ? 34 : 25,
       }}>
         <div className="label printed--soft" style={{
           fontSize: mob ? 17 : 15, fontWeight: 700, color: "var(--ink)",
@@ -95,7 +97,7 @@ function PhotographyPage({ sub, go }) {
         <div style={mob ? {
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "14px 16px",
+          gap: "20px 16px",
           alignItems: "start",
         } : {
           display: "flex",
@@ -109,8 +111,8 @@ function PhotographyPage({ sub, go }) {
               <button key={p.id} onClick={() => go("photography/" + p.id)}
                 style={{
                   display: "flex", flexDirection: "column", alignItems: "flex-start",
-                  gap: mob ? 4 : 10,
-                  textAlign: "left", paddingBottom: 0, border: 0,
+                  gap: mob ? 7 : 10,
+                  textAlign: "left", paddingBottom: mob ? 3 : 0, border: 0,
                   width: mob ? "100%" : "auto",
                 }}>
                 <span style={{
@@ -122,8 +124,8 @@ function PhotographyPage({ sub, go }) {
                 </span>
                 <span style={{
                   fontFamily: "var(--mono-worn)",
-                  fontSize: mob ? 13 : 15,
-                  letterSpacing: mob ? "0.05em" : "0.08em",
+                  fontSize: mob ? 15 : 15,
+                  letterSpacing: mob ? "0.04em" : "0.08em",
                   textTransform: "uppercase",
                 }}>
                   <LetterpressTitle text={p.title} />

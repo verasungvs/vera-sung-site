@@ -565,7 +565,34 @@ function PhotoNum({ item }) {
 
 function PerformanceShowreel({ mob }) {
   const stopSave = e => e.preventDefault();
-  const videoUrl = "assets/performance/performance-showreel-40s-1080p.mp4?v=20260815-4";
+  const [videoUrl, setVideoUrl] = usePgState("");
+
+  React.useEffect(() => {
+    const controller = new AbortController();
+    let objectUrl = "";
+    const parts = Array.from({ length: 22 }, (_, index) =>
+      `assets/performance/showreel-40s-parts/performance-showreel-40s-1080p.part-${String(index).padStart(2, "0")}?v=20260815-5`
+    );
+
+    Promise.all(parts.map(src =>
+      fetch(src, { signal: controller.signal }).then(response => {
+        if (!response.ok) throw new Error("Showreel part failed to load");
+        return response.arrayBuffer();
+      })
+    ))
+      .then(buffers => {
+        objectUrl = URL.createObjectURL(new Blob(buffers, { type: "video/mp4" }));
+        setVideoUrl(objectUrl);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setVideoUrl("");
+      });
+
+    return () => {
+      controller.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, []);
 
   return (
     <Reveal as="section" style={{

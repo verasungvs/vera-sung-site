@@ -87,7 +87,7 @@
   --r-2: 6px;
 
   /* ---------- MOTION ----------
-     Not transitions \u2014 dissolves. Felt, not noticed.
+     Not transitions — dissolves. Felt, not noticed.
      Durations are slow on purpose; users should slow down. */
   --ease:        cubic-bezier(0.33, 0, 0.20, 1);     /* slow ease-out, no overshoot */
   --ease-slow:   cubic-bezier(0.22, 0.04, 0.30, 1);
@@ -218,4 +218,28 @@ a:hover, .link:hover {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.37  0 0 0 0 0.30  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
   mix-blend-mode: multiply;
   opacity: 0.35;
+}
+
+/* ===========================================================
+   QUICK VISUAL TWEAKS — 2026-08-15
+   Homepage + LE PASSAGE only. Everything else is untouched.
+   =========================================================== */
+
+/* Homepage hero: slightly smaller, while keeping its natural ratio. */
+[data-screen-label="Home"] > section:first-of-type {
+  width: 94% !important;
+  max-width: 820px !important;
+}
+
+/* Homepage watermark opacity requested at 0.35. */
+[data-screen-label="Home"] > section:first-of-type span {
+  color: rgba(70, 64, 59, 0.35) !important;
+}
+
+/* LE PASSAGE desktop plates: a touch larger. Mobile stays at the existing 94%. */
+@media (min-width: 901px) {
+  [data-screen-label="Photography / LE PASSAGE"] section[style*="width: 76%"] {
+    width: 80% !important;
+    max-width: 80% !important;
+  }
 }

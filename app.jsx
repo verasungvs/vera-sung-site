@@ -1,10 +1,41 @@
 /* App shell — sticky header with stamped wordmark + mono nav, hash routing. */
 const { useEffect: useAppEffect, useState: useAppState } = React;
 
+/* Most visual adjustments now live in site-settings.js so future edits only
+   require changing a few values instead of rewriting page components. */
+const SITE = window.VERA_SITE || {
+  cacheVersion: "fallback",
+  home: {
+    image: "assets/home-passage-2026.webp",
+    link: "photography/passage",
+    desktopWidth: "88%",
+    mobileWidth: "100%",
+    maxWidth: 900,
+    desktopBottomGap: 105,
+    mobileBottomGap: 48,
+    watermark: "LE PASSAGE, 2026",
+    watermarkDesktopSize: 11,
+    watermarkMobileSize: 9,
+    watermarkOpacity: 0.40,
+  },
+  passage: {
+    desktopWidth: "76%",
+    mobileWidth: "94%",
+    webImageWidth: 1100,
+    webImageQuality: 74,
+    first2026Positions: 6,
+    watermark2026: "LE PASSAGE, 2026",
+    watermark2023: "LE PASSAGE, 2023",
+    watermarkSize: 9,
+    watermarkOpacity: 0.58,
+    desktopGap: 96,
+  },
+};
+
 const LegacyPassageSequence = PassageSequence;
 
 const passageWebSrc = (src) =>
-  `/.netlify/images?url=/${src}&w=1100&fm=jpg&q=74`;
+  `/.netlify/images?url=/${src}&w=${SITE.passage.webImageWidth}&fm=jpg&q=${SITE.passage.webImageQuality}`;
 
 function VisibleNaturalPhoto({ src, style }) {
   const noSave = e => { e.preventDefault(); e.stopPropagation(); };
@@ -29,11 +60,7 @@ function VisibleNaturalPhoto({ src, style }) {
           WebkitTouchCallout: "none",
         }}
       />
-      <div
-        aria-hidden="true"
-        style={{ position: "absolute", inset: 0, zIndex: 5 }}
-        onContextMenu={noSave}
-      />
+      <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 5 }} onContextMenu={noSave} />
     </div>
   );
 }
@@ -49,9 +76,9 @@ function PassageWatermarkedPhoto({ src, label }) {
         zIndex: 12,
         pointerEvents: "none",
         fontFamily: "var(--mono)",
-        fontSize: 9,
+        fontSize: SITE.passage.watermarkSize,
         letterSpacing: "0.10em",
-        color: "rgba(255,255,255,.58)",
+        color: `rgba(255,255,255,${SITE.passage.watermarkOpacity})`,
         textShadow: "0 1px 2px rgba(0,0,0,.28)",
         textTransform: "uppercase",
         whiteSpace: "nowrap",
@@ -64,31 +91,33 @@ function PassageWatermarkedPhoto({ src, label }) {
 
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
-  const heroSrc = "assets/home-passage-2026.webp?v=20260815e";
+  const heroSrc = `${SITE.home.image}?v=${SITE.cacheVersion}`;
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <Reveal as="section" style={{
-        width: mob ? "100%" : "88%",
-        maxWidth: 900,
-        margin: mob ? "0 auto 48px" : "0 auto 105px",
+        width: mob ? SITE.home.mobileWidth : SITE.home.desktopWidth,
+        maxWidth: SITE.home.maxWidth,
+        margin: mob
+          ? `0 auto ${SITE.home.mobileBottomGap}px`
+          : `0 auto ${SITE.home.desktopBottomGap}px`,
       }}>
         <div
-          onClick={() => go("photography/passage")}
+          onClick={() => go(SITE.home.link)}
           role="link"
           tabIndex={0}
           aria-label="Open Le Passage"
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              go("photography/passage");
+              go(SITE.home.link);
             }
           }}
           style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}
         >
           <img
             src={heroSrc}
-            alt="LE PASSAGE, 2026"
+            alt={SITE.home.watermark}
             draggable={false}
             onContextMenu={(e) => e.preventDefault()}
             style={{
@@ -108,15 +137,15 @@ HomePage = function HomePage2026({ go }) {
             zIndex: 12,
             pointerEvents: "none",
             fontFamily: "var(--mono)",
-            fontSize: mob ? 9 : 11,
+            fontSize: mob ? SITE.home.watermarkMobileSize : SITE.home.watermarkDesktopSize,
             lineHeight: 1,
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "rgba(70,64,59,.40)",
+            color: `rgba(70,64,59,${SITE.home.watermarkOpacity})`,
             textShadow: "0 1px 1px rgba(255,255,255,.20)",
             whiteSpace: "nowrap",
           }}>
-            LE PASSAGE, 2026
+            {SITE.home.watermark}
           </span>
         </div>
       </Reveal>
@@ -136,11 +165,7 @@ HomePage = function HomePage2026({ go }) {
                }}
                onMouseEnter={e => { e.currentTarget.style.paddingLeft = "6px"; e.currentTarget.style.opacity = "0.78"; }}
                onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.opacity = "1"; }}>
-            <span style={{
-              fontFamily: "var(--mono-worn)",
-              fontSize: mob ? 9 : 11,
-              letterSpacing: "0.22em",
-            }}>
+            <span style={{ fontFamily: "var(--mono-worn)", fontSize: mob ? 9 : 11, letterSpacing: "0.22em" }}>
               <LetterpressTitle text={pr.no} />
             </span>
             <span style={{
@@ -160,9 +185,7 @@ HomePage = function HomePage2026({ go }) {
 };
 
 PassageSequence = function PassageSequence2026({ project }) {
-  if (project.id !== "passage") {
-    return <LegacyPassageSequence project={project} />;
-  }
+  if (project.id !== "passage") return <LegacyPassageSequence project={project} />;
 
   const seq = project.sequence || [];
   const mob = useIsMobile();
@@ -172,10 +195,12 @@ PassageSequence = function PassageSequence2026({ project }) {
     <div style={{ paddingTop: 40 }}>
       {seq.map((p, i) => {
         const isLast = i === seq.length - 1;
-        const baseGap = isLast ? 40 : (!mob ? 96 : gaps[i % gaps.length]);
+        const baseGap = isLast ? 40 : (!mob ? SITE.passage.desktopGap : gaps[i % gaps.length]);
         const mb = !mob ? baseGap : (baseGap + (p.extraGap || 0));
-        const label = i < 6 ? "LE PASSAGE, 2026" : "LE PASSAGE, 2023";
-        const width = mob ? "94%" : "76%";
+        const label = i < SITE.passage.first2026Positions
+          ? SITE.passage.watermark2026
+          : SITE.passage.watermark2023;
+        const width = mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth;
         const wrapStyle = {
           width,
           maxWidth: width,
@@ -246,16 +271,15 @@ function Header({ route, go }) {
   const [top] = route.split("/");
   const mob = useIsMobile();
   const items = [
-    { id: "home",                 label: "Home" },
-    { id: "photography/passage",  label: "Photography", match: "photography" },
-    { id: "performance",          label: "Performance" },
-    { id: "about",                label: "About" },
-    { id: "contact",              label: "Contact" },
+    { id: "home", label: "Home" },
+    { id: "photography/passage", label: "Photography", match: "photography" },
+    { id: "performance", label: "Performance" },
+    { id: "about", label: "About" },
+    { id: "contact", label: "Contact" },
   ];
 
   const navChildren = items.map((it) => {
-    const active = top === (it.match || it.id.split("/")[0]) ||
-                   (it.id === "home" && top === "home");
+    const active = top === (it.match || it.id.split("/")[0]) || (it.id === "home" && top === "home");
     return (
       <button key={it.id} onClick={() => go(it.id)} className={active ? "active" : ""}>
         <span className="printed--soft">{it.label}</span>
@@ -263,9 +287,7 @@ function Header({ route, go }) {
     );
   });
 
-  if (mob) {
-    navChildren.splice(3, 0, <span key="nav-break" style={{ flexBasis: "100%", height: 0 }} />);
-  }
+  if (mob) navChildren.splice(3, 0, <span key="nav-break" style={{ flexBasis: "100%", height: 0 }} />);
 
   return (
     <header className="site">
@@ -294,8 +316,7 @@ function Footer({ go }) {
     <footer className="site">
       <div className="meta printed--soft" style={footerTextStyle}>© 2026 Vera Sung. All rights reserved.</div>
       <div className="c">
-        <button className="link meta printed--soft" onClick={() => go("contact")}
-          style={footerTextStyle}>
+        <button className="link meta printed--soft" onClick={() => go("contact")} style={footerTextStyle}>
           verasung_vs@gmail.com
         </button>
       </div>
@@ -330,11 +351,11 @@ function App() {
   switch (top) {
     case "photography": body = <PhotographyPage sub={sub} go={go} />; break;
     case "performance": body = <PerformancePage />; break;
-    case "about":       body = <AboutPage go={go} />; break;
-    case "cv":          body = <AboutPage go={go} />; break;
-    case "links":       body = <AboutPage go={go} />; break;
-    case "contact":     body = <ContactPage />; break;
-    default:             body = <HomePage go={go} />;
+    case "about": body = <AboutPage go={go} />; break;
+    case "cv": body = <AboutPage go={go} />; break;
+    case "links": body = <AboutPage go={go} />; break;
+    case "contact": body = <ContactPage />; break;
+    default: body = <HomePage go={go} />;
   }
 
   return (

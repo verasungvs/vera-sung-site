@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-layout-align-7",
+  cacheVersion: "20260815-layered-home-8",
   home: {
     images: [
       {
@@ -117,7 +117,9 @@ function PassageWatermarkedPhoto({ src, label }) {
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
   const [slide, setSlide] = useAppState(0);
-  const slides = SITE.home.images;
+  const [showCompanion, setShowCompanion] = useAppState(false);
+  const slides = SITE.home.images.slice(0, 2);
+  const companion = SITE.home.images[2];
 
   useAppEffect(() => {
     const timer = window.setInterval(
@@ -126,6 +128,13 @@ HomePage = function HomePage2026({ go }) {
     );
     return () => window.clearInterval(timer);
   }, [slides.length]);
+
+  useAppEffect(() => {
+    setShowCompanion(false);
+    if (slide !== 1) return undefined;
+    const timer = window.setTimeout(() => setShowCompanion(true), 1000);
+    return () => window.clearTimeout(timer);
+  }, [slide]);
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
@@ -214,6 +223,48 @@ HomePage = function HomePage2026({ go }) {
           </span>
         </div>
       </Reveal>
+
+      <button
+        type="button"
+        onClick={() => go(SITE.home.link)}
+        aria-label="Open Photography"
+        style={{
+          position: "fixed",
+          top: mob ? 104 : 82,
+          left: mob ? 22 : 56,
+          zIndex: 16,
+          display: "block",
+          width: mob ? 108 : 172,
+          padding: 0,
+          border: 0,
+          background: "transparent",
+          cursor: "pointer",
+          lineHeight: 0,
+          opacity: showCompanion ? 1 : 0,
+          visibility: showCompanion ? "visible" : "hidden",
+          transition: "opacity 700ms ease-in-out, visibility 700ms ease-in-out",
+          pointerEvents: showCompanion ? "auto" : "none",
+        }}
+      >
+        <span style={{ position: "relative", display: "block" }}>
+          <img
+            src={`${companion.src}?v=${SITE.cacheVersion}`}
+            alt={companion.alt}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{
+              display: "block",
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+              pointerEvents: "none",
+              userSelect: "none",
+              WebkitUserDrag: "none",
+              WebkitTouchCallout: "none",
+            }}
+          />
+        </span>
+      </button>
 
       <Reveal as="section" style={{
         marginBottom: 160,

@@ -282,7 +282,9 @@ function PassageSequence({ project }) {
             fontSize: project.id === "practice" ? (mob ? 6 : 7) : (mob ? 10 : 11),
             lineHeight: 1,
             letterSpacing: project.id === "practice" ? "0.05em" : "0.10em",
-            color: "rgba(255,255,255,.74)",
+            color: project.id === "night-walks"
+              ? "rgba(255,255,255,.59)"
+              : "rgba(255,255,255,.74)",
             textShadow: "0 1px 2px rgba(0,0,0,.46)",
             textTransform: "uppercase",
             whiteSpace: "nowrap",

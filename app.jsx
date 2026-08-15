@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-still-diptych-10",
+  cacheVersion: "20260815-triptych-sequence-11",
   home: {
     images: [
       {
@@ -16,7 +16,11 @@ const SITE = {
         scale: 0.94,
       },
     ],
-    companion: {
+    bodyPortrait: {
+      src: "assets/home-carousel-practice.jpg",
+      alt: "Photograph by Vera Sung",
+    },
+    sinkPortrait: {
       src: "assets/home-carousel-mirror.jpg",
       alt: "Photograph by Vera Sung",
     },
@@ -106,27 +110,39 @@ function PassageWatermarkedPhoto({ src, label }) {
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
   const [showFirst, setShowFirst] = useAppState(false);
-  const [showCompanion, setShowCompanion] = useAppState(false);
+  const [showBody, setShowBody] = useAppState(false);
+  const [showSink, setShowSink] = useAppState(false);
+  const [retiring, setRetiring] = useAppState(false);
   const first = SITE.home.images[0];
-  const companion = SITE.home.companion;
+  const bodyPortrait = SITE.home.bodyPortrait;
+  const sinkPortrait = SITE.home.sinkPortrait;
 
   useAppEffect(() => {
     const mainTimer = window.setTimeout(() => setShowFirst(true), 50);
-    const companionTimer = window.setTimeout(() => setShowCompanion(true), 700);
+    const bodyTimer = window.setTimeout(() => setShowBody(true), 3500);
+    const sinkTimer = window.setTimeout(() => {
+      setShowSink(true);
+      setRetiring(true);
+      setShowFirst(false);
+      setShowBody(false);
+    }, 6500);
     return () => {
       window.clearTimeout(mainTimer);
-      window.clearTimeout(companionTimer);
+      window.clearTimeout(bodyTimer);
+      window.clearTimeout(sinkTimer);
     };
   }, []);
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <section style={{
-        width: mob ? SITE.home.mobileWidth : SITE.home.desktopWidth,
-        maxWidth: SITE.home.maxWidth,
+        position: "relative",
+        width: "100vw",
+        height: mob ? 235 : "min(430px, 42vw)",
+        marginLeft: "calc(50% - 50vw)",
         margin: mob
-          ? `0 auto ${SITE.home.mobileBottomGap}px`
-          : `0 auto ${SITE.home.desktopBottomGap}px`,
+          ? `0 0 ${SITE.home.mobileBottomGap}px calc(50% - 50vw)`
+          : `0 0 ${SITE.home.desktopBottomGap}px calc(50% - 50vw)`,
       }}>
         <div
           onClick={() => go(SITE.home.link)}
@@ -141,8 +157,9 @@ HomePage = function HomePage2026({ go }) {
           }}
           style={{
             position: "relative",
-            aspectRatio: "3 / 2",
-            overflow: "hidden",
+            width: "100%",
+            height: "100%",
+            overflow: "visible",
             cursor: "pointer",
             outline: "none",
             lineHeight: 0,
@@ -155,15 +172,60 @@ HomePage = function HomePage2026({ go }) {
             onContextMenu={(e) => e.preventDefault()}
             style={{
               position: "absolute",
-              inset: 0,
+              top: 0,
+              left: "50%",
               display: "block",
-              width: "100%",
+              width: "auto",
               height: "100%",
               objectFit: "contain",
               background: "transparent",
               opacity: showFirst ? 1 : 0,
+              transition: `opacity ${retiring ? 5000 : SITE.home.fadeDuration}ms ease-in-out`,
+              transform: "translateX(-50%)",
+              pointerEvents: "none",
+              userSelect: "none",
+              WebkitUserDrag: "none",
+              WebkitTouchCallout: "none",
+            }}
+          />
+          <img
+            src={`${bodyPortrait.src}?v=${SITE.cacheVersion}`}
+            alt={bodyPortrait.alt}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: mob ? 8 : "4vw",
+              zIndex: 3,
+              display: "block",
+              width: "auto",
+              height: "100%",
+              objectFit: "contain",
+              opacity: showBody ? 1 : 0,
+              transition: `opacity ${retiring ? 5000 : SITE.home.fadeDuration}ms ease-in-out`,
+              pointerEvents: "none",
+              userSelect: "none",
+              WebkitUserDrag: "none",
+              WebkitTouchCallout: "none",
+            }}
+          />
+          <img
+            src={`${sinkPortrait.src}?v=${SITE.cacheVersion}`}
+            alt={sinkPortrait.alt}
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: mob ? 8 : "4vw",
+              zIndex: 4,
+              display: "block",
+              width: "auto",
+              height: "100%",
+              objectFit: "contain",
+              opacity: showSink ? 1 : 0,
               transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
-              transform: `scale(${first.scale || 1})`,
               pointerEvents: "none",
               userSelect: "none",
               WebkitUserDrag: "none",
@@ -184,48 +246,6 @@ HomePage = function HomePage2026({ go }) {
           />
         </div>
       </section>
-
-      <button
-        type="button"
-        onClick={() => go(SITE.home.link)}
-        aria-label="Open Photography"
-        style={{
-          position: "fixed",
-          top: mob ? 116 : 82,
-          left: mob ? 18 : 56,
-          zIndex: 16,
-          display: "block",
-          width: mob ? 88 : 148,
-          padding: 0,
-          border: 0,
-          background: "transparent",
-          cursor: "pointer",
-          lineHeight: 0,
-          opacity: showCompanion ? 1 : 0,
-          visibility: showCompanion ? "visible" : "hidden",
-          transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out, visibility ${SITE.home.fadeDuration}ms ease-in-out`,
-          pointerEvents: showCompanion ? "auto" : "none",
-        }}
-      >
-        <span style={{ position: "relative", display: "block" }}>
-          <img
-            src={`${companion.src}?v=${SITE.cacheVersion}`}
-            alt={companion.alt}
-            draggable={false}
-            onContextMenu={(e) => e.preventDefault()}
-            style={{
-              display: "block",
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-              pointerEvents: "none",
-              userSelect: "none",
-              WebkitUserDrag: "none",
-              WebkitTouchCallout: "none",
-            }}
-          />
-        </span>
-      </button>
 
       <Reveal as="section" style={{
         marginBottom: 160,

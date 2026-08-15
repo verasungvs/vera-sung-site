@@ -7,9 +7,25 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-home-drifting-1400",
+  cacheVersion: "20260815-home-carousel-1",
   home: {
-    image: "assets/home-passage-2026.jpg",
+    images: [
+      {
+        src: "assets/home-passage-2026.jpg",
+        alt: "LE PASSAGE, 2026",
+        watermark: "LE PASSAGE, 2026",
+      },
+      {
+        src: "assets/home-carousel-mirror.jpg",
+        alt: "Photograph by Vera Sung",
+      },
+      {
+        src: "assets/home-carousel-cabinet.jpg",
+        alt: "Photograph by Vera Sung",
+      },
+    ],
+    interval: 5000,
+    fadeDuration: 1800,
     link: "photography/passage",
     desktopWidth: "88%",
     mobileWidth: "100%",
@@ -94,7 +110,16 @@ function PassageWatermarkedPhoto({ src, label }) {
 
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
-  const heroSrc = `${SITE.home.image}?v=${SITE.cacheVersion}`;
+  const [slide, setSlide] = useAppState(0);
+  const slides = SITE.home.images;
+
+  useAppEffect(() => {
+    const timer = window.setInterval(
+      () => setSlide(current => (current + 1) % slides.length),
+      SITE.home.interval
+    );
+    return () => window.clearInterval(timer);
+  }, [slides.length]);
 
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
@@ -116,25 +141,39 @@ HomePage = function HomePage2026({ go }) {
               go(SITE.home.link);
             }
           }}
-          style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}
+          style={{
+            position: "relative",
+            aspectRatio: "3 / 2",
+            overflow: "hidden",
+            cursor: "pointer",
+            outline: "none",
+            lineHeight: 0,
+          }}
         >
-          <img
-            src={heroSrc}
-            alt={SITE.home.watermark}
-            draggable={false}
-            onContextMenu={(e) => e.preventDefault()}
-            style={{
-              display: "block",
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-              background: "transparent",
-              pointerEvents: "none",
-              userSelect: "none",
-              WebkitUserDrag: "none",
-              WebkitTouchCallout: "none",
-            }}
-          />
+          {slides.map((item, index) => (
+            <img
+              key={item.src}
+              src={`${item.src}?v=${SITE.cacheVersion}`}
+              alt={item.alt}
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "block",
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                background: "transparent",
+                opacity: index === slide ? 1 : 0,
+                transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
+                pointerEvents: "none",
+                userSelect: "none",
+                WebkitUserDrag: "none",
+                WebkitTouchCallout: "none",
+              }}
+            />
+          ))}
           <div
             aria-hidden="true"
             onContextMenu={(e) => e.preventDefault()}
@@ -161,8 +200,10 @@ HomePage = function HomePage2026({ go }) {
             color: `rgba(70,64,59,${SITE.home.watermarkOpacity})`,
             textShadow: "0 1px 1px rgba(255,255,255,.20)",
             whiteSpace: "nowrap",
+            opacity: slides[slide].watermark ? 1 : 0,
+            transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
           }}>
-            {SITE.home.watermark}
+            {slides[slide].watermark || ""}
           </span>
         </div>
       </Reveal>

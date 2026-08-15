@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-footer-order-30",
+  cacheVersion: "20260816-no-work-watermarks-31",
   home: {
     images: [
       {
@@ -23,21 +23,12 @@ const SITE = {
     maxWidth: 900,
     desktopBottomGap: 320,
     mobileBottomGap: 48,
-    watermark: "LE PASSAGE, 2026",
-    watermarkDesktopSize: 11,
-    watermarkMobileSize: 9,
-    watermarkOpacity: 0.40,
   },
   passage: {
     desktopWidth: "90%",
     mobileWidth: "100%",
     webImageWidth: 1100,
     webImageQuality: 74,
-    first2026Positions: 6,
-    watermark2026: "© Vera Sung · LE PASSAGE, 2026",
-    watermark2023: "© Vera Sung · LE PASSAGE, 2023",
-    watermarkSize: 9,
-    watermarkOpacity: 0.58,
     desktopGap: 96,
   },
 };
@@ -75,28 +66,8 @@ function VisibleNaturalPhoto({ src, style }) {
   );
 }
 
-function PassageWatermarkedPhoto({ src, label }) {
-  return (
-    <div style={{ position: "relative" }}>
-      <VisibleNaturalPhoto src={passageWebSrc(src)} />
-      <span aria-hidden="true" style={{
-        position: "absolute",
-        right: 10,
-        bottom: 8,
-        zIndex: 12,
-        pointerEvents: "none",
-        fontFamily: "var(--mono)",
-        fontSize: SITE.passage.watermarkSize,
-        letterSpacing: "0.10em",
-        color: `rgba(255,255,255,${SITE.passage.watermarkOpacity})`,
-        textShadow: "0 1px 2px rgba(0,0,0,.28)",
-        textTransform: "uppercase",
-        whiteSpace: "nowrap",
-      }}>
-        {label}
-      </span>
-    </div>
-  );
+function PassageWebPhoto({ src }) {
+  return <VisibleNaturalPhoto src={passageWebSrc(src)} />;
 }
 
 HomePage = function HomePage2026({ go }) {
@@ -203,9 +174,6 @@ PassageSequence = function PassageSequence2026({ project }) {
         const isLast = i === seq.length - 1;
         const baseGap = isLast ? 40 : (!mob ? SITE.passage.desktopGap : gaps[i % gaps.length]);
         const mb = !mob ? baseGap : (baseGap + (p.extraGap || 0));
-        const label = i < SITE.passage.first2026Positions
-          ? SITE.passage.watermark2026
-          : SITE.passage.watermark2023;
         const width = mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth;
         const wrapStyle = {
           width,
@@ -224,8 +192,8 @@ PassageSequence = function PassageSequence2026({ project }) {
                 columnGap: mob ? 0 : 18,
                 rowGap: mob ? 14 : 0,
               }}>
-                <PassageWatermarkedPhoto src={p.a.src} label={label} />
-                <PassageWatermarkedPhoto src={p.b.src} label={label} />
+                <PassageWebPhoto src={p.a.src} />
+                <PassageWebPhoto src={p.b.src} />
               </div>
             </Reveal>
           );
@@ -240,9 +208,9 @@ PassageSequence = function PassageSequence2026({ project }) {
                 columnGap: mob ? 0 : 18,
                 rowGap: mob ? 14 : 0,
               }}>
-                <PassageWatermarkedPhoto src={p.a.src} label={label} />
-                <PassageWatermarkedPhoto src={p.b.src} label={label} />
-                <PassageWatermarkedPhoto src={p.c.src} label={label} />
+                <PassageWebPhoto src={p.a.src} />
+                <PassageWebPhoto src={p.b.src} />
+                <PassageWebPhoto src={p.c.src} />
               </div>
             </Reveal>
           );
@@ -250,7 +218,7 @@ PassageSequence = function PassageSequence2026({ project }) {
 
         return (
           <Reveal as="section" key={i} style={wrapStyle}>
-            <PassageWatermarkedPhoto src={p.src} label={label} />
+            <PassageWebPhoto src={p.src} />
           </Reveal>
         );
       })}

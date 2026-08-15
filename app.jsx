@@ -9,10 +9,34 @@ const LegacyPassageSequence = PassageSequence;
 const passageWebSrc = (src) =>
   `/.netlify/images?url=/${src}&w=1100&fm=jpg&q=74`;
 
+function CleanNaturalPhoto({ src, style }) {
+  const noSave = e => { e.preventDefault(); e.stopPropagation(); };
+  return (
+    <div className="vs-photo" style={{ ...(style || {}), background: "transparent" }}
+         onContextMenu={noSave} onDragStart={noSave}>
+      <img
+        src={src} alt="" aria-hidden="true" draggable={false}
+        style={{
+          display: "block", width: "100%", height: "auto",
+          opacity: 0, pointerEvents: "none",
+          userSelect: "none", WebkitUserDrag: "none",
+        }}
+      />
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: `url(${src})`,
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        pointerEvents: "none",
+      }} aria-hidden="true" />
+    </div>
+  );
+}
+
 function PassageWatermarkedPhoto({ src, label }) {
   return (
     <div style={{ position: "relative" }}>
-      <Photo src={passageWebSrc(src)} natural />
+      <CleanNaturalPhoto src={passageWebSrc(src)} />
       <span aria-hidden="true" style={{
         position: "absolute",
         right: 10,
@@ -34,9 +58,11 @@ function PassageWatermarkedPhoto({ src, label }) {
 }
 
 /* Homepage override: the Passage image itself links to the series.
-   Natural sizing keeps the photograph edge-to-edge, with no band beneath it. */
+   This clean renderer intentionally omits the global grain layer because this
+   very pale photograph loses too much detail under multiply texture. */
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
+  const heroSrc = "assets/home-passage-2026.jpg?v=20260815c";
   return (
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <Reveal as="section" style={{
@@ -54,11 +80,7 @@ HomePage = function HomePage2026({ go }) {
             }
           }}
           style={{ position: "relative", cursor: "pointer", outline: "none", lineHeight: 0 }}>
-          <Photo
-            src="assets/home-passage-2026.jpg"
-            natural
-            style={{ background: "transparent" }}
-          />
+          <CleanNaturalPhoto src={heroSrc} />
           <span aria-hidden="true" style={{
             position: "absolute",
             right: mob ? 12 : 16,

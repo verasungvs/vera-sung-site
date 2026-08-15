@@ -499,8 +499,8 @@ const P = (n) => ({ n: String(n).padStart(2, "0"), src: "assets/performance/p" +
 /* Paired & triple rows use very narrow margins (x ~ 2, r ~ 2) so the photos
    sit large; solo rows vary widely to keep the page's irregular rhythm. */
 const PERFORMANCE_ROWS = [
-  { items: [P(7)],                x:  2, r:  2, gap: 110 },  /* large solo — full width */
-  { items: [P(25), P(26)],        x:  2, r:  2, gap: 100 },  /* pair — large */
+  { items: [P(7)],                x:  7, r:  7, gap: 110 },  /* opening solo — slightly smaller */
+  { items: [P(1)],                x: 24, r: 24, gap: 100 },  /* former image 13 — moved here and reduced */
   { items: [P(31)],               x:  6, r:  8, gap: 120 },  /* large solo */
   { items: [P(5), P(13)],         x:  2, r:  2, gap: 100 },  /* pair */
   { items: [P(12)],               x:  2, r:  2, gap: 120 },  /* panoramic */
@@ -510,7 +510,7 @@ const PERFORMANCE_ROWS = [
   { items: [P(6)],                x:  8, r:  4, gap: 120 },  /* large solo */
   /* images 11 + 12 — equal-size pairing, full available width */
   { items: [P(8), P(17)],         x:  0, r:  0, gap: 120, layout: "1fr 1fr" },
-  { items: [P(1)],                x:  6, r:  8, gap: 120 },  /* large solo */
+  { items: [P(25), P(26)],        x:  2, r:  2, gap: 120 },  /* former images 2 + 3 — moved here */
   { items: [P(3)],                x:  8, r:  6, gap: 120 },  /* large solo */
   /* image 15 — standalone large solo */
   { items: [P(23)],               x:  4, r:  6, gap: 110 },
@@ -567,7 +567,7 @@ function PerformanceShowreel({ mob }) {
     <Reveal as="section" style={{
       width: mob ? "100%" : "62%",
       maxWidth: 820,
-      marginLeft: mob ? 0 : "10%",
+      marginLeft: "auto",
       marginRight: "auto",
       marginBottom: mob ? 52 : 120,
     }}>
@@ -594,7 +594,6 @@ function PerformanceShowreel({ mob }) {
         </div>
       </div>
       <video
-        src="assets/performance/performance-showreel-35s.mp4"
         controls
         controlsList="nodownload noplaybackrate"
         disablePictureInPicture
@@ -607,7 +606,12 @@ function PerformanceShowreel({ mob }) {
           height: "auto",
           background: "#000",
         }}
-      />
+      >
+        <source
+          src="assets/performance/performance-showreel-35s.mp4?v=20260815-2"
+          type="video/mp4"
+        />
+      </video>
     </Reveal>
   );
 }

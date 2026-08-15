@@ -1,12 +1,15 @@
 /* App shell — sticky header with stamped wordmark + mono nav, hash routing. */
 const { useEffect: useAppEffect, useState: useAppState } = React;
 
-/* Most visual adjustments now live in site-settings.js so future edits only
-   require changing a few values instead of rewriting page components. */
-const SITE = window.VERA_SITE || {
-  cacheVersion: "fallback",
+/* ================================================================
+   QUICK EDIT PANEL
+   For most future homepage / LE PASSAGE visual adjustments, edit
+   ONLY the values in this block. No component rewrite is needed.
+   ================================================================ */
+const SITE = {
+  cacheVersion: "20260815-verified-1",
   home: {
-    image: "assets/home-passage-2026.webp",
+    image: "assets/home-passage-2026.jpg",
     link: "photography/passage",
     desktopWidth: "88%",
     mobileWidth: "100%",

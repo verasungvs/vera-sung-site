@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-photo-bottom-line-28",
+  cacheVersion: "20260815-photo-balanced-29",
   home: {
     images: [
       {
@@ -122,7 +122,7 @@ HomePage = function HomePage2026({ go }) {
         maxWidth: 1180,
         aspectRatio: "3 / 2",
         left: "50%",
-        transform: mob ? "translate(-50%, 108px)" : "translateX(-50%)",
+        transform: mob ? "translate(-50%, 78px)" : "translateX(-50%)",
         margin: mob
           ? `0 0 ${SITE.home.mobileBottomGap}px`
           : `0 0 ${SITE.home.desktopBottomGap}px`,

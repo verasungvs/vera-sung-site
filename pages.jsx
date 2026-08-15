@@ -930,7 +930,31 @@ function ContactPage() {
 
         <Reveal delay={150}>
           <div style={{ paddingTop: mob ? 0 : 28 }}>
-            <Photo src="assets/contact-portrait.jpg" natural />
+            <div style={{
+              position: "relative",
+              width: mob ? "82%" : "78%",
+              maxWidth: 520,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}>
+              <Photo src="assets/contact-portrait.jpg" natural />
+              <span aria-hidden="true" style={{
+                position: "absolute",
+                right: 9,
+                bottom: 8,
+                zIndex: 12,
+                pointerEvents: "none",
+                fontFamily: "var(--mono)",
+                fontSize: mob ? 8 : 10,
+                lineHeight: 1,
+                letterSpacing: "0.08em",
+                color: "rgba(255,255,255,.62)",
+                textShadow: "0 1px 2px rgba(0,0,0,.42)",
+                whiteSpace: "nowrap",
+              }}>
+                © Vera Sung
+              </span>
+            </div>
             <div className="printed" style={{
               fontFamily: "var(--mono)",
               fontSize: mob ? 11 : 12,

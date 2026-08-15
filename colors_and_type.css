@@ -243,3 +243,12 @@ a:hover, .link:hover {
     max-width: 90% !important;
   }
 }
+
+
+/* Mobile homepage hero: true edge-to-edge plate. Desktop remains unchanged. */
+@media (max-width: 900px) {
+  [data-screen-label="Home"] > section:first-of-type {
+    width: 100vw !important;
+    max-width: none !important;
+  }
+}

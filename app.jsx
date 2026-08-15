@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-verified-1",
+  cacheVersion: "20260815-home-2",
   home: {
     image: "assets/home-passage-2026.jpg",
     link: "photography/passage",

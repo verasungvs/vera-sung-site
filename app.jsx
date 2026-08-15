@@ -390,15 +390,19 @@ function Header({ route, go }) {
       <div className="row">
         <button onClick={() => go("home")} className="stamp stamp--wordmark printed--stamp"
                 style={{
-                  display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 1,
+                  display: "flex",
+                  flexDirection: mob ? "row" : "column",
+                  alignItems: mob ? "baseline" : "flex-start",
+                  gap: mob ? 10 : 1,
                   opacity: 0.68,
                 }}>
-          <span>vera sung</span>
+          <span style={{ fontSize: mob ? 16 : undefined }}>vera sung</span>
           <span style={{
-            fontFamily: "var(--mono-worn)", fontSize: 13,
-            letterSpacing: "0.22em", textTransform: "none",
+            fontFamily: "var(--mono-worn)", fontSize: mob ? 9 : 13,
+            letterSpacing: mob ? "0.12em" : "0.22em", textTransform: "none",
             color: "var(--ink)", opacity: 0.5,
             transform: "rotate(-0.35deg)",
+            whiteSpace: "nowrap",
           }}>宋 孟璇</span>
         </button>
         <nav className="primary">{navChildren}</nav>

@@ -1,6 +1,185 @@
 /* App shell — sticky header with stamped wordmark + mono nav, hash routing. */
 const { useEffect: useAppEffect, useState: useAppState } = React;
 
+/* ==================== 2026 PASSAGE PRESENTATION ====================
+   Homepage hero, reduced web-resolution Passage images, and subtle year marks.
+   The original PassageSequence is retained for every other photographic series. */
+const LegacyPassageSequence = PassageSequence;
+
+const passageWebSrc = (src) =>
+  `/.netlify/images?url=/${src}&w=800&fm=jpg&q=58`;
+
+function PassageWatermarkedPhoto({ src, label }) {
+  return (
+    <div style={{ position: "relative" }}>
+      <Photo src={passageWebSrc(src)} natural />
+      <span aria-hidden="true" style={{
+        position: "absolute",
+        right: 10,
+        bottom: 8,
+        zIndex: 12,
+        pointerEvents: "none",
+        fontFamily: "var(--mono)",
+        fontSize: 9,
+        letterSpacing: "0.10em",
+        color: "rgba(255,255,255,.60)",
+        textShadow: "0 1px 2px rgba(0,0,0,.30)",
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+      }}>
+        {label}
+      </span>
+    </div>
+  );
+}
+
+/* Homepage override: the new Passage image is itself the link to the series. */
+HomePage = function HomePage2026({ go }) {
+  const mob = useIsMobile();
+  return (
+    <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
+      <Reveal as="section" style={{
+        margin: mob ? "0 -22px 48px" : "0 -12% 120px",
+      }}>
+        <div
+          onClick={() => go("photography/passage")}
+          role="link"
+          tabIndex={0}
+          aria-label="Open Le Passage"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              go("photography/passage");
+            }
+          }}
+          style={{ position: "relative", cursor: "pointer", outline: "none" }}>
+          <Photo src="assets/home-passage-2026.jpg" aspect="3/2" />
+          <span aria-hidden="true" style={{
+            position: "absolute",
+            right: mob ? 10 : 12,
+            bottom: mob ? 8 : 10,
+            zIndex: 12,
+            pointerEvents: "none",
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 8 : 9,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "rgba(55,50,45,.48)",
+            textShadow: "0 1px 1px rgba(255,255,255,.28)",
+            whiteSpace: "nowrap",
+          }}>
+            LE PASSAGE, 2026
+          </span>
+        </div>
+      </Reveal>
+
+      <Reveal as="section" style={{ marginBottom: 160 }}>
+        {PROJECTS.map(pr => (
+          <div key={pr.id}
+               onClick={() => go("photography/" + pr.id)}
+               style={{
+                 display: "grid",
+                 gridTemplateColumns: mob ? "28px 1fr" : "60px 1fr",
+                 alignItems: "baseline",
+                 columnGap: mob ? 12 : 32,
+                 padding: mob ? "3px 0" : "6px 0",
+                 cursor: "pointer",
+                 transition: "padding-left .8s var(--ease), opacity .8s var(--ease)",
+               }}
+               onMouseEnter={e => { e.currentTarget.style.paddingLeft = "6px"; e.currentTarget.style.opacity = "0.78"; }}
+               onMouseLeave={e => { e.currentTarget.style.paddingLeft = "0"; e.currentTarget.style.opacity = "1"; }}>
+            <span style={{
+              fontFamily: "var(--mono-worn)",
+              fontSize: mob ? 9 : 11,
+              letterSpacing: "0.22em",
+            }}>
+              <LetterpressTitle text={pr.no} />
+            </span>
+            <span style={{
+              fontFamily: "var(--mono-worn)",
+              fontSize: mob ? 12 : 18,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              opacity: mob ? 0.80 : 1,
+            }}>
+              <LetterpressTitle text={pr.title} />
+            </span>
+          </div>
+        ))}
+      </Reveal>
+    </div>
+  );
+};
+
+/* Passage override: every work is displayed at 2/3 of the former width.
+   The first six visual positions are marked 2026; all following positions 2023. */
+PassageSequence = function PassageSequence2026({ project }) {
+  if (project.id !== "passage") {
+    return <LegacyPassageSequence project={project} />;
+  }
+
+  const seq = project.sequence || [];
+  const mob = useIsMobile();
+  const gaps = [64, 64, 128, 64, 96, 64, 64, 144, 64];
+
+  return (
+    <div style={{ paddingTop: 40 }}>
+      {seq.map((p, i) => {
+        const isLast = i === seq.length - 1;
+        const baseGap = isLast ? 40 : (!mob ? 96 : gaps[i % gaps.length]);
+        const mb = !mob ? baseGap : (baseGap + (p.extraGap || 0));
+        const label = i < 6 ? "LE PASSAGE, 2026" : "LE PASSAGE, 2023";
+        const wrapStyle = {
+          width: "66.6667%",
+          maxWidth: "66.6667%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: mb,
+        };
+
+        if (p.kind === "diptych") {
+          return (
+            <Reveal as="section" key={i} style={wrapStyle}>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: mob ? "1fr" : "1fr 1fr",
+                columnGap: mob ? 0 : 18,
+                rowGap: mob ? 14 : 0,
+              }}>
+                <PassageWatermarkedPhoto src={p.a.src} label={label} />
+                <PassageWatermarkedPhoto src={p.b.src} label={label} />
+              </div>
+            </Reveal>
+          );
+        }
+
+        if (p.kind === "triptych") {
+          return (
+            <Reveal as="section" key={i} style={wrapStyle}>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: mob ? "1fr" : "1fr 1fr 1fr",
+                columnGap: mob ? 0 : 18,
+                rowGap: mob ? 14 : 0,
+              }}>
+                <PassageWatermarkedPhoto src={p.a.src} label={label} />
+                <PassageWatermarkedPhoto src={p.b.src} label={label} />
+                <PassageWatermarkedPhoto src={p.c.src} label={label} />
+              </div>
+            </Reveal>
+          );
+        }
+
+        return (
+          <Reveal as="section" key={i} style={wrapStyle}>
+            <PassageWatermarkedPhoto src={p.src} label={label} />
+          </Reveal>
+        );
+      })}
+    </div>
+  );
+};
+
 function useHashRoute() {
   const parse = () => (location.hash.replace(/^#\/?/, "") || "home");
   const [route, setRoute] = useAppState(parse());

@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-clean-still-18",
+  cacheVersion: "20260815-larger-8pct-19",
   home: {
     images: [
       {
@@ -118,8 +118,8 @@ HomePage = function HomePage2026({ go }) {
     <div className="page-enter col-narrow" data-screen-label="Home" style={{ paddingTop: 64 }}>
       <section style={{
         position: "relative",
-        width: mob ? "100vw" : "97vw",
-        maxWidth: 1140,
+        width: mob ? "103vw" : "100vw",
+        maxWidth: 1180,
         aspectRatio: "3 / 2",
         left: "50%",
         transform: "translateX(-50%)",
@@ -162,7 +162,7 @@ HomePage = function HomePage2026({ go }) {
               height: "100%",
               objectFit: "contain",
               background: "transparent",
-              opacity: dimFirst ? 0.6 : (showFirst ? 1 : 0.18),
+              opacity: dimFirst ? 0.6 : (showFirst ? 1 : 0.08),
               transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
               transform: "translateX(-50%)",
               pointerEvents: "none",

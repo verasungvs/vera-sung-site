@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-single-still-12",
+  cacheVersion: "20260815-single-still-13",
   home: {
     images: [
       {
@@ -102,12 +102,15 @@ function PassageWatermarkedPhoto({ src, label }) {
 HomePage = function HomePage2026({ go }) {
   const mob = useIsMobile();
   const [showFirst, setShowFirst] = useAppState(false);
+  const [dimFirst, setDimFirst] = useAppState(false);
   const first = SITE.home.images[0];
 
   useAppEffect(() => {
     const mainTimer = window.setTimeout(() => setShowFirst(true), 50);
+    const dimTimer = window.setTimeout(() => setDimFirst(true), 13050);
     return () => {
       window.clearTimeout(mainTimer);
+      window.clearTimeout(dimTimer);
     };
   }, []);
 
@@ -159,7 +162,7 @@ HomePage = function HomePage2026({ go }) {
               height: "100%",
               objectFit: "contain",
               background: "transparent",
-              opacity: showFirst ? 1 : 0.06,
+              opacity: dimFirst ? 0.5 : (showFirst ? 1 : 0.06),
               transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
               transform: "translateX(-50%)",
               pointerEvents: "none",

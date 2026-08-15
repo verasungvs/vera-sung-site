@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-watermarks-3",
+  cacheVersion: "20260815-layout-fixes-4",
   home: {
     images: [
       {
@@ -18,7 +18,8 @@ const SITE = {
       {
         src: "assets/home-carousel-mirror.jpg",
         alt: "Photograph by Vera Sung",
-        scale: 0.92,
+        scale: 0.86,
+        offsetX: 6,
       },
       {
         src: "assets/home-carousel-cabinet.jpg",
@@ -40,8 +41,8 @@ const SITE = {
     watermarkOpacity: 0.40,
   },
   passage: {
-    desktopWidth: "76%",
-    mobileWidth: "94%",
+    desktopWidth: "84%",
+    mobileWidth: "97%",
     webImageWidth: 1100,
     webImageQuality: 74,
     first2026Positions: 6,
@@ -169,7 +170,7 @@ HomePage = function HomePage2026({ go }) {
                 background: "transparent",
                 opacity: index === slide ? 1 : 0,
                 transition: `opacity ${SITE.home.fadeDuration}ms ease-in-out`,
-                transform: `scale(${item.scale || 1})`,
+                transform: `translateX(${item.offsetX || 0}%) scale(${item.scale || 1})`,
                 pointerEvents: "none",
                 userSelect: "none",
                 WebkitUserDrag: "none",

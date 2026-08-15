@@ -240,6 +240,9 @@ function PassageSequence({ project }) {
     "assets/practice-08.jpg",
     "assets/practice-11.jpg",
   ]);
+  const slightlyCompactPracticeSources = new Set([
+    "assets/practice-02.jpg",
+  ]);
   const watermarkLabels = {
     "night-walks": "© Vera Sung · NIGHT WALKS",
     practice: "© Vera Sung · PRACTICE WITHOUT OBJECTS",
@@ -248,8 +251,11 @@ function PassageSequence({ project }) {
   const sequencePhoto = (src) => {
     const compact = compactPortraitProjects && portraitSources.has(src);
     const extraCompact = project.id === "practice" && extraCompactPracticeSources.has(src);
+    const slightlyCompact = project.id === "practice" && slightlyCompactPracticeSources.has(src);
     const compactWidth = extraCompact
-      ? (mob ? "60%" : "56%")
+      ? (mob ? "56%" : "52%")
+      : slightlyCompact
+      ? "88%"
       : project.id === "practice"
       ? (mob ? "70%" : "64%")
       : (mob ? "82%" : "76%");
@@ -257,9 +263,9 @@ function PassageSequence({ project }) {
     return (
       <div style={{
         position: "relative",
-        ...(compact ? {
+        ...((compact || slightlyCompact) ? {
         width: compactWidth,
-        maxWidth: extraCompact ? 490 : (project.id === "practice" ? 560 : (mob ? 620 : 680)),
+        maxWidth: extraCompact ? 450 : (slightlyCompact ? 720 : (project.id === "practice" ? 560 : (mob ? 620 : 680))),
         marginLeft: "auto",
         marginRight: "auto",
         } : {}),
@@ -268,14 +274,14 @@ function PassageSequence({ project }) {
         {watermark ? (
           <span aria-hidden="true" style={{
             position: "absolute",
-            right: 10,
-            bottom: 8,
+            right: project.id === "practice" ? 6 : 10,
+            bottom: project.id === "practice" ? 6 : 8,
             zIndex: 12,
             pointerEvents: "none",
             fontFamily: "var(--mono)",
-            fontSize: mob ? 10 : 11,
+            fontSize: project.id === "practice" ? (mob ? 6 : 7) : (mob ? 10 : 11),
             lineHeight: 1,
-            letterSpacing: "0.10em",
+            letterSpacing: project.id === "practice" ? "0.05em" : "0.10em",
             color: "rgba(255,255,255,.74)",
             textShadow: "0 1px 2px rgba(0,0,0,.46)",
             textTransform: "uppercase",

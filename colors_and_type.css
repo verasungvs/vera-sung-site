@@ -238,8 +238,8 @@ a:hover, .link:hover {
 
 /* LE PASSAGE desktop plates: a touch larger. Mobile stays at the existing 94%. */
 @media (min-width: 901px) {
-  [data-screen-label="Photography / LE PASSAGE"] section[style*="width: 76%"] {
-    width: 80% !important;
-    max-width: 80% !important;
+  [data-screen-label="Photography / LE PASSAGE"] section[style*="width: 84%"] {
+    width: 84% !important;
+    max-width: 84% !important;
   }
 }

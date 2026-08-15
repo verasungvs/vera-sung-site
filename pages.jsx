@@ -1048,7 +1048,10 @@ function ContactPage() {
               fontSize: mob ? 11 : 12,
               lineHeight: 1.7,
               color: "var(--ink-4)",
-              maxWidth: mob ? "100%" : 380,
+              width: mob ? "82%" : "78%",
+              maxWidth: 520,
+              marginLeft: "auto",
+              marginRight: "auto",
               marginTop: mob ? 20 : 56,
               letterSpacing: ".02em",
             }}>

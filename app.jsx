@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260815-mirror-align-6",
+  cacheVersion: "20260815-layout-align-7",
   home: {
     images: [
       {
@@ -26,11 +26,11 @@ const SITE = {
         src: "assets/home-carousel-cabinet.jpg",
         alt: "Photograph by Vera Sung",
         scale: 0.80,
-        offsetX: -30,
+        offsetX: -10,
         mobileOffsetX: -8,
       },
     ],
-    interval: 4000,
+    interval: 3500,
     fadeDuration: 1500,
     link: "photography/",
     desktopWidth: "88%",
@@ -215,7 +215,13 @@ HomePage = function HomePage2026({ go }) {
         </div>
       </Reveal>
 
-      <Reveal as="section" style={{ marginBottom: 160 }}>
+      <Reveal as="section" style={{
+        marginBottom: 160,
+        width: mob ? "92%" : 460,
+        maxWidth: "100%",
+        marginLeft: "auto",
+        marginRight: "auto",
+      }}>
         {PROJECTS.map(pr => (
           <div key={pr.id}
                onClick={() => go("photography/" + pr.id)}

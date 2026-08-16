@@ -328,8 +328,8 @@ function PassageSequence({ project }) {
               position: "relative",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "105.6%",
-              maxWidth: 912,
+              width: mob ? "105.6%" : "97.2%",
+              maxWidth: mob ? 912 : 839,
               marginBottom: mb,
             }
           : { marginLeft: offset, marginRight: offset, marginBottom: mb };

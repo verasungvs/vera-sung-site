@@ -32,7 +32,7 @@ const SITE = {
     watermark: "©Vera Sung",
     watermarkDesktopSize: 11,
     watermarkMobileSize: 9,
-    watermarkOpacity: 0.35,
+    watermarkOpacity: 0.45,
     desktopGap: 96,
   },
 };
@@ -71,8 +71,8 @@ function VisibleNaturalPhoto({ src, style, watermark }) {
       {watermark ? (
         <span aria-hidden="true" style={{
           position: "absolute",
-          right: mob ? 10 : 14,
-          bottom: mob ? 9 : 11,
+          right: mob ? 16 : 20,
+          bottom: mob ? 15 : 17,
           zIndex: 12,
           pointerEvents: "none",
           fontFamily: "var(--mono)",
@@ -196,7 +196,11 @@ PassageSequence = function PassageSequence2026({ project }) {
         const isLast = i === seq.length - 1;
         const baseGap = isLast ? 40 : (!mob ? SITE.passage.desktopGap : gaps[i % gaps.length]);
         const mb = !mob ? baseGap : (baseGap + (p.extraGap || 0));
-        const width = mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth;
+        const fullSequencePosition = i + 2;
+        const isSmallerPlate = fullSequencePosition === 4 || fullSequencePosition === 5;
+        const width = isSmallerPlate
+          ? (mob ? "118.3%" : "106.5%")
+          : (mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth);
         const wrapStyle = {
           position: "relative",
           left: "50%",

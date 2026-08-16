@@ -25,8 +25,8 @@ const SITE = {
     mobileBottomGap: 48,
   },
   passage: {
-    desktopWidth: "90%",
-    mobileWidth: "100%",
+    desktopWidth: "125.3%",
+    mobileWidth: "139.2%",
     webImageWidth: 1400,
     webImageQuality: 82,
     desktopGap: 96,
@@ -173,7 +173,14 @@ PassageSequence = function PassageSequence2026({ project }) {
         const baseGap = isLast ? 40 : (!mob ? SITE.passage.desktopGap : gaps[i % gaps.length]);
         const mb = !mob ? baseGap : (baseGap + (p.extraGap || 0));
         const width = mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth;
-        const wrapStyle = { width, maxWidth: width, marginLeft: "auto", marginRight: "auto", marginBottom: mb };
+        const wrapStyle = {
+          position: "relative",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width,
+          maxWidth: width,
+          marginBottom: mb,
+        };
         if (p.kind === "diptych") {
           return (
             <Reveal as="section" key={i} style={wrapStyle}>
@@ -210,7 +217,9 @@ function SeriesPageWithOpeningPhoto({ sub, go }) {
   const pr = PROJECTS.find(p => p.id === sub) || PROJECTS[0];
   const first = pr.sequence && pr.sequence[0];
   const restProject = { ...pr, sequence: (pr.sequence || []).slice(1) };
-  const openingWidth = pr.id === "passage" ? (mob ? "100%" : "90%") : (mob ? "82%" : "76%");
+  const openingWidth = pr.id === "passage"
+    ? (mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth)
+    : (mob ? "82%" : "76%");
   const openingMaxWidth = pr.id === "night-walks" ? (mob ? 620 : 680) : undefined;
 
   return (
@@ -228,7 +237,14 @@ function SeriesPageWithOpeningPhoto({ sub, go }) {
       </div>
 
       {first && first.src && (
-        <section style={{ width: openingWidth, maxWidth: openingMaxWidth || openingWidth, marginLeft: "auto", marginRight: "auto", marginBottom: mob ? 48 : 80 }}>
+        <section style={{
+          width: openingWidth,
+          maxWidth: openingMaxWidth || openingWidth,
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: mob ? 48 : 80,
+          ...(pr.id === "passage" ? { position: "relative", left: "50%", transform: "translateX(-50%)" } : {}),
+        }}>
           <VisibleNaturalPhoto src={passageWebSrc(first.src)} />
         </section>
       )}

@@ -236,11 +236,11 @@ a:hover, .link:hover {
   color: rgba(70, 64, 59, 0.35) !important;
 }
 
-/* LE PASSAGE desktop plates: a touch larger. Mobile stays at the existing 94%. */
+/* LE PASSAGE sizing is controlled from the quick-edit panel in app.jsx. */
 @media (min-width: 901px) {
-  [data-screen-label="Photography / LE PASSAGE"] section[style*="width: 90%"] {
-    width: 90% !important;
-    max-width: 90% !important;
+  [data-screen-label="Photography / LE PASSAGE"] section[style*="width: 125.3%"] {
+    width: 125.3% !important;
+    max-width: 125.3% !important;
   }
 }
 

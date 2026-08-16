@@ -260,6 +260,7 @@ function PassageSequence({ project }) {
     const webSrc = usePassageResolution
       ? `/.netlify/images?url=/${src}&w=1400&fm=jpg&q=82`
       : src;
+    const watermark = project.id === "drifting" ? "©Vera Sung" : null;
 
     return (
       <div style={{
@@ -272,6 +273,25 @@ function PassageSequence({ project }) {
         } : {}),
       }}>
         <Photo src={webSrc} natural />
+        {watermark ? (
+          <span aria-hidden="true" style={{
+            position: "absolute",
+            right: mob ? 16 : 20,
+            bottom: mob ? 15 : 17,
+            zIndex: 12,
+            pointerEvents: "none",
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 9 : 11,
+            lineHeight: 1,
+            letterSpacing: "0.10em",
+            color: "rgba(255,255,255,.72)",
+            textShadow: "0 1px 2px rgba(0,0,0,.50)",
+            whiteSpace: "nowrap",
+            opacity: 0.45,
+          }}>
+            {watermark}
+          </span>
+        ) : null}
       </div>
     );
   };

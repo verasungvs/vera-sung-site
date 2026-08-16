@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260816-mobile-passage-layout-34",
+  cacheVersion: "20260816-responsive-photo-sizing-35",
   home: {
     images: [
       {
@@ -25,8 +25,8 @@ const SITE = {
     mobileBottomGap: 48,
   },
   passage: {
-    desktopWidth: "125.3%",
-    mobileWidth: "118.3%",
+    desktopWidth: "112.8%",
+    mobileWidth: "100.6%",
     webImageWidth: 1400,
     webImageQuality: 82,
     watermark: "©Vera Sung",
@@ -199,7 +199,7 @@ PassageSequence = function PassageSequence2026({ project }) {
         const fullSequencePosition = i + 2;
         const isSmallerPlate = fullSequencePosition === 4 || fullSequencePosition === 5;
         const width = isSmallerPlate
-          ? (mob ? "100.6%" : "106.5%")
+          ? (mob ? "100.6%" : "95.9%")
           : (mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth);
         const wrapStyle = {
           position: "relative",

@@ -34,6 +34,7 @@ const SITE = {
 };
 
 const LegacyPassageSequence = PassageSequence;
+const LegacyPhotographyPage = PhotographyPage;
 
 const passageWebSrc = (src) =>
   `/.netlify/images?url=/${src}&w=${SITE.passage.webImageWidth}&fm=jpg&q=${SITE.passage.webImageQuality}`;
@@ -102,7 +103,7 @@ HomePage = function HomePage2026({ go }) {
           onClick={() => go(SITE.home.link)}
           role="link"
           tabIndex={0}
-          aria-label="Open Le Passage"
+          aria-label="Open Photography projects"
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -226,6 +227,74 @@ PassageSequence = function PassageSequence2026({ project }) {
   );
 };
 
+PhotographyPage = function PhotographyPage2026({ sub, go }) {
+  const mob = useIsMobile();
+
+  if (sub) return <LegacyPhotographyPage sub={sub} go={go} />;
+
+  return (
+    <div className="page-enter col-narrow" data-screen-label="Photography" style={{ paddingTop: 48 }}>
+      <div style={{
+        paddingTop: mob ? 8 : 0,
+        paddingBottom: mob ? 28 : 18,
+        marginBottom: mob ? 80 : 120,
+      }}>
+        <div className="label printed--soft" style={{
+          fontSize: mob ? 17 : 15,
+          fontWeight: 700,
+          color: "var(--ink)",
+          marginBottom: mob ? 18 : 28,
+          letterSpacing: "0.22em",
+        }}>
+          projects
+        </div>
+
+        <div style={mob ? {
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "18px",
+          alignItems: "start",
+        } : {
+          display: "flex",
+          flexWrap: "nowrap",
+          gap: "0 40px",
+          alignItems: "start",
+        }}>
+          {PROJECTS.map(p => (
+            <button key={p.id} onClick={() => go("photography/" + p.id)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: mob ? 7 : 10,
+                textAlign: "left",
+                paddingBottom: mob ? 3 : 0,
+                border: 0,
+                width: mob ? "100%" : "auto",
+              }}>
+              <span style={{
+                fontFamily: "var(--mono-worn)",
+                fontSize: 11,
+                letterSpacing: "0.28em",
+              }}>
+                <LetterpressTitle text={p.no} />
+              </span>
+              <span style={{
+                fontFamily: "var(--mono-worn)",
+                fontSize: 15,
+                letterSpacing: mob ? "0.04em" : "0.08em",
+                textTransform: "uppercase",
+              }}>
+                <LetterpressTitle text={p.title} />
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function useHashRoute() {
   const parse = () => (location.hash.replace(/^#\/?/, "") || "home");
   const [route, setRoute] = useAppState(parse());
@@ -247,7 +316,7 @@ function Header({ route, go }) {
   const [photoMenuOpen, setPhotoMenuOpen] = useAppState(false);
   const items = [
     { id: "home", label: "Home" },
-    { id: "photography/passage", label: "Photography", match: "photography" },
+    { id: "photography", label: "Photography", match: "photography" },
     { id: "performance", label: "Performance" },
     { id: "about", label: "About" },
     { id: "contact", label: "Contact" },

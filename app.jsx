@@ -227,8 +227,156 @@ PassageSequence = function PassageSequence2026({ project }) {
   );
 };
 
+function SeriesPageWithOpeningPhoto({ sub, go }) {
+  const mob = useIsMobile();
+  const pr = PROJECTS.find(p => p.id === sub) || PROJECTS[0];
+  const first = pr.sequence && pr.sequence[0];
+  const restProject = { ...pr, sequence: (pr.sequence || []).slice(1) };
+  const openingWidth = pr.id === "passage"
+    ? (mob ? "100%" : "90%")
+    : (mob ? "82%" : "76%");
+  const openingMaxWidth = pr.id === "night-walks" ? (mob ? 620 : 680) : undefined;
+
+  return (
+    <div className="page-enter col-narrow" data-screen-label={"Photography / " + pr.title} style={{ paddingTop: 48 }}>
+      <div style={{
+        paddingTop: mob ? 8 : 0,
+        paddingBottom: mob ? 28 : 18,
+        borderBottom: "1px solid rgba(85,82,75,.10)",
+        marginBottom: mob ? 34 : 25,
+      }}>
+        <div className="label printed--soft" style={{
+          fontSize: mob ? 17 : 15, fontWeight: 700, color: "var(--ink)",
+          marginBottom: mob ? 18 : 28, letterSpacing: "0.22em",
+        }}>
+          projects
+        </div>
+        <div style={mob ? {
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "18px",
+          alignItems: "start",
+        } : {
+          display: "flex",
+          flexWrap: "nowrap",
+          gap: "0 40px",
+          alignItems: "start",
+        }}>
+          {PROJECTS.map(p => (
+            <button key={p.id} onClick={() => go("photography/" + p.id)}
+              style={{
+                display: "flex", flexDirection: "column", alignItems: "flex-start",
+                gap: mob ? 7 : 10,
+                textAlign: "left", paddingBottom: mob ? 3 : 0, border: 0,
+                width: mob ? "100%" : "auto",
+              }}>
+              <span style={{
+                fontFamily: "var(--mono-worn)",
+                fontSize: 11,
+                letterSpacing: "0.28em",
+              }}>
+                <LetterpressTitle text={p.no} />
+              </span>
+              <span style={{
+                fontFamily: "var(--mono-worn)",
+                fontSize: 15,
+                letterSpacing: mob ? "0.04em" : "0.08em",
+                textTransform: "uppercase",
+              }}>
+                <LetterpressTitle text={p.title} />
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {first && first.src && (
+        <Reveal as="section" style={{
+          width: openingWidth,
+          maxWidth: openingMaxWidth || openingWidth,
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: mob ? 48 : 80,
+        }}>
+          <VisibleNaturalPhoto src={passageWebSrc(first.src)} />
+        </Reveal>
+      )}
+
+      <section style={{ marginBottom: mob ? 40 : 96 }}>
+        <div className="numeral printed--soft" style={{ marginBottom: 18, fontSize: 15 }}>series {pr.no}</div>
+        <div className="stamp stamp--big printed--stamp" style={{ marginBottom: 32 }}>
+          {pr.title}
+        </div>
+        {pr.id === "passage" ? (
+          <div className="printed" style={{
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 14 : 18,
+            lineHeight: mob ? 1.55 : 1.75,
+            color: "var(--ink-2)", maxWidth: 720,
+            marginTop: mob ? 16 : 24,
+          }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
+              On the vast sandy expanse surrounding Mont-Saint-Michel, as
+              the sea withdraws, people begin to step onto the sand:
+              wandering, lingering, watching.
+            </p>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
+              Each day, there is a brief moment when we are allowed to walk
+              here, to pass through. They gather, drift, forming a collective
+              silhouette, like migration, like ritual, like an ordinary walk.
+            </p>
+            <p style={{ margin: 0 }}>
+              When the time comes, the sea returns. The sand does not
+              disappear, it is simply covered. Day after day, this rhythm
+              rises and falls with the moon.
+            </p>
+          </div>
+        ) : (
+          <div className="printed" style={{
+            fontFamily: "var(--mono)",
+            fontSize: mob ? 14 : 18,
+            lineHeight: mob ? 1.55 : 1.75,
+            color: "var(--paper-light)", maxWidth: 720,
+            marginTop: mob ? 16 : 24,
+          }}>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
+              Night walks in the American town of Wilson.
+            </p>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
+              Under the cover of darkness, I move forward, feeling as if
+              nothing but a thin skin wraps around me.
+            </p>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
+              For nearly a month, my walking has been animal, instinctive,
+              almost a premonition in motion.
+            </p>
+            <p style={{ margin: mob ? "0 0 8px" : "0 0 14px" }}>
+              Look, someone slips quietly past that window. Strands of hair
+              on the wooden floor, traces scattered by the watcher.
+            </p>
+            <p style={{ margin: 0 }}>
+              Another day, night is about to fall again. Stepping once more
+              into the unease and danger that darkness carries alters the
+              rhythm of my breath and heartbeat, as if I could sense the
+              tremors of what has yet to happen.
+            </p>
+          </div>
+        )}
+      </section>
+
+      <Rule />
+      <PassageSequence project={restProject} />
+      <NextProject current={pr.id} go={go} />
+    </div>
+  );
+}
+
 PhotographyPage = function PhotographyPage2026({ sub, go }) {
   const mob = useIsMobile();
+
+  if (sub === "passage" || sub === "night-walks") {
+    return <SeriesPageWithOpeningPhoto sub={sub} go={go} />;
+  }
 
   if (sub) return <LegacyPhotographyPage sub={sub} go={go} />;
 

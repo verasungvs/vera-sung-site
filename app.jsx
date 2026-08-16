@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260816-sharper-web-images-32",
+  cacheVersion: "20260816-watermark-layout-refresh-33",
   home: {
     images: [
       {

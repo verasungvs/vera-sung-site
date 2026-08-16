@@ -305,10 +305,11 @@ function PassageSequence({ project }) {
         const offset = mob ? "0" : (p.breakout || (i === 0 ? firstBreakout : breakout));
         const wrapStyle = project.id === "drifting"
           ? {
-              width: "88%",
-              maxWidth: 760,
-              marginLeft: "auto",
-              marginRight: "auto",
+              position: "relative",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "105.6%",
+              maxWidth: 912,
               marginBottom: mb,
             }
           : { marginLeft: offset, marginRight: offset, marginBottom: mb };

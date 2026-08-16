@@ -7,7 +7,7 @@ const { useEffect: useAppEffect, useState: useAppState } = React;
    ONLY the values in this block. No component rewrite is needed.
    ================================================================ */
 const SITE = {
-  cacheVersion: "20260816-watermark-layout-refresh-33",
+  cacheVersion: "20260816-mobile-passage-layout-34",
   home: {
     images: [
       {
@@ -26,7 +26,7 @@ const SITE = {
   },
   passage: {
     desktopWidth: "125.3%",
-    mobileWidth: "139.2%",
+    mobileWidth: "118.3%",
     webImageWidth: 1400,
     webImageQuality: 82,
     watermark: "©Vera Sung",
@@ -199,7 +199,7 @@ PassageSequence = function PassageSequence2026({ project }) {
         const fullSequencePosition = i + 2;
         const isSmallerPlate = fullSequencePosition === 4 || fullSequencePosition === 5;
         const width = isSmallerPlate
-          ? (mob ? "118.3%" : "106.5%")
+          ? (mob ? "100.6%" : "106.5%")
           : (mob ? SITE.passage.mobileWidth : SITE.passage.desktopWidth);
         const wrapStyle = {
           position: "relative",
@@ -251,7 +251,11 @@ function SeriesPageWithOpeningPhoto({ sub, go }) {
   const openingMaxWidth = pr.id === "night-walks" ? (mob ? 620 : 680) : undefined;
 
   return (
-    <div className="page-enter col-narrow" data-screen-label={"Photography / " + pr.title} style={{ paddingTop: 48 }}>
+    <div
+      className="page-enter col-narrow"
+      data-screen-label={"Photography / " + pr.title}
+      style={{ paddingTop: 48, overflowX: mob && pr.id === "passage" ? "clip" : undefined }}
+    >
       <div style={{ paddingTop: mob ? 8 : 0, paddingBottom: mob ? 28 : 18, borderBottom: "1px solid rgba(85,82,75,.10)", marginBottom: mob ? 34 : 25 }}>
         <div className="label printed--soft" style={{ fontSize: mob ? 17 : 15, fontWeight: 700, color: "var(--ink)", marginBottom: mob ? 18 : 28, letterSpacing: "0.22em" }}>projects</div>
         <div style={mob ? { display: "grid", gridTemplateColumns: "1fr", gap: "18px", alignItems: "start" } : { display: "flex", flexWrap: "nowrap", gap: "0 40px", alignItems: "start" }}>

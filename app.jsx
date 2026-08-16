@@ -29,6 +29,10 @@ const SITE = {
     mobileWidth: "139.2%",
     webImageWidth: 1400,
     webImageQuality: 82,
+    watermark: "©Vera Sung",
+    watermarkDesktopSize: 11,
+    watermarkMobileSize: 9,
+    watermarkOpacity: 0.35,
     desktopGap: 96,
   },
 };
@@ -39,7 +43,8 @@ const LegacyPhotographyPage = PhotographyPage;
 const passageWebSrc = (src) =>
   `/.netlify/images?url=/${src}&w=${SITE.passage.webImageWidth}&fm=jpg&q=${SITE.passage.webImageQuality}`;
 
-function VisibleNaturalPhoto({ src, style }) {
+function VisibleNaturalPhoto({ src, style, watermark }) {
+  const mob = useIsMobile();
   const noSave = e => { e.preventDefault(); e.stopPropagation(); };
   return (
     <div
@@ -63,12 +68,31 @@ function VisibleNaturalPhoto({ src, style }) {
         }}
       />
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 5 }} onContextMenu={noSave} />
+      {watermark ? (
+        <span aria-hidden="true" style={{
+          position: "absolute",
+          right: mob ? 10 : 14,
+          bottom: mob ? 9 : 11,
+          zIndex: 12,
+          pointerEvents: "none",
+          fontFamily: "var(--mono)",
+          fontSize: mob ? SITE.passage.watermarkMobileSize : SITE.passage.watermarkDesktopSize,
+          lineHeight: 1,
+          letterSpacing: "0.10em",
+          color: "rgba(255,255,255,.72)",
+          textShadow: "0 1px 2px rgba(0,0,0,.50)",
+          whiteSpace: "nowrap",
+          opacity: SITE.passage.watermarkOpacity,
+        }}>
+          {watermark}
+        </span>
+      ) : null}
     </div>
   );
 }
 
 function PassageWebPhoto({ src }) {
-  return <VisibleNaturalPhoto src={passageWebSrc(src)} />;
+  return <VisibleNaturalPhoto src={passageWebSrc(src)} watermark={SITE.passage.watermark} />;
 }
 
 HomePage = function HomePage2026({ go }) {
@@ -245,7 +269,10 @@ function SeriesPageWithOpeningPhoto({ sub, go }) {
           marginBottom: mob ? 48 : 80,
           ...(pr.id === "passage" ? { position: "relative", left: "50%", transform: "translateX(-50%)" } : {}),
         }}>
-          <VisibleNaturalPhoto src={passageWebSrc(first.src)} />
+          <VisibleNaturalPhoto
+            src={passageWebSrc(first.src)}
+            watermark={pr.id === "passage" ? SITE.passage.watermark : undefined}
+          />
         </section>
       )}
 

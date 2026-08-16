@@ -267,7 +267,7 @@ PhotographyPage = function PhotographyPage2026({ sub, go }) {
   return (
     <div className="page-enter col-narrow" data-screen-label="Photography" style={{ paddingTop: 48, minHeight: mob ? undefined : "calc(100vh - 170px)" }}>
       <div style={{ paddingTop: mob ? 8 : 0, paddingBottom: mob ? 28 : 18, marginBottom: mob ? 80 : 0 }}>
-        <div className="label printed--soft" style={{ fontSize: mob ? 17 : 15, fontWeight: 700, color: "var(--ink)", marginBottom: mob ? 28 : 30, letterSpacing: "0.22em" }}>projects</div>
+        <div className="label printed--soft" style={{ fontSize: mob ? 17 : 15, fontWeight: 700, color: "var(--ink)", marginBottom: mob ? 28 : 50, letterSpacing: "0.22em" }}>projects</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: mob ? "18px" : "22px", alignItems: "start" }}>
           {PROJECTS.map(p => (
             <button key={p.id} onClick={() => go("photography/" + p.id)} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: mob ? 7 : 8, textAlign: "left", paddingBottom: mob ? 3 : 0, border: 0, width: "100%" }}>

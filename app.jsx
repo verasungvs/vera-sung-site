@@ -233,31 +233,33 @@ PhotographyPage = function PhotographyPage2026({ sub, go }) {
   if (sub) return <LegacyPhotographyPage sub={sub} go={go} />;
 
   return (
-    <div className="page-enter col-narrow" data-screen-label="Photography" style={{ paddingTop: 48 }}>
+    <div
+      className="page-enter col-narrow"
+      data-screen-label="Photography"
+      style={{
+        paddingTop: 48,
+        minHeight: mob ? undefined : "calc(100vh - 170px)",
+      }}
+    >
       <div style={{
         paddingTop: mob ? 8 : 0,
         paddingBottom: mob ? 28 : 18,
-        marginBottom: mob ? 80 : 120,
+        marginBottom: mob ? 80 : 0,
       }}>
         <div className="label printed--soft" style={{
           fontSize: mob ? 17 : 15,
           fontWeight: 700,
           color: "var(--ink)",
-          marginBottom: mob ? 18 : 28,
+          marginBottom: mob ? 28 : 30,
           letterSpacing: "0.22em",
         }}>
           projects
         </div>
 
-        <div style={mob ? {
+        <div style={{
           display: "grid",
           gridTemplateColumns: "1fr",
-          gap: "18px",
-          alignItems: "start",
-        } : {
-          display: "flex",
-          flexWrap: "nowrap",
-          gap: "0 40px",
+          gap: mob ? "18px" : "22px",
           alignItems: "start",
         }}>
           {PROJECTS.map(p => (
@@ -266,11 +268,11 @@ PhotographyPage = function PhotographyPage2026({ sub, go }) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                gap: mob ? 7 : 10,
+                gap: mob ? 7 : 8,
                 textAlign: "left",
                 paddingBottom: mob ? 3 : 0,
                 border: 0,
-                width: mob ? "100%" : "auto",
+                width: "100%",
               }}>
               <span style={{
                 fontFamily: "var(--mono-worn)",
@@ -442,7 +444,7 @@ function Header({ route, go }) {
             whiteSpace: "nowrap",
           }}>宋 孟璇</span>
         </button>
-        <nav className="primary">{navChildren}</nav>
+        <nav className="primary" style={!mob && top === "home" ? { gap: 36 } : undefined}>{navChildren}</nav>
         <span className="meta-right"></span>
       </div>
       <div className="crease"></div>
@@ -450,11 +452,12 @@ function Header({ route, go }) {
   );
 }
 
-function Footer({ go, compact = false }) {
+function Footer({ go, compact = false, pinBottom = false }) {
   const mob = useIsMobile();
   const compactStyle = compact
     ? (mob ? { marginTop: 38, minHeight: "220px", padding: "0 22px 2px", rowGap: 0, alignContent: "end", borderTop: "none" } : { paddingBottom: 24 })
     : undefined;
+  const pinStyle = pinBottom && !mob ? { marginTop: 0 } : undefined;
   const footerTextStyle = {
     fontSize: 14,
     letterSpacing: "0.04em",
@@ -462,7 +465,7 @@ function Footer({ go, compact = false }) {
     lineHeight: mob && compact ? 1.25 : undefined,
   };
   return (
-    <footer className="site" style={compactStyle}>
+    <footer className="site" style={{ ...(compactStyle || {}), ...(pinStyle || {}) }}>
       <div className="meta printed--soft" style={{ ...footerTextStyle, order: mob && compact ? 3 : undefined }}>© 2026 Vera Sung. All rights reserved.</div>
       <div className="c" style={{ order: mob && compact ? 2 : undefined }}>
         <button className="link meta printed--soft" onClick={() => go("contact")} style={footerTextStyle}>
@@ -490,6 +493,7 @@ function Footer({ go, compact = false }) {
 function App() {
   const [route, go] = useHashRoute();
   const [top, sub] = route.split("/");
+  const photographyIndex = top === "photography" && !sub;
 
   useAppEffect(() => {
     const isNightWalks = top === "photography" && sub === "night-walks";
@@ -511,7 +515,7 @@ function App() {
     <>
       <Header route={route} go={go} />
       {body}
-      <Footer go={go} compact={top === "home"} />
+      <Footer go={go} compact={top === "home"} pinBottom={photographyIndex} />
     </>
   );
 }

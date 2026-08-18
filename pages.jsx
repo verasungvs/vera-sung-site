@@ -750,7 +750,7 @@ function AboutPage({ go }) {
               onClick={() => document.getElementById("about-cv").scrollIntoView({ behavior: "smooth" })}
               className="printed--soft"
               style={{
-                fontFamily: "var(--mono)", fontSize: 13,
+                fontFamily: "var(--mono)", fontSize: mob ? 16 : 18,
                 letterSpacing: "0.18em", color: "var(--ink-2)",
                 opacity: 0.88, textTransform: "uppercase",
               }}>
@@ -772,21 +772,26 @@ function AboutPage({ go }) {
           <div className="printed" style={{
             fontFamily: "var(--mono)",
             fontSize: mob ? 14 : 17,
-            lineHeight: mob ? 1.55 : 1.7,
+            lineHeight: mob ? 1.4 : 1.5,
             color: "var(--ink-2)",
             maxWidth: mob ? "100%" : 560,
             marginTop: mob ? 24 : 40,
             letterSpacing: mob ? "0.005em" : undefined,
           }}>
-            <p style={{ margin: 0 }}>
+            <p style={{ margin: mob ? "0 0 14px" : "0 0 18px" }}>
               Born in Taichung, Taiwan, Vera is a performer who also explores
-              artistic creation. She currently lives and works between Taiwan
-              and France. Photography and video are her primary media. Alongside
-              observing and exploring from behind the camera, she also experiments
-              with bringing her own body into the work. Through bodily gesture,
-              trace, and scene, she explores forms and memories of presence and
-              absence, as well as the unnamed states that exist between them. She
-              is currently a member of the French photography agency Hans Lucas.
+              artistic creation.
+            </p>
+            <p style={{ margin: mob ? "0 0 18px" : "0 0 24px" }}>
+              She currently lives and works between Taiwan and France.
+              Photography and video are her primary media. Alongside observing
+              and exploring from behind the camera, she also experiments with
+              bringing her own body into the work. Through bodily gesture, trace,
+              and scene, she explores forms and memories of presence and absence,
+              as well as the unnamed states that exist between them.
+            </p>
+            <p style={{ margin: 0 }}>
+              She is currently a member of the French photography agency Hans Lucas.
             </p>
           </div>
 

@@ -760,12 +760,12 @@ function AboutPage({ go }) {
 
           {/* Wordmark — same pattern as the top-left header */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
-            <span className="stamp stamp--page printed--stamp">vera sung</span>
+            <span className="stamp stamp--page printed--stamp">Vera Sung</span>
             <span style={{
               fontFamily: "var(--mono-worn)", fontSize: 15,
               letterSpacing: "0.22em", color: "var(--ink)", opacity: 0.5,
               transform: "rotate(-0.35deg)", display: "inline-block",
-            }} className="printed--stamp">宋 孟璇</span>
+            }} className="printed--stamp">宋孟璇</span>
           </div>
 
           {/* Biography */}
@@ -778,15 +778,15 @@ function AboutPage({ go }) {
             marginTop: mob ? 24 : 40,
             letterSpacing: mob ? "0.005em" : undefined,
           }}>
-            <p style={{ margin: mob ? "0 0 10px" : "0 0 16px" }}>
-              Vera Sung (宋孟璇) is a Taiwanese performer and artist living and
-              working between Taiwan and France. Rooted in her background in
-              performance, her practice explores forms and memories of presence
-              and absence through bodily gesture, trace, and scene, as well as
-              the unnamed states that exist between them.
-            </p>
             <p style={{ margin: 0 }}>
-              She is a member of the French photography agency Hans Lucas.
+              Born in Taichung, Taiwan, Vera is a performer who also explores
+              artistic creation. She currently lives and works between Taiwan
+              and France. Photography and video are her primary media. Alongside
+              observing and exploring from behind the camera, she also experiments
+              with bringing her own body into the work. Through bodily gesture,
+              trace, and scene, she explores forms and memories of presence and
+              absence, as well as the unnamed states that exist between them. She
+              is currently a member of the French photography agency Hans Lucas.
             </p>
           </div>
 
